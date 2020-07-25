@@ -16,8 +16,7 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "de.alberteinholz.ehtech.TechMod",
-            "de.alberteinholz.ehmooshroom.MooshroomLib"
+            "de.alberteinholz.ehtech.TechMod"
         ],
         "client": [
             "de.alberteinholz.ehtech.TechMod"
