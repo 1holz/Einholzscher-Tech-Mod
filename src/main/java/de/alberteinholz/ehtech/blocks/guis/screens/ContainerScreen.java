@@ -8,11 +8,12 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 
 @Environment(EnvType.CLIENT)
 public class ContainerScreen extends CottonInventoryScreen<SyncedGuiDescription> {
-    public ContainerScreen(SyncedGuiDescription description, PlayerInventory inventory, Text title) {
+    public ContainerScreen(ScreenHandler description, PlayerInventory inventory, Text title) {
         this((ContainerGui) description, inventory.player, title);
     }
 

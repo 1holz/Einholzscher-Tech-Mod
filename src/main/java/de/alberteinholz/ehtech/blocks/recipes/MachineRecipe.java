@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
+import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
@@ -15,7 +16,6 @@ import de.alberteinholz.ehtech.blocks.recipes.Input.DataIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.EntityIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.FluidIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.ItemIngredient;
-import de.alberteinholz.ehtech.registry.BlockRegistry;
 import io.github.fablabsmc.fablabs.api.fluidvolume.v1.FluidVolume;
 import io.github.fablabsmc.fablabs.api.fluidvolume.v1.Fraction;
 import net.fabricmc.api.EnvType;
@@ -67,12 +67,12 @@ public class MachineRecipe implements Recipe<Inventory> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return BlockRegistry.getEntry(typeId).recipeSerializer;
+        return BlockRegistryHelper.BLOCKS.get(typeId).recipeSerializer;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return BlockRegistry.getEntry(typeId).recipeType;
+        return BlockRegistryHelper.BLOCKS.get(typeId).recipeType;
     }
 
     public boolean matches(BlockPos pos, World world) {

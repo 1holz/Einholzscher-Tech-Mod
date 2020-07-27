@@ -13,7 +13,7 @@ import de.alberteinholz.ehtech.blocks.guis.screens.ContainerScreen;
 import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
 import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe.Serializer;
 import de.alberteinholz.ehtech.itemgroups.ItemGroups;
-import de.alberteinholz.ehtech.util.Ref;
+import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen;
 import net.fabricmc.api.EnvType;
@@ -37,7 +37,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
-public enum BlockRegistry {
+@Deprecated
+public enum BlockRegistryOld {
     COAL_GENERATOR,
     MACHINE_CONFIG,
     ORE_GROWER;
@@ -50,15 +51,15 @@ public enum BlockRegistry {
         ORE_GROWER.setup(new MachineBlock(getId(ORE_GROWER)), getDefaultItemSettings(), OreGrowerBlockEntity::new, OreGrowerGui::new, getDefaultRecipeType(getId(ORE_GROWER)), new Serializer(), ContainerScreen::new);
     }
 
-    public static BlockRegistry getEntry(Identifier id) {
-        for (BlockRegistry entry : BlockRegistry.values()) {
+    public static BlockRegistryOld getEntry(Identifier id) {
+        for (BlockRegistryOld entry : BlockRegistryOld.values()) {
             if (entry.name().equalsIgnoreCase(id.getPath())) return entry;
         }
         return null;
     }
 
-    public static Identifier getId(BlockRegistry entry) {
-        return new Identifier(Ref.MOD_ID, entry.toString().toLowerCase());
+    public static Identifier getId(BlockRegistryOld entry) {
+        return Helper.makeIdentifier(entry.toString().toLowerCase());
     }
 
     private static Settings getDefaultItemSettings() {
@@ -106,7 +107,7 @@ public enum BlockRegistry {
 
     public static void registerBlocks() {
         setupAll();
-        for (BlockRegistry entry : BlockRegistry.values()) {
+        for (BlockRegistryOld entry : BlockRegistryOld.values()) {
             if (entry.block != null) Registry.register(Registry.BLOCK, getId(entry), entry.block);
             if (entry.itemSettings != null && entry.block != null) Registry.register(Registry.ITEM, getId(entry), new BlockItem(entry.block, entry.itemSettings));
             if (entry.blockEntitySupplier != null && entry.block != null) entry.blockEntityType = Registry.register(Registry.BLOCK_ENTITY_TYPE, getId(entry), Builder.create(entry.blockEntitySupplier, entry.block).build(null));
@@ -118,7 +119,7 @@ public enum BlockRegistry {
 
     @Environment(EnvType.CLIENT)
     public static void registerBlocksClient() {
-        for (BlockRegistry entry : BlockRegistry.values()) {
+        for (BlockRegistryOld entry : BlockRegistryOld.values()) {
             if (entry.screenHandlerType != null && entry.screenFactory != null) ScreenRegistry.register(entry.screenHandlerType, entry.screenFactory);
         }
     }

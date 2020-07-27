@@ -9,7 +9,7 @@ import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataPr
 import de.alberteinholz.ehtech.blocks.guis.guis.ContainerGui;
 import de.alberteinholz.ehtech.blocks.guis.widgets.Bar;
 import de.alberteinholz.ehtech.blocks.guis.widgets.Button;
-import de.alberteinholz.ehtech.util.Ref;
+import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.component.data.api.UnitManager;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
@@ -49,10 +49,10 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     protected void initWidgetsDependencies() {
         super.initWidgetsDependencies();
-        powerBarBG = new Identifier(Ref.MOD_ID, "textures/gui/container/machine/elements/power_bar/background.png");
-        powerBarFG = new Identifier(Ref.MOD_ID, "textures/gui/container/machine/elements/power_bar/foreground.png");
-        progressBarBG = new Identifier(Ref.MOD_ID, "textures/gui/container/machine/elements/progress_bar/background.png");
-        progressBarFG = new Identifier(Ref.MOD_ID, "textures/gui/container/machine/elements/progress_bar/foreground.png");
+        powerBarBG = Helper.makeIdentifier("textures/gui/container/machine/elements/power_bar/background.png");
+        powerBarFG = Helper.makeIdentifier("textures/gui/container/machine/elements/power_bar/foreground.png");
+        progressBarBG = Helper.makeIdentifier("textures/gui/container/machine/elements/progress_bar/background.png");
+        progressBarFG = Helper.makeIdentifier("textures/gui/container/machine/elements/progress_bar/foreground.png");
     }
 
     @SuppressWarnings("unchecked")
@@ -123,7 +123,7 @@ public abstract class MachineGui extends ContainerGui {
     protected class ActivationButton extends Button {
         @Override
         public Identifier setTexture(int mouseX, int mouseY) {
-            withTexture(new Identifier(Ref.MOD_ID, "textures/gui/container/machine/elements/activation_button/" + ((MachineDataProviderComponent) getDataProviderComponent()).getActivationState().toString().toLowerCase() + ".png"));
+            withTexture(Helper.makeIdentifier("textures/gui/container/machine/elements/activation_button/" + ((MachineDataProviderComponent) getDataProviderComponent()).getActivationState().toString().toLowerCase() + ".png"));
             return super.setTexture(mouseX, mouseY);
         }
     }

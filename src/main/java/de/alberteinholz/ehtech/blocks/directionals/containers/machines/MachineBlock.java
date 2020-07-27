@@ -2,9 +2,9 @@ package de.alberteinholz.ehtech.blocks.directionals.containers.machines;
 
 import java.util.Set;
 
+import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import de.alberteinholz.ehtech.blocks.directionals.containers.ContainerBlock;
-import de.alberteinholz.ehtech.registry.BlockRegistry;
 import io.github.cottonmc.component.UniversalComponents;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.Component;
@@ -28,7 +28,7 @@ public class MachineBlock extends ContainerBlock implements BlockEntityProvider 
 
     @Override
     public BlockEntity createBlockEntity(BlockView view) {
-        return BlockRegistry.getEntry(id).blockEntityType.instantiate();
+        return BlockRegistryHelper.BLOCKS.get(id).blockEntityType.instantiate();
     }
 
     @SuppressWarnings("unchecked")

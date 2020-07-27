@@ -2,13 +2,14 @@ package de.alberteinholz.ehtech.registry;
 
 import de.alberteinholz.ehtech.itemgroups.ItemGroups;
 import de.alberteinholz.ehtech.items.Wrench;
-import de.alberteinholz.ehtech.util.Ref;
+import de.alberteinholz.ehtech.util.Helper;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.Settings;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public enum ItemRegistry {
+@Deprecated
+public enum ItemRegistryOld {
 	WRENCH;
 
 	//static
@@ -26,7 +27,7 @@ public enum ItemRegistry {
 	public Item item;
 
 	public Identifier getIdentifier() {
-		return new Identifier(Ref.MOD_ID, this.toString().toLowerCase());
+		return Helper.makeIdentifier(this.toString().toLowerCase());
 	}
 
 	private void setup(Item item) {
@@ -35,7 +36,7 @@ public enum ItemRegistry {
 
 	public static void registerItems() {
 		setupAll();
-		for (ItemRegistry entry : ItemRegistry.values()) {
+		for (ItemRegistryOld entry : ItemRegistryOld.values()) {
 			Registry.register(Registry.ITEM, entry.getIdentifier(), entry.item);
 		}
 	}

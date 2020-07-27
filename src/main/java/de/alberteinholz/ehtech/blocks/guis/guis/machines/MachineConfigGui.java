@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigBehavior;
@@ -11,7 +12,7 @@ import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataPr
 import de.alberteinholz.ehtech.blocks.directionals.containers.machines.MachineBlock;
 import de.alberteinholz.ehtech.blocks.guis.guis.ContainerGui;
 import de.alberteinholz.ehtech.blocks.guis.widgets.Button;
-import de.alberteinholz.ehtech.registry.BlockRegistry;
+import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
@@ -23,7 +24,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 public class MachineConfigGui extends ContainerGui {
@@ -40,7 +40,7 @@ public class MachineConfigGui extends ContainerGui {
     protected Button cancel;
 
     public MachineConfigGui(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this(BlockRegistry.MACHINE_CONFIG.screenHandlerType, syncId, playerInventory, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("machine_config")).screenHandlerType, syncId, playerInventory, buf);
     }
 
     public MachineConfigGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
@@ -116,18 +116,7 @@ public class MachineConfigGui extends ContainerGui {
             }
         } else if (id == buttonIds.indexOf(cancel)) {
             if (!world.isClient) {
-                Identifier entryId = null;
-                for (BlockRegistry entry : BlockRegistry.values()) {
-                    if (entry.block != null && entry.block == world.getBlockState(pos).getBlock()) {
-                        entryId = BlockRegistry.getId(entry);
-                        break;
-                    }
-                }
-                if (entryId == null) {
-                    close(player);
-                } else {
-                    player.openHandledScreen((MachineBlockEntity) world.getBlockEntity(pos));
-                }
+                player.openHandledScreen((MachineBlockEntity) world.getBlockEntity(pos));
             }
             return true;
         } else {

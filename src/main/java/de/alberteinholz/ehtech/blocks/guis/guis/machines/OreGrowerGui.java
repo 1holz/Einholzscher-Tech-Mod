@@ -1,21 +1,20 @@
 package de.alberteinholz.ehtech.blocks.guis.guis.machines;
 
+import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
 import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
-import de.alberteinholz.ehtech.registry.BlockRegistry;
-import de.alberteinholz.ehtech.util.Ref;
+import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.Identifier;
 
 public class OreGrowerGui extends MachineGui {
     protected WItemSlot oreInputSlot;
 
     public OreGrowerGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this(BlockRegistry.ORE_GROWER.screenHandlerType, syncId, playerInv, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("ore_grower")).screenHandlerType, syncId, playerInv, buf);
     }
 
     public OreGrowerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
@@ -25,8 +24,8 @@ public class OreGrowerGui extends MachineGui {
     @Override
     protected void initWidgetsDependencies() {
         super.initWidgetsDependencies();
-        progressBarBG = new Identifier(Ref.MOD_ID, "textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
-        progressBarFG = new Identifier(Ref.MOD_ID, "textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
+        progressBarBG = Helper.makeIdentifier("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
+        progressBarFG = Helper.makeIdentifier("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
     }
 
     @Override

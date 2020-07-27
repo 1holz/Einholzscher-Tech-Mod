@@ -2,6 +2,7 @@ package de.alberteinholz.ehtech.util;
 
 import java.util.Arrays;
 
+import de.alberteinholz.ehtech.TechMod;
 import net.minecraft.util.Identifier;
 
 public class Helper {
@@ -12,7 +13,7 @@ public class Helper {
     }
 
     //TODO: expand this
-    public static Identifier translationKey(String name) {
-        return new Identifier(Ref.MOD_ID, name);
+    public static Identifier makeIdentifier(String name) {
+        return new Identifier(TechMod.MOD_ID, name);
     }
 }

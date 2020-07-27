@@ -2,6 +2,8 @@ package de.alberteinholz.ehtech.blocks.blockentities.containers.machines;
 
 import java.util.Optional;
 
+import de.alberteinholz.ehmooshroom.registry.BlockRegistryEntry;
+import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.ContainerBlockEntity;
 import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent;
@@ -20,7 +22,7 @@ import de.alberteinholz.ehtech.blocks.recipes.Input.DataIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.EntityIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.FluidIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.ItemIngredient;
-import de.alberteinholz.ehtech.registry.BlockRegistry;
+import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.component.api.ActionType;
 import io.github.cottonmc.component.energy.type.EnergyTypes;
@@ -32,7 +34,6 @@ import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -40,6 +41,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -52,7 +54,7 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
     public int powerBilanz = 0;
     public int lastPower = capacitor.getCurrentEnergy();
 
-    public MachineBlockEntity(BlockRegistry registryEntry) {
+    public MachineBlockEntity(BlockRegistryEntry registryEntry) {
         super(registryEntry);
         capacitor.setDataProvider((MachineDataProviderComponent) data);
         inventory.stacks.put("power_input", new ContainerInventoryComponent.Slot(ContainerInventoryComponent.Slot.Type.OTHER));
@@ -108,7 +110,7 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
     }
 
     public boolean checkForRecipe() {
-        Optional<MachineRecipe> optional = world.getRecipeManager().getFirstMatch(BlockRegistry.getEntry(BlockEntityType.getId(getType())).recipeType, new InventoryWrapper(pos), world);
+        Optional<MachineRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<MachineRecipe>) registryEntry.recipeType, new InventoryWrapper(pos), world);
         ((MachineDataProviderComponent) this.data).setRecipe(optional.orElse(null));
         return optional.isPresent();
     }
@@ -266,7 +268,7 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
 		public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
 			PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
             writeScreenOpeningData((ServerPlayerEntity) player, buf);
-            return BlockRegistry.MACHINE_CONFIG.clientHandlerFactory.create(syncId, inv, buf);
+            return BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("machine_config")).clientHandlerFactory.create(syncId, inv, buf);
 		}
 
 		@Override

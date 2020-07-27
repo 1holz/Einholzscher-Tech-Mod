@@ -1,10 +1,10 @@
 package de.alberteinholz.ehtech.blocks.guis.guis.machines;
 
+import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
 import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
 import de.alberteinholz.ehtech.blocks.components.container.machine.CoalGeneratorDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.guis.widgets.Bar;
-import de.alberteinholz.ehtech.registry.BlockRegistry;
-import de.alberteinholz.ehtech.util.Ref;
+import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
@@ -21,7 +21,7 @@ public class CoalGeneratorGui extends MachineGui {
     protected WItemSlot coalInputSlot;
 
     public CoalGeneratorGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this(BlockRegistry.COAL_GENERATOR.screenHandlerType, syncId, playerInv, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("coal_generator")).screenHandlerType, syncId, playerInv, buf);
     }
 
     public CoalGeneratorGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
@@ -31,8 +31,8 @@ public class CoalGeneratorGui extends MachineGui {
     @Override
     protected void initWidgetsDependencies() {
         super.initWidgetsDependencies();
-        heatBarBG = new Identifier(Ref.MOD_ID, "textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
-        heatBarFG = new Identifier(Ref.MOD_ID, "textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
+        heatBarBG = Helper.makeIdentifier("textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
+        heatBarFG = Helper.makeIdentifier("textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
     }
 
     @Override
