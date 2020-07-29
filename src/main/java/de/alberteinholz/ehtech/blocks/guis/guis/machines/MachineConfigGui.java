@@ -40,7 +40,7 @@ public class MachineConfigGui extends ContainerGui {
     protected Button cancel;
 
     public MachineConfigGui(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("machine_config")).screenHandlerType, syncId, playerInventory, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeId("machine_config")).screenHandlerType, syncId, playerInventory, buf);
     }
 
     public MachineConfigGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {

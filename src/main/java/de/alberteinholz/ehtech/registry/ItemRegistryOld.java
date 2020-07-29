@@ -27,7 +27,7 @@ public enum ItemRegistryOld {
 	public Item item;
 
 	public Identifier getIdentifier() {
-		return Helper.makeIdentifier(this.toString().toLowerCase());
+		return Helper.makeId(this.toString().toLowerCase());
 	}
 
 	private void setup(Item item) {

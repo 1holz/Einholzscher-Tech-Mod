@@ -14,7 +14,7 @@ public class OreGrowerGui extends MachineGui {
     protected WItemSlot oreInputSlot;
 
     public OreGrowerGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("ore_grower")).screenHandlerType, syncId, playerInv, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeId("ore_grower")).screenHandlerType, syncId, playerInv, buf);
     }
 
     public OreGrowerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
@@ -24,8 +24,8 @@ public class OreGrowerGui extends MachineGui {
     @Override
     protected void initWidgetsDependencies() {
         super.initWidgetsDependencies();
-        progressBarBG = Helper.makeIdentifier("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
-        progressBarFG = Helper.makeIdentifier("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
+        progressBarBG = Helper.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
+        progressBarFG = Helper.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
     }
 
     @Override

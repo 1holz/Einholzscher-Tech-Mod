@@ -268,7 +268,7 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
 		public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
 			PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
             writeScreenOpeningData((ServerPlayerEntity) player, buf);
-            return BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("machine_config")).clientHandlerFactory.create(syncId, inv, buf);
+            return BlockRegistryHelper.BLOCKS.get(Helper.makeId("machine_config")).clientHandlerFactory.create(syncId, inv, buf);
 		}
 
 		@Override

@@ -42,13 +42,13 @@ public class Registry {
     }
 
     public static void registrerItems() {
-        ItemRegistryHelper.create(Helper.makeIdentifier("wrench")).withItemBuild(Wrench::new, new Settings().group(ItemGroups.EH_TECH)).register();
+        ItemRegistryHelper.create(Helper.makeId("wrench")).withItemBuild(Wrench::new, new Settings().group(ItemGroups.EH_TECH)).register();
     }
 
     public static void registerBlocks() {
-        BlockRegistryHelper.create(Helper.makeIdentifier("machine_config")).withGui(MachineConfigGui::new).withScreen(ContainerScreen::new);
+        BlockRegistryHelper.create(Helper.makeId("machine_config")).withGui(MachineConfigGui::new).withScreen(ContainerScreen::new);
         //machines:
-        BlockRegistryHelper.create(Helper.makeIdentifier("coal_generator")).withBlock(new MachineBlock(Helper.makeIdentifier("coal_generator"))).withBlockItemBuild(new Settings().group(ItemGroups.EH_TECH)).withBlockEntity(CoalGeneratorBlockEntity::new).withGui(CoalGeneratorGui::new).withScreen(ContainerScreen::new).withRecipe(getDefaultRecipeType(Helper.makeIdentifier("coal_generator"))).withRecipeSerializer(new Serializer());
-        BlockRegistryHelper.create(Helper.makeIdentifier("ore_grower")).withBlock(new MachineBlock(Helper.makeIdentifier("ore_grower"))).withBlockItemBuild(new Settings().group(ItemGroups.EH_TECH)).withBlockEntity(OreGrowerBlockEntity::new).withGui(OreGrowerGui::new).withScreen(ContainerScreen::new).withRecipe(getDefaultRecipeType(Helper.makeIdentifier("ore_grower"))).withRecipeSerializer(new Serializer());
+        BlockRegistryHelper.create(Helper.makeId("coal_generator")).withBlock(new MachineBlock(Helper.makeId("coal_generator"))).withBlockItemBuild(new Settings().group(ItemGroups.EH_TECH)).withBlockEntity(CoalGeneratorBlockEntity::new).withGui(CoalGeneratorGui::new).withScreen(ContainerScreen::new).withRecipe(getDefaultRecipeType(Helper.makeId("coal_generator"))).withRecipeSerializer(new Serializer());
+        BlockRegistryHelper.create(Helper.makeId("ore_grower")).withBlock(new MachineBlock(Helper.makeId("ore_grower"))).withBlockItemBuild(new Settings().group(ItemGroups.EH_TECH)).withBlockEntity(OreGrowerBlockEntity::new).withGui(OreGrowerGui::new).withScreen(ContainerScreen::new).withRecipe(getDefaultRecipeType(Helper.makeId("ore_grower"))).withRecipeSerializer(new Serializer());
     }
 }

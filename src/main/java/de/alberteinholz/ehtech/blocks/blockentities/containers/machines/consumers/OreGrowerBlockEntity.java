@@ -16,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class OreGrowerBlockEntity extends ConsumerBlockEntity {
     public OreGrowerBlockEntity() {
-        this(BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("ore_grower")));
+        this(BlockRegistryHelper.BLOCKS.get(Helper.makeId("ore_grower")));
     }
 
     public OreGrowerBlockEntity(BlockRegistryEntry registryEntry) {

@@ -12,7 +12,7 @@ import de.alberteinholz.ehtech.util.Helper;
 
 public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
     public CoalGeneratorBlockEntity() {
-        this(BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("coal_generator")));
+        this(BlockRegistryHelper.BLOCKS.get(Helper.makeId("coal_generator")));
     }
 
     public CoalGeneratorBlockEntity(BlockRegistryEntry registryEntry) {

@@ -55,7 +55,7 @@ public class Button extends WButton implements AdvancedTooltip {
 
     public Identifier setTexture(int mouseX, int mouseY) {
         String state = !isEnabled() ? "disabled" : (mouseX >= 0 && mouseY >= 0 && mouseX < width && mouseY < height) ? "hovered" : "regular";
-        return Helper.makeIdentifier("textures/gui/widget/button/" + state + ".png");
+        return Helper.makeId("textures/gui/widget/button/" + state + ".png");
     }
 
     public void draw(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {

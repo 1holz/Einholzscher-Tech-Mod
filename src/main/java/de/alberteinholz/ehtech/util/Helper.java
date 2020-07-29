@@ -13,7 +13,7 @@ public class Helper {
     }
 
     //TODO: expand this
-    public static Identifier makeIdentifier(String name) {
+    public static Identifier makeId(String name) {
         return new Identifier(TechMod.MOD_ID, name);
     }
 }

@@ -49,10 +49,10 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     protected void initWidgetsDependencies() {
         super.initWidgetsDependencies();
-        powerBarBG = Helper.makeIdentifier("textures/gui/container/machine/elements/power_bar/background.png");
-        powerBarFG = Helper.makeIdentifier("textures/gui/container/machine/elements/power_bar/foreground.png");
-        progressBarBG = Helper.makeIdentifier("textures/gui/container/machine/elements/progress_bar/background.png");
-        progressBarFG = Helper.makeIdentifier("textures/gui/container/machine/elements/progress_bar/foreground.png");
+        powerBarBG = Helper.makeId("textures/gui/container/machine/elements/power_bar/background.png");
+        powerBarFG = Helper.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
+        progressBarBG = Helper.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
+        progressBarFG = Helper.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
     }
 
     @SuppressWarnings("unchecked")
@@ -123,7 +123,7 @@ public abstract class MachineGui extends ContainerGui {
     protected class ActivationButton extends Button {
         @Override
         public Identifier setTexture(int mouseX, int mouseY) {
-            withTexture(Helper.makeIdentifier("textures/gui/container/machine/elements/activation_button/" + ((MachineDataProviderComponent) getDataProviderComponent()).getActivationState().toString().toLowerCase() + ".png"));
+            withTexture(Helper.makeId("textures/gui/container/machine/elements/activation_button/" + ((MachineDataProviderComponent) getDataProviderComponent()).getActivationState().toString().toLowerCase() + ".png"));
             return super.setTexture(mouseX, mouseY);
         }
     }

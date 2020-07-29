@@ -21,7 +21,7 @@ public class CoalGeneratorGui extends MachineGui {
     protected WItemSlot coalInputSlot;
 
     public CoalGeneratorGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeIdentifier("coal_generator")).screenHandlerType, syncId, playerInv, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeId("coal_generator")).screenHandlerType, syncId, playerInv, buf);
     }
 
     public CoalGeneratorGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
@@ -31,8 +31,8 @@ public class CoalGeneratorGui extends MachineGui {
     @Override
     protected void initWidgetsDependencies() {
         super.initWidgetsDependencies();
-        heatBarBG = Helper.makeIdentifier("textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
-        heatBarFG = Helper.makeIdentifier("textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
+        heatBarBG = Helper.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
+        heatBarFG = Helper.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
     }
 
     @Override

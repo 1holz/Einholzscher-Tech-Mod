@@ -59,7 +59,7 @@ public enum BlockRegistryOld {
     }
 
     public static Identifier getId(BlockRegistryOld entry) {
-        return Helper.makeIdentifier(entry.toString().toLowerCase());
+        return Helper.makeId(entry.toString().toLowerCase());
     }
 
     private static Settings getDefaultItemSettings() {
