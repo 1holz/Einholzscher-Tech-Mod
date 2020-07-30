@@ -2,8 +2,8 @@ package de.alberteinholz.ehtech.blocks.blockentities.containers.machines;
 
 import java.util.Optional;
 
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryEntry;
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
+import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
+import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.ContainerBlockEntity;
 import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent;
@@ -54,7 +54,7 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
     public int powerBilanz = 0;
     public int lastPower = capacitor.getCurrentEnergy();
 
-    public MachineBlockEntity(BlockRegistryEntry registryEntry) {
+    public MachineBlockEntity(RegistryEntry registryEntry) {
         super(registryEntry);
         capacitor.setDataProvider((MachineDataProviderComponent) data);
         inventory.stacks.put("power_input", new ContainerInventoryComponent.Slot(ContainerInventoryComponent.Slot.Type.OTHER));
@@ -268,7 +268,7 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
 		public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
 			PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
             writeScreenOpeningData((ServerPlayerEntity) player, buf);
-            return BlockRegistryHelper.BLOCKS.get(Helper.makeId("machine_config")).clientHandlerFactory.create(syncId, inv, buf);
+            return RegistryHelper.getEntry(Helper.makeId("machine_config")).clientHandlerFactory.create(syncId, inv, buf);
 		}
 
 		@Override

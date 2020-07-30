@@ -1,7 +1,7 @@
 package de.alberteinholz.ehtech.blocks.blockentities.containers.machines.generators;
 
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryEntry;
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
+import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
+import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent;
 import de.alberteinholz.ehtech.blocks.components.container.machine.CoalGeneratorDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
@@ -12,10 +12,10 @@ import de.alberteinholz.ehtech.util.Helper;
 
 public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
     public CoalGeneratorBlockEntity() {
-        this(BlockRegistryHelper.BLOCKS.get(Helper.makeId("coal_generator")));
+        this(RegistryHelper.getEntry(Helper.makeId("coal_generator")));
     }
 
-    public CoalGeneratorBlockEntity(BlockRegistryEntry registryEntry) {
+    public CoalGeneratorBlockEntity(RegistryEntry registryEntry) {
         super(registryEntry);
         inventory.stacks.put("coal_input", new ContainerInventoryComponent.Slot(ContainerInventoryComponent.Slot.Type.INPUT));
         ((MachineDataProviderComponent) data).setConfigAvailability(new ConfigType[]{ConfigType.ITEM}, new ConfigBehavior[]{ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);

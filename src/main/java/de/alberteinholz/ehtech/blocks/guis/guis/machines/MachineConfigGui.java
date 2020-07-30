@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
+import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigBehavior;
@@ -40,7 +40,7 @@ public class MachineConfigGui extends ContainerGui {
     protected Button cancel;
 
     public MachineConfigGui(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeId("machine_config")).screenHandlerType, syncId, playerInventory, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(Helper.makeId("machine_config")).screenHandlerType, syncId, playerInventory, buf);
     }
 
     public MachineConfigGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {

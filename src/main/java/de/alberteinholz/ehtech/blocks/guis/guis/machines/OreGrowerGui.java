@@ -1,6 +1,6 @@
 package de.alberteinholz.ehtech.blocks.guis.guis.machines;
 
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
+import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
 import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
@@ -14,7 +14,7 @@ public class OreGrowerGui extends MachineGui {
     protected WItemSlot oreInputSlot;
 
     public OreGrowerGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeId("ore_grower")).screenHandlerType, syncId, playerInv, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(Helper.makeId("ore_grower")).screenHandlerType, syncId, playerInv, buf);
     }
 
     public OreGrowerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {

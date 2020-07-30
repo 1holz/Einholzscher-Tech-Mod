@@ -7,7 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
+import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
@@ -67,12 +67,12 @@ public class MachineRecipe implements Recipe<Inventory> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return BlockRegistryHelper.BLOCKS.get(typeId).recipeSerializer;
+        return RegistryHelper.getEntry(typeId).recipeSerializer;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return BlockRegistryHelper.BLOCKS.get(typeId).recipeType;
+        return RegistryHelper.getEntry(typeId).recipeType;
     }
 
     public boolean matches(BlockPos pos, World world) {

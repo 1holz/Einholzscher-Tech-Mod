@@ -1,7 +1,7 @@
 package de.alberteinholz.ehtech.blocks.blockentities.containers.machines.consumers;
 
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryEntry;
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
+import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
+import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigBehavior;
@@ -16,10 +16,10 @@ import net.minecraft.util.math.BlockPos;
 
 public class OreGrowerBlockEntity extends ConsumerBlockEntity {
     public OreGrowerBlockEntity() {
-        this(BlockRegistryHelper.BLOCKS.get(Helper.makeId("ore_grower")));
+        this(RegistryHelper.getEntry(Helper.makeId("ore_grower")));
     }
 
-    public OreGrowerBlockEntity(BlockRegistryEntry registryEntry) {
+    public OreGrowerBlockEntity(RegistryEntry registryEntry) {
         super(registryEntry);
         inventory.stacks.put("seed_input", new ContainerInventoryComponent.Slot(ContainerInventoryComponent.Slot.Type.INPUT));
         ((MachineDataProviderComponent) data).setConfigAvailability(new ConfigType[]{ConfigType.ITEM}, new ConfigBehavior[]{ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);

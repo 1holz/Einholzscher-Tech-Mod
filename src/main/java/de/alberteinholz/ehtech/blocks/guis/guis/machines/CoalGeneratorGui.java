@@ -1,6 +1,6 @@
 package de.alberteinholz.ehtech.blocks.guis.guis.machines;
 
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryHelper;
+import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
 import de.alberteinholz.ehtech.blocks.components.container.machine.CoalGeneratorDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.guis.widgets.Bar;
@@ -21,7 +21,7 @@ public class CoalGeneratorGui extends MachineGui {
     protected WItemSlot coalInputSlot;
 
     public CoalGeneratorGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this((ScreenHandlerType<SyncedGuiDescription>) BlockRegistryHelper.BLOCKS.get(Helper.makeId("coal_generator")).screenHandlerType, syncId, playerInv, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(Helper.makeId("coal_generator")).screenHandlerType, syncId, playerInv, buf);
     }
 
     public CoalGeneratorGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {

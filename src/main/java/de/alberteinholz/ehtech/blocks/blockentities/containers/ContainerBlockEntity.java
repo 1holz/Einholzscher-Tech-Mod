@@ -1,6 +1,6 @@
 package de.alberteinholz.ehtech.blocks.blockentities.containers;
 
-import de.alberteinholz.ehmooshroom.registry.BlockRegistryEntry;
+import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehtech.blocks.components.container.ContainerDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent;
 import io.netty.buffer.Unpooled;
@@ -21,11 +21,11 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
 public abstract class ContainerBlockEntity extends BlockEntity implements BlockEntityClientSerializable, ExtendedScreenHandlerFactory {
-    protected final BlockRegistryEntry registryEntry;
+    protected final RegistryEntry registryEntry;
     public ContainerInventoryComponent inventory = initializeInventoryComponent();
     public ContainerDataProviderComponent data = initializeDataProviderComponent();
 
-    public ContainerBlockEntity(BlockRegistryEntry registryEntry) {
+    public ContainerBlockEntity(RegistryEntry registryEntry) {
         super(registryEntry.blockEntityType);
         this.registryEntry = registryEntry;
         inventory.setDataProvider(data);
