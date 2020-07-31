@@ -15,8 +15,8 @@ public class TechMod implements ModInitializer, ClientModInitializer {
 
 	@Override
 	public void onInitialize() {
-		Registry.registerBlocks();
 		Registry.registrerItems();
+		Registry.registerBlocks();
         //BlockRegistryOld.registerBlocks();
 		//ItemRegistryOld.registerItems();
 	}
