@@ -15,15 +15,10 @@ public class TechMod implements ModInitializer, ClientModInitializer {
 
 	@Override
 	public void onInitialize() {
-		Registry.registrerItems();
-		Registry.registerBlocks();
-        //BlockRegistryOld.registerBlocks();
-		//ItemRegistryOld.registerItems();
+		Registry.register();
 	}
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void onInitializeClient() {
-        //BlockRegistryOld.registerBlocksClient();
-    }
+	public void onInitializeClient() {}
 }

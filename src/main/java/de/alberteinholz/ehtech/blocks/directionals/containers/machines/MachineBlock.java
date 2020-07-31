@@ -49,6 +49,6 @@ public class MachineBlock extends ContainerBlock implements BlockEntityProvider 
     }
 
     protected static FabricBlockSettings getStandardFabricBlockSettings() {
-        return FabricBlockSettings.of(Material.METAL).strength(5, 10);
+        return FabricBlockSettings.of(Material.METAL).requiresTool().strength(5, 10);
     }
 }
