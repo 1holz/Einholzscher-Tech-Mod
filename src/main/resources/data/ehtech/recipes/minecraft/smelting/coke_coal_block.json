@@ -1,0 +1,11 @@
+{
+    "type": "smelting",
+    "ingredient": [
+        {
+            "item": "minecraft:coal_block"
+        }
+    ],
+    "result": "ehtech:coke_coal_block",
+    "experience": 1.35,
+    "cookingtime": 1800
+}

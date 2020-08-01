@@ -1,0 +1,32 @@
+{
+    "type": "crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "ehtech:hard_coal_tiny"
+        },
+        {
+            "item": "ehtech:hard_coal_tiny"
+        },
+        {
+            "item": "ehtech:hard_coal_tiny"
+        },
+        {
+            "item": "ehtech:hard_coal_tiny"
+        },
+        {
+            "item": "ehtech:hard_coal_tiny"
+        },
+        {
+            "item": "ehtech:hard_coal_tiny"
+        },
+        {
+            "item": "ehtech:hard_coal_tiny"
+        },
+        {
+            "item": "ehtech:hard_coal_tiny"
+        }
+    ],
+    "result": {
+        "item": "minecraft:coal"
+    }
+}

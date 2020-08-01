@@ -1,0 +1,10 @@
+{
+    "type": "smelting",
+    "ingredient": [
+        {
+            "item": "minecraft:coal"
+        }
+    ],
+    "result": "ehtech:coke_coal_chunk",
+    "experience": 0.15
+}

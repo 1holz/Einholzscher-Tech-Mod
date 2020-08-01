@@ -1,5 +1,7 @@
 {
+    "block.ehtech.charcoal_block": "Holzkohleblock",
     "block.ehtech.coal_generator": "Kohle Generator",
+    "block.ehtech.coke_coal_block": "Koksblock",
     "block.ehtech.machine_config.down": "U",
     "block.ehtech.machine_config.up": "O",
     "block.ehtech.machine_config.north": "N",
@@ -9,11 +11,16 @@
     "block.ehtech.machine_config.item": "Gegenstände",
     "block.ehtech.machine_config.fluid": "Flüssigkeiten",
     "block.ehtech.machine_config.power": "Strom",
+    "block.ehtech.machine_frame_1": "Machinenrahmen Stufe 1",
     "block.ehtech.ore_grower": "Erz Wachser",
 
     "chat.ehtech.wip": "An diesem Feature wird noch gearbeitet",
     
     "item.ehtech.wrench": "Schraubenschlüssel",
+    "item.ehtech.charcoal_tiny": "Winzige Holzkohle",
+    "item.ehtech.coke_coal_chunk": "Koks Stück",
+    "item.ehtech.coke_coal_tiny": "Winziges Koks",
+    "item.ehtech.hard_coal_tiny": "Winzige Steinkohle",
 
     "itemGroup.ehtech.wrench": "Einholzscher Technik Mod",
 

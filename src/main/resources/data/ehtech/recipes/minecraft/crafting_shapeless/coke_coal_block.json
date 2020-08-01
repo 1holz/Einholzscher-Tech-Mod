@@ -1,0 +1,35 @@
+{
+    "type": "crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "ehtech:coke_coal_chunk"
+        },
+        {
+            "item": "ehtech:coke_coal_chunk"
+        },
+        {
+            "item": "ehtech:coke_coal_chunk"
+        },
+        {
+            "item": "ehtech:coke_coal_chunk"
+        },
+        {
+            "item": "ehtech:coke_coal_chunk"
+        },
+        {
+            "item": "ehtech:coke_coal_chunk"
+        },
+        {
+            "item": "ehtech:coke_coal_chunk"
+        },
+        {
+            "item": "ehtech:coke_coal_chunk"
+        },
+        {
+            "item": "ehtech:coke_coal_chunk"
+        }
+    ],
+    "result": {
+        "item": "ehtech:coke_coal_block"
+    }
+}

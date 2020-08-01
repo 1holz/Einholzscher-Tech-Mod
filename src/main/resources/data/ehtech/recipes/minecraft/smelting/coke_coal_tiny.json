@@ -1,0 +1,11 @@
+{
+    "type": "smelting",
+    "ingredient": [
+        {
+            "item": "ehtech:hard_coal_tiny"
+        }
+    ],
+    "result": "ehtech:coke_coal_tiny",
+    "experience": 0.01875,
+    "cookingtime": 25
+}

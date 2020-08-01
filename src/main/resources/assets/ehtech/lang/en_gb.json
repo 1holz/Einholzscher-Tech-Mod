@@ -1,5 +1,7 @@
 {
+    "block.ehtech.charcoal_block": "Charcoal Block",
     "block.ehtech.coal_generator": "Coal Generator",
+    "block.ehtech.coke_coal_block": "Coke Coal Block",
     "block.ehtech.machine_config.down": "D",
     "block.ehtech.machine_config.up": "U",
     "block.ehtech.machine_config.north": "N",
@@ -9,11 +11,16 @@
     "block.ehtech.machine_config.item": "Items",
     "block.ehtech.machine_config.fluid": "Fluids",
     "block.ehtech.machine_config.power": "Power",
+    "block.ehtech.machine_frame_1": "Machine Frame Tier 1",
     "block.ehtech.ore_grower": "Ore Grower",
 
     "chat.ehtech.wip": "This feature is in a work in progress state",
     
     "item.ehtech.wrench": "Wrench",
+    "item.ehtech.charcoal_tiny": "Tiny Charcoal",
+    "item.ehtech.coke_coal_chunk": "Coke Coal Chunk",
+    "item.ehtech.coke_coal_tiny": "Tiny Coke Coal",
+    "item.ehtech.hard_coal_tiny": "Tiny Hard Coal",
 
     "itemGroup.ehtech.wrench": "Einholzscher Tech Mod",
 

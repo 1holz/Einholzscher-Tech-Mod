@@ -1,0 +1,32 @@
+{
+    "type": "crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "ehtech:charcoal_tiny"
+        },
+        {
+            "item": "ehtech:charcoal_tiny"
+        },
+        {
+            "item": "ehtech:charcoal_tiny"
+        },
+        {
+            "item": "ehtech:charcoal_tiny"
+        },
+        {
+            "item": "ehtech:charcoal_tiny"
+        },
+        {
+            "item": "ehtech:charcoal_tiny"
+        },
+        {
+            "item": "ehtech:charcoal_tiny"
+        },
+        {
+            "item": "ehtech:charcoal_tiny"
+        }
+    ],
+    "result": {
+        "item": "minecraft:charcoal"
+    }
+}

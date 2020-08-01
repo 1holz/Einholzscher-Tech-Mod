@@ -1,0 +1,12 @@
+{
+    "type": "crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "ehtech:coke_coal_chunk"
+        }
+    ],
+    "result": {
+        "count": 8,
+        "item": "ehtech:coke_coal_tiny"
+    }
+}

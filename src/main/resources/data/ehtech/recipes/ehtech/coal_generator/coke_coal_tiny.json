@@ -3,10 +3,10 @@
     "input": {
         "items": [
             {
-                "item": "ehtech:machine_recipes/coal_generator/tiny_hard_coal"
+                "item": "ehtech:machine_recipes/coal_generator/coke_coal_tiny"
             }
         ]
     },
-    "generates": 0.125,
+    "generates": 0.15,
     "timeModifier": 1.25
 }

@@ -1,0 +1,35 @@
+{
+    "type": "crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "minecraft:charcoal"
+        },
+        {
+            "item": "minecraft:charcoal"
+        },
+        {
+            "item": "minecraft:charcoal"
+        },
+        {
+            "item": "minecraft:charcoal"
+        },
+        {
+            "item": "minecraft:charcoal"
+        },
+        {
+            "item": "minecraft:charcoal"
+        },
+        {
+            "item": "minecraft:charcoal"
+        },
+        {
+            "item": "minecraft:charcoal"
+        },
+        {
+            "item": "minecraft:charcoal"
+        }
+    ],
+    "result": {
+        "item": "ehtech:charcoal_block"
+    }
+}
