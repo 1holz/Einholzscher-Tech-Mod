@@ -1,13 +1,13 @@
 {
     "type": "crafting_shapeless",
-    "group": "charcoal_chunk",
+    "group": "hard_coal_chunk",
     "ingredients": [
         {
-            "item": "ehtech:charcoal_block"
+            "item": "minecraft:coal_block"
         }
     ],
     "result": {
         "count": 9,
-        "item": "minecraft:charcoal"
+        "item": "minecraft:coal"
     }
 }

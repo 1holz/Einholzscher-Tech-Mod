@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        	"layer0": "minecraft:item/hard_coal_tiny"
+        "layer0": "ehtech:item/hard_coal_tiny"
     }
 }

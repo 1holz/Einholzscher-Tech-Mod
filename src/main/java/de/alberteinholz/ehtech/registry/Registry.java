@@ -54,10 +54,10 @@ public class Registry {
         Function<RegistryEntry, RegistryEntry> simpleItemTemplate = entry -> {
             return entry.withItemBuild(Item::new, new Item.Settings().group(RegistryHelper.getEntry(Helper.makeId("wrench")).itemGroup));
         };
-        FuelRegistry.INSTANCE.add(RegistryHelper.create(Helper.makeId("hard_coal_tiny")).applyTemplate(simpleItemTemplate).item, 200);
-        FuelRegistry.INSTANCE.add(RegistryHelper.create(Helper.makeId("charcoal_tiny")).applyTemplate(simpleItemTemplate).item, 200);
-        FuelRegistry.INSTANCE.add(RegistryHelper.create(Helper.makeId("coke_coal_tiny")).applyTemplate(simpleItemTemplate).item, 400);
-        FuelRegistry.INSTANCE.add(RegistryHelper.create(Helper.makeId("coke_coal_chunk")).applyTemplate(simpleItemTemplate).item, 3200);
+        RegistryHelper.create(Helper.makeId("hard_coal_tiny")).applyTemplate(simpleItemTemplate).makeItemFurnaceFuel(200);
+        RegistryHelper.create(Helper.makeId("charcoal_tiny")).applyTemplate(simpleItemTemplate).makeItemFurnaceFuel(200);
+        RegistryHelper.create(Helper.makeId("coke_coal_tiny")).applyTemplate(simpleItemTemplate).makeItemFurnaceFuel(400);
+        RegistryHelper.create(Helper.makeId("coke_coal_chunk")).applyTemplate(simpleItemTemplate).makeItemFurnaceFuel(3200);
         //blocks
         Function<RegistryEntry, RegistryEntry> simpleBlockTemplate = entry -> {
             return entry.withBlockItemBuild(new Item.Settings().group(RegistryHelper.getEntry(Helper.makeId("wrench")).itemGroup));
@@ -67,10 +67,10 @@ public class Registry {
         RegistryHelper.create(Helper.makeId("machine_frame_1")).withBlock(new Block(AbstractBlock.Settings.of(Material.METAL).requiresTool().strength(5, 10))).applyTemplate(simpleBlockTemplate);
         //machines:
         Function<RegistryEntry, RegistryEntry> machineTemplate = entry -> {
-            return entry.withScreen(ContainerScreen::new).withRecipeSerializer(new Serializer()).applyTemplate(simpleBlockTemplate);
+            return entry.withBlock(new MachineBlock(entry.id)).withScreen(ContainerScreen::new).withRecipe(getDefaultRecipeType(entry.id)).withRecipeSerializer(new Serializer()).applyTemplate(simpleBlockTemplate);
         };
-        RegistryHelper.create(Helper.makeId("coal_generator")).withBlock(new MachineBlock(Helper.makeId("coal_generator"))).withBlockEntityBuild(CoalGeneratorBlockEntity::new).withGui(CoalGeneratorGui::new).withRecipe(getDefaultRecipeType(Helper.makeId("coal_generator"))).applyTemplate(machineTemplate);
-        RegistryHelper.create(Helper.makeId("ore_grower")).withBlock(new MachineBlock(Helper.makeId("ore_grower"))).withBlockEntityBuild(OreGrowerBlockEntity::new).withGui(OreGrowerGui::new).withRecipe(getDefaultRecipeType(Helper.makeId("ore_grower"))).applyTemplate(machineTemplate);
+        RegistryHelper.create(Helper.makeId("coal_generator")).withBlockEntityBuild(CoalGeneratorBlockEntity::new).withGui(CoalGeneratorGui::new).applyTemplate(machineTemplate);
+        RegistryHelper.create(Helper.makeId("ore_grower")).withBlockEntityBuild(OreGrowerBlockEntity::new).withGui(OreGrowerGui::new).applyTemplate(machineTemplate);
         //additional guis
         RegistryHelper.create(Helper.makeId("machine_config")).withGui(MachineConfigGui::new).withScreen(ContainerScreen::new);
     }

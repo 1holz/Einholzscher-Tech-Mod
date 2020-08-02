@@ -1,5 +1,6 @@
 {
     "type": "crafting_shapeless",
+    "group": "hard_coal_chunk",
     "ingredients": [
         {
             "item": "ehtech:hard_coal_tiny"
