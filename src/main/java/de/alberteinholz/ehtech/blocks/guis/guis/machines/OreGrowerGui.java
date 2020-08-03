@@ -13,6 +13,7 @@ import net.minecraft.screen.ScreenHandlerType;
 public class OreGrowerGui extends MachineGui {
     protected WItemSlot oreInputSlot;
 
+    @SuppressWarnings("unchecked")
     public OreGrowerGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(Helper.makeId("ore_grower")).screenHandlerType, syncId, playerInv, buf);
     }

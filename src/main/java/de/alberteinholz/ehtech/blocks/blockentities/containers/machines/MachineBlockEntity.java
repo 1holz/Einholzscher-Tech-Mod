@@ -109,6 +109,7 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
         }
     }
 
+    @SuppressWarnings("unchecked")
     public boolean checkForRecipe() {
         Optional<MachineRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<MachineRecipe>) registryEntry.recipeType, new InventoryWrapper(pos), world);
         ((MachineDataProviderComponent) this.data).setRecipe(optional.orElse(null));

@@ -69,8 +69,8 @@ public class Registry {
         Function<RegistryEntry, RegistryEntry> machineTemplate = entry -> {
             return entry.withBlock(new MachineBlock(entry.id)).withScreen(ContainerScreen::new).withRecipe(getDefaultRecipeType(entry.id)).withRecipeSerializer(new Serializer()).applyTemplate(simpleBlockTemplate);
         };
-        RegistryHelper.create(Helper.makeId("coal_generator")).withBlockEntityBuild(CoalGeneratorBlockEntity::new).withGui(CoalGeneratorGui::new).applyTemplate(machineTemplate);
-        RegistryHelper.create(Helper.makeId("ore_grower")).withBlockEntityBuild(OreGrowerBlockEntity::new).withGui(OreGrowerGui::new).applyTemplate(machineTemplate);
+        RegistryHelper.create(Helper.makeId("coal_generator")).withGui(CoalGeneratorGui::new).applyTemplate(machineTemplate).withBlockEntityBuild(CoalGeneratorBlockEntity::new);
+        RegistryHelper.create(Helper.makeId("ore_grower")).withGui(OreGrowerGui::new).applyTemplate(machineTemplate).withBlockEntityBuild(OreGrowerBlockEntity::new);
         //additional guis
         RegistryHelper.create(Helper.makeId("machine_config")).withGui(MachineConfigGui::new).withScreen(ContainerScreen::new);
     }

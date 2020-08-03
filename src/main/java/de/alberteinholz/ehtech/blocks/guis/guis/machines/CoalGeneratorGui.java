@@ -20,6 +20,7 @@ public class CoalGeneratorGui extends MachineGui {
     protected Bar heatBar;
     protected WItemSlot coalInputSlot;
 
+    @SuppressWarnings("unchecked")
     public CoalGeneratorGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(Helper.makeId("coal_generator")).screenHandlerType, syncId, playerInv, buf);
     }

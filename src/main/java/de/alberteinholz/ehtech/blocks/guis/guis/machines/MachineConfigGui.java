@@ -39,6 +39,7 @@ public class MachineConfigGui extends ContainerGui {
     protected Map<Integer, ConfigButton> configButtons;
     protected Button cancel;
 
+    @SuppressWarnings("unchecked")
     public MachineConfigGui(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
         this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(Helper.makeId("machine_config")).screenHandlerType, syncId, playerInventory, buf);
     }
