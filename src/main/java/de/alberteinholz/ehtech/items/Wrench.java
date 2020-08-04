@@ -50,7 +50,7 @@ public class Wrench extends Tool {
         else if (mode == WrenchMode.ITEM && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.FLUID && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.CONFIGURE && !context.getWorld().isClient()) context.getPlayer().openHandledScreen(((MachineBlockEntity) context.getWorld().getBlockEntity(context.getBlockPos())).getSideConfigScreenHandlerFactory());
-        else if (mode == WrenchMode.BREAK && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
+        //else if (mode == WrenchMode.BREAK && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.BLOCK_SPECIFIC && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         //else return super.useOnBlock(context);
         return ActionResult.SUCCESS;
@@ -68,7 +68,7 @@ public class Wrench extends Tool {
         ITEM,
         FLUID,
         CONFIGURE,
-        BREAK,
+        //BREAK,
         BLOCK_SPECIFIC;
 
         public WrenchMode next() {
