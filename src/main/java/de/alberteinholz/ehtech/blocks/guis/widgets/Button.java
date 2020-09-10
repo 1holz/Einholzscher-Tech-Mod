@@ -9,12 +9,12 @@ import java.util.function.Supplier;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.cotton.gui.client.ScreenDrawing;
+import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WButton;
 import io.github.cottonmc.cotton.gui.widget.WSprite;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
@@ -90,10 +90,10 @@ public class Button extends WButton implements AdvancedTooltip {
 		return advancedTooltips;
 	}
 
-	@Override
-	public void addTooltip(List<StringRenderable> info) {
+    @Override
+	public void addTooltip(TooltipBuilder info) {
 		AdvancedTooltip.super.addTooltip(info);
-	}
+    }
 
     @Override
     public boolean canResize() {

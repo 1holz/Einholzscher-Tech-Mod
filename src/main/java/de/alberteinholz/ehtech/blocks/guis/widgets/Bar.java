@@ -10,11 +10,11 @@ import io.github.cottonmc.component.data.api.UnitManager;
 import io.github.cottonmc.component.data.impl.SimpleDataElement;
 import io.github.cottonmc.component.energy.impl.SimpleCapacitorComponent;
 import io.github.cottonmc.cotton.gui.client.ScreenDrawing;
+import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WBar;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.StringRenderable;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -83,19 +83,19 @@ public class Bar extends WBar implements AdvancedTooltip {
 			int left = x;
 			int top = y + getHeight() - barSize;
 			if (bar!=null) {
-				ScreenDrawing.texturedRect(left, top, getWidth(), barSize, bar, 0, (float) (1 - percent), 1, 1, 0xFFFFFFFF);
+				ScreenDrawing.texturedRect(left, top, getWidth(), barSize, bar.image, 0, (float) (1 - percent), 1, 1, 0xFFFFFFFF);
 			} else {
 				ScreenDrawing.coloredRect(left, top, getWidth(), barSize,  ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
 			}
 		} else if (direction == Direction.RIGHT) {
 			if (bar!=null) {
-				ScreenDrawing.texturedRect(x, y, barSize, getHeight(), bar, 0, 0, (float) percent, 1, 0xFFFFFFFF);
+				ScreenDrawing.texturedRect(x, y, barSize, getHeight(), bar.image, 0, 0, (float) percent, 1, 0xFFFFFFFF);
 			} else {
 				ScreenDrawing.coloredRect(x, y, barSize, getHeight(), ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
 			}
 		} else if (direction == Direction.DOWN) {
 			if (bar!=null) {
-				ScreenDrawing.texturedRect(x, y, getWidth(), barSize, bar, 0, 0, 1, (float) percent, 0xFFFFFFFF);
+				ScreenDrawing.texturedRect(x, y, getWidth(), barSize, bar.image, 0, 0, 1, (float) percent, 0xFFFFFFFF);
 			} else {
 				ScreenDrawing.coloredRect(x, y, getWidth(), barSize, ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
 			}
@@ -103,7 +103,7 @@ public class Bar extends WBar implements AdvancedTooltip {
 			int left = x + getWidth() - barSize;
 			int top = y;
 			if (bar!=null) {
-				ScreenDrawing.texturedRect(left, top, barSize, getHeight(), bar, (float) (1 - percent), 0, 1, 1, 0xFFFFFFFF);
+				ScreenDrawing.texturedRect(left, top, barSize, getHeight(), bar.image, (float) (1 - percent), 0, 1, 1, 0xFFFFFFFF);
 			} else {
 				ScreenDrawing.coloredRect(left, top, barSize, getHeight(), ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
 			}
@@ -120,10 +120,10 @@ public class Bar extends WBar implements AdvancedTooltip {
 		return advancedTooltips;
 	}
 
-	@Override
-	public void addTooltip(List<StringRenderable> info) {
+    @Override
+	public void addTooltip(TooltipBuilder info) {
 		AdvancedTooltip.super.addTooltip(info);
-	}
+    }
 
 	protected String getMin() {
 		return element != null ? element.getBarUnit().format(element.getBarMinimum()) : UnitManager.WORK_UNITS.format(0.0);

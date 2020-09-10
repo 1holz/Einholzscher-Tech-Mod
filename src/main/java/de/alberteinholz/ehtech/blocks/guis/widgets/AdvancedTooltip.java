@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import net.minecraft.text.StringRenderable;
+import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import net.minecraft.text.TranslatableText;
 
 public interface AdvancedTooltip {
@@ -15,11 +15,11 @@ public interface AdvancedTooltip {
     //Use this in the widget class:
     /*
     @Override
-	public void addTooltip(List<String> info) {
+	public void addTooltip(TooltipBuilder info) {
 		AdvancedTooltip.super.addTooltip(info);
     }
     */
-	default void addTooltip(List<StringRenderable> info) {
+	default void addTooltip(TooltipBuilder info) {
 		if (!getTooltips().isEmpty()) {
 			for (String tooltip : getTooltips()) {
 				info.add(new TranslatableText(tooltip));

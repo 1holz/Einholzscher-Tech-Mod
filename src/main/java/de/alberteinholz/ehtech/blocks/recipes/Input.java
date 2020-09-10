@@ -8,8 +8,8 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.tag.ServerTagManagerHolder;
 import net.minecraft.tag.Tag;
-import net.minecraft.tag.TagContainers;
 import net.minecraft.util.Identifier;
 
 public class Input {
@@ -107,7 +107,7 @@ public class Input {
 
         public ItemIngredient(Identifier id, int amount, CompoundTag tag) {
             this.id = id;
-            this.ingredient = TagContainers.instance().items().get(id);
+            this.ingredient = ServerTagManagerHolder.getTagManager().getItems().getTag(id);
             this.amount = amount;
             this.tag = tag;
         }
@@ -134,7 +134,7 @@ public class Input {
 
         public FluidIngredient(Identifier id, Fraction amount, CompoundTag tag) {
             this.id = id;
-            this.ingredient = TagContainers.instance().fluids().get(id);
+            this.ingredient = ServerTagManagerHolder.getTagManager().getFluids().getTag(id);
             this.amount = amount;
             this.tag = tag;
         }
@@ -161,7 +161,7 @@ public class Input {
 
         public BlockIngredient(Identifier id) {
             this.id = id;
-            this.ingredient = TagContainers.instance().blocks().get(id);
+            this.ingredient = ServerTagManagerHolder.getTagManager().getBlocks().getTag(id);
             this.state = null;
         }
 
@@ -182,7 +182,7 @@ public class Input {
 
         public EntityIngredient(Identifier id, int amount, CompoundTag tag) {
             this.id = id;
-            this.ingredient = TagContainers.instance().entityTypes().get(id);
+            this.ingredient = ServerTagManagerHolder.getTagManager().getEntityTypes().getTag(id);
             this.amount = amount;
             this.tag = tag;
         }
