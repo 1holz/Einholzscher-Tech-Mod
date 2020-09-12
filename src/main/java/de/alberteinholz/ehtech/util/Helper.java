@@ -1,15 +1,13 @@
 package de.alberteinholz.ehtech.util;
 
-import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import de.alberteinholz.ehtech.TechMod;
 import net.minecraft.util.Identifier;
 
 public class Helper {
-    public static Integer[] countingArray(int size) {
-        Integer[] array = new Integer[size];
-        Arrays.setAll(array, i -> i);
-        return array;
+    public static int[] countingArray(int size) {
+        return IntStream.range(0, size).toArray();
     }
 
     //TODO: expand this

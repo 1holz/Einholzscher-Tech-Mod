@@ -1,7 +1,6 @@
 package de.alberteinholz.ehtech.blocks.guis.guis.machines;
 
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
-import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
 import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
@@ -32,7 +31,7 @@ public class OreGrowerGui extends MachineGui {
     @Override
     protected void initWidgets() {
         super.initWidgets();
-        oreInputSlot = WItemSlot.of(blockInventory, ((InventoryWrapper) blockInventory).getContainerInventoryComponent().getNumber("seed_input"));
+        oreInputSlot = WItemSlot.of(blockInventory, 4);
     }
 
     @Override

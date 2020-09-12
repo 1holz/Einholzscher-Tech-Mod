@@ -2,7 +2,7 @@ package de.alberteinholz.ehtech.blocks.blockentities.containers.machines.generat
 
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
-import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent;
+import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent.Slot.Type;
 import de.alberteinholz.ehtech.blocks.components.container.machine.CoalGeneratorDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigBehavior;
@@ -17,7 +17,7 @@ public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
 
     public CoalGeneratorBlockEntity(RegistryEntry registryEntry) {
         super(registryEntry);
-        inventory.stacks.put("coal_input", new ContainerInventoryComponent.Slot(ContainerInventoryComponent.Slot.Type.INPUT));
+        inventory.addSlots(Type.INPUT);
         ((MachineDataProviderComponent) data).setConfigAvailability(new ConfigType[]{ConfigType.ITEM}, new ConfigBehavior[]{ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
 

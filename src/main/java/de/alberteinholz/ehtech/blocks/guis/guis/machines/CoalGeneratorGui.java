@@ -1,7 +1,6 @@
 package de.alberteinholz.ehtech.blocks.guis.guis.machines;
 
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
-import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
 import de.alberteinholz.ehtech.blocks.components.container.machine.CoalGeneratorDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.guis.widgets.Bar;
 import de.alberteinholz.ehtech.util.Helper;
@@ -40,7 +39,7 @@ public class CoalGeneratorGui extends MachineGui {
     protected void initWidgets() {
         super.initWidgets();
         heatBar = new Bar(heatBarBG, heatBarFG, ((CoalGeneratorDataProviderComponent) getDataProviderComponent()).heat, Direction.UP);
-        coalInputSlot = WItemSlot.of(blockInventory, ((InventoryWrapper) blockInventory).getContainerInventoryComponent().getNumber("coal_input"));
+        coalInputSlot = WItemSlot.of(blockInventory, 4);
     }
 
     @Override

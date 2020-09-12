@@ -3,6 +3,8 @@ package de.alberteinholz.ehtech.blocks.components.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent.Slot.Type;
 import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
@@ -23,18 +25,26 @@ import net.minecraft.world.WorldAccess;
 
 public class ContainerInventoryComponent implements InventoryComponent {
     protected final InventoryWrapper inventoryWrapper = new InventoryWrapper(this);
-    //public HashMap<String, Slot> stacks = new LinkedHashMap<String, Slot>();
     protected DefaultedList<Slot> slots;
     protected final List<Runnable> listeners = new ArrayList<>();
     protected ContainerDataProviderComponent data;
 
-    public ContainerInventoryComponent(Type... types) {
-        slots = DefaultedList.ofSize(types.length, new Slot(Type.STORAGE));
-        for (int i = 0; i < types.length; i++) if (!types[i].equals(Type.STORAGE) && types[i] != null) slots.get(i).type = types[i];
+    //null id for no id
+    //types determine size
+    public ContainerInventoryComponent(Type[] types, String[] ids) {
+        slots = DefaultedList.ofSize(types.length, new Slot());
+        for (int i = 0; i < types.length; i++) {
+            if (!types[i].equals(Type.STORAGE) && types[i] != null) slots.get(i).type = types[i];
+            if (ids[i] != null) slots.get(i).id = ids[i];
+        }
     }
 
-    public void addSlots(Type... types) {
-        for (Type type : types) slots.add(new Slot(type));
+    //null id for no id
+    //types determine size
+    public void addSlots(Type[] types, String[] ids) {
+        for (int i = 0; i < types.length; i++) {
+            slots.add(new Slot(types[i], ids[i]));
+        }
     }
 
     @Override
@@ -77,19 +87,19 @@ public class ContainerInventoryComponent implements InventoryComponent {
 		return slots.get(slot).stack.copy();
     }
     
-    protected List<Slot> getSlots(Type type) {
+    public List<Slot> getSlots(Type type) {
 		List<Slot> list = new ArrayList<>();
 		for (Slot slot : slots) if (slot.type.equals(type)) list.add(slot);
         return list;
     }
     
-    protected List<Slot> getInsertable() {
+    public List<Slot> getInsertable() {
 		List<Slot> list = new ArrayList<>();
 		for (Slot slot : slots) if (slot.type.insert) list.add(slot);
         return list;
     }
     
-    protected List<Slot> getExtractable() {
+    public List<Slot> getExtractable() {
 		List<Slot> list = new ArrayList<>();
 		for (Slot slot : slots) if (slot.type.extract) list.add(slot);
         return list;
@@ -107,13 +117,13 @@ public class ContainerInventoryComponent implements InventoryComponent {
         ContainerInventoryComponent fromContainerComponent = fromComponent instanceof ContainerInventoryComponent ? (ContainerInventoryComponent) fromComponent : null;
         InventoryComponent toComponent = to instanceof InventoryWrapper && ((InventoryWrapper) to).component != null ? ((InventoryWrapper) to).component : null;
         ContainerInventoryComponent toContainerComponent = toComponent instanceof ContainerInventoryComponent ? (ContainerInventoryComponent) toComponent : null;
-        for (int idFrom : fromContainerComponent != null ? (Integer[]) fromContainerComponent.getExtractable().toArray() : Helper.countingArray(from.size())) {
+        for (int idFrom : fromContainerComponent != null ? (Integer[]) fromContainerComponent.getExtractable().toArray() : ArrayUtils.toObject(Helper.countingArray(from.size()))) {
             if (fromContainerComponent != null ? fromContainerComponent.canExtract(idFrom, dir) : fromComponent != null ? fromComponent.canExtract(idFrom) : true) {
                 //XXX: Update on UC update
                 ItemStack extractionTest = fromComponent != null ? fromComponent.takeStack(idFrom, maxTransfer - transfer, ActionType.TEST) : from.getStack(idFrom).copy();
                 if (extractionTest.isEmpty()) continue;
                 if (extractionTest.getCount() > maxTransfer - transfer) extractionTest.setCount(maxTransfer - transfer);
-                for (int idTo : toContainerComponent != null ? (Integer[]) toContainerComponent.getInsertable().toArray() : Helper.countingArray(to.size())) {
+                for (int idTo : toContainerComponent != null ? (Integer[]) toContainerComponent.getInsertable().toArray() : ArrayUtils.toObject(Helper.countingArray(to.size()))) {
                     int insertionCount = extractionTest.getCount() - (toComponent != null ? toComponent.insertStack(idTo, extractionTest, action).getCount() : 0);
                     if (!(to instanceof InventoryWrapper)) { //vanilla
                         ItemStack target = to.getStack(idTo);
@@ -266,19 +276,26 @@ public class ContainerInventoryComponent implements InventoryComponent {
         return inventoryWrapper;
     }
 
-    /*TODO: Think about this
-    public boolean isSlotAvailable(String slot, Direction side) {
-        return checkSlot(slot);
+    public boolean isSlotAvailable(int slot, Direction side) {
+        return canInsert(slot, side) || canExtract(slot, side);
     }
-    */
 
     public static class Slot {
         public Type type;
+        public String id;
         public ItemStack stack = ItemStack.EMPTY;
-        public String name;
+
+        public Slot() {
+            this(Type.STORAGE, null);
+        }
 
         public Slot(Type type) {
+            this(type, null);
+        }
+
+        public Slot(Type type, String id) {
             this.type = type;
+            this.id = id;
         }
 
         public enum Type {

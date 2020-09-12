@@ -57,10 +57,7 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
     public MachineBlockEntity(RegistryEntry registryEntry) {
         super(registryEntry);
         capacitor.setDataProvider((MachineDataProviderComponent) data);
-        inventory.stacks.put("power_input", new ContainerInventoryComponent.Slot(ContainerInventoryComponent.Slot.Type.OTHER));
-        inventory.stacks.put("power_output", new ContainerInventoryComponent.Slot(ContainerInventoryComponent.Slot.Type.OTHER));
-        inventory.stacks.put("upgrade", new ContainerInventoryComponent.Slot(ContainerInventoryComponent.Slot.Type.OTHER));
-        inventory.stacks.put("network", new ContainerInventoryComponent.Slot(ContainerInventoryComponent.Slot.Type.OTHER));
+        inventory.addSlots(Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER);
     }
 
     @Override
@@ -124,8 +121,8 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
         if ((consumerRecipe && capacitor.extractEnergy(capacitor.getPreferredType(), consum, ActionType.TEST) == consum) || !consumerRecipe) {
             for (ItemIngredient ingredient : recipe.input.items) {
                 int consumingLeft = ingredient.amount;
-                for (Slot slot : inventory.stacks.values()) {
-                    if (slot.type == Type.INPUT && ingredient.ingredient.contains(slot.stack.getItem()) && NbtHelper.matches(ingredient.tag, slot.stack.getTag(), true)) {
+                for (Slot slot : inventory.getSlots(Type.INPUT)) {
+                    if (ingredient.ingredient.contains(slot.stack.getItem()) && NbtHelper.matches(ingredient.tag, slot.stack.getTag(), true)) {
                         if (slot.stack.getCount() >= consumingLeft) {
                             slot.stack.decrement(consumingLeft);
                             break;

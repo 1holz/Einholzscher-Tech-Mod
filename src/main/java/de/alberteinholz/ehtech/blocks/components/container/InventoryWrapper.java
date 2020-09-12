@@ -1,7 +1,6 @@
 package de.alberteinholz.ehtech.blocks.components.container;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.IntStream;
 
 import de.alberteinholz.ehtech.TechMod;
 import io.github.cottonmc.component.api.ActionType;
@@ -14,6 +13,7 @@ import net.minecraft.util.math.Direction;
 
 //Own InventoryWrapper because CU's doesn't work for me
 public class InventoryWrapper implements SidedInventory {
+    //TODO: split the 2 purposes
     public final InventoryComponent component;
     public final BlockPos pos;
 
@@ -36,14 +36,6 @@ public class InventoryWrapper implements SidedInventory {
         }
     }
 
-    protected String getId(int slot) {
-        if (!(component instanceof ContainerInventoryComponent)) {
-            TechMod.LOGGER.smallBug(new Exception("Tried to get String-id from non ContainerInventoryComponent"));
-            return "";
-        }
-        return (String) ((ContainerInventoryComponent) component).stacks.keySet().toArray()[slot];
-    }
-
     @Override
     public int size() {
         return component.getSize();
@@ -51,10 +43,7 @@ public class InventoryWrapper implements SidedInventory {
 
     @Override
     public boolean isEmpty() {
-		for (int i = 0; i < size(); i++) {
-			if (!getStack(i).isEmpty()) return false;
-		}
-		return true;
+        return component.isEmpty();
     }
 
     @Override
@@ -92,26 +81,22 @@ public class InventoryWrapper implements SidedInventory {
         component.clear();
     }
 
-    @Deprecated
     @Override
     public int[] getAvailableSlots(Direction side) {
-        List<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i < component.getStacks().size(); i++) {
-            if (!(component instanceof ContainerInventoryComponent)) list.add(i);
-            else if (((ContainerInventoryComponent) component).isSlotAvailable(getId(i), side)) list.add(i);
-        }
-        return list.stream().mapToInt(i -> i).toArray();
+        if (component instanceof ContainerInventoryComponent) return IntStream.range(0, ((ContainerInventoryComponent) component).size()).filter(slot -> ((ContainerInventoryComponent) component).isSlotAvailable(slot, side)).toArray();
+        //XXX: Update on UC update
+        else return IntStream.range(0, component.getSize()).filter(slot -> component.canInsert(slot) || component.canExtract(slot)).toArray();
     }
 
     @Override
     public boolean canInsert(int slot, ItemStack stack, Direction dir) {
-        if (component instanceof ContainerInventoryComponent) return ((ContainerInventoryComponent) component).canInsert(getId(slot), dir);
+        if (component instanceof ContainerInventoryComponent) return ((ContainerInventoryComponent) component).canInsert(slot, dir);
         else return component.canInsert(slot);
     }
 
     @Override
     public boolean canExtract(int slot, ItemStack stack, Direction dir) {
-        if (component instanceof ContainerInventoryComponent) return ((ContainerInventoryComponent) component).canExtract(getId(slot),dir);
+        if (component instanceof ContainerInventoryComponent) return ((ContainerInventoryComponent) component).canExtract(slot,dir);
         else return component.canExtract(slot);
     }
 }
