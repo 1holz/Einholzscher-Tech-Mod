@@ -66,20 +66,13 @@ public class MachineConfigGui extends ContainerGui {
         item = new WLabel(new TranslatableText("block.ehtech.machine_config.item"));
         fluid = new WLabel(new TranslatableText("block.ehtech.machine_config.fluid"));
         power = new WLabel(new TranslatableText("block.ehtech.machine_config.power"));
-        for (ConfigType type : ConfigType.values()) {
-            for (Direction dir : Direction.values()) {
-                for (ConfigBehavior behavior : ConfigBehavior.values()) {
-                    ConfigButton button = new ConfigButton(type, dir, behavior);
-                    buttonIds.add(button);
-                    button.id = buttonIds.indexOf(button);
-                    configButtons.put(button.id, button);
-                    if (getDataProviderComponent().getConfig(type, behavior, dir) == null) {
-                        button.setEnabled(false);
-                    } else {
-                        button.setOnClick(getDefaultOnButtonClick(button));
-                    }
-                }
-            }
+        for (ConfigType type : ConfigType.values()) for (Direction dir : Direction.values()) for (ConfigBehavior behavior : ConfigBehavior.values()) {
+            ConfigButton button = new ConfigButton(type, dir, behavior);
+            buttonIds.add(button);
+            button.id = buttonIds.indexOf(button);
+            configButtons.put(button.id, button);
+            if (getDataProviderComponent().getConfig(type, behavior, dir) == null) button.setEnabled(false);
+            else button.setOnClick(getDefaultOnButtonClick(button));
         }
         cancel = (Button) new Button().setLabel(new LiteralText("X"));
         cancel.tooltips.add("tooltip.ehtech.cancel_button");
@@ -112,17 +105,11 @@ public class MachineConfigGui extends ContainerGui {
             if (button.isEnabled()) {
                 ((MachineDataProviderComponent) getDataProviderComponent()).changeConfig(button.TYPE, button.BEHAVIOR, button.DIR);
                 return true;
-            } else {
-                return false;
-            }
+            } else return false;
         } else if (id == buttonIds.indexOf(cancel)) {
-            if (!world.isClient) {
-                player.openHandledScreen((MachineBlockEntity) world.getBlockEntity(pos));
-            }
+            if (!world.isClient) player.openHandledScreen((MachineBlockEntity) world.getBlockEntity(pos));
             return true;
-        } else {
-            return false;
-        }
+        } else return false;
     }
 
     protected MachineDataProviderComponent getDataProviderComponent() {
@@ -163,11 +150,8 @@ public class MachineConfigGui extends ContainerGui {
 
         @Override
         public void draw(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
-            if (isEnabled()) {
-                withTint(getDataProviderComponent().allowsConfig(TYPE, BEHAVIOR, DIR) ? 0xFFFFFF00 : 0xFFFF0000);
-            } else {
-                advancedTooltips.remove("tooltip.ehtech.config_button");
-            }
+            if (isEnabled()) withTint(getDataProviderComponent().allowsConfig(TYPE, BEHAVIOR, DIR) ? 0xFFFFFF00 : 0xFFFF0000);
+            else advancedTooltips.remove("tooltip.ehtech.config_button");
             super.draw(matrices, x, y, mouseX, mouseY);
         }
     }

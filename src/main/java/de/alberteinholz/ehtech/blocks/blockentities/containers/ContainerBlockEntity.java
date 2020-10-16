@@ -1,9 +1,15 @@
 package de.alberteinholz.ehtech.blocks.blockentities.containers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehtech.blocks.components.container.ContainerDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent;
 import io.netty.buffer.Unpooled;
+import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
@@ -22,12 +28,17 @@ import net.minecraft.text.TranslatableText;
 
 public abstract class ContainerBlockEntity extends BlockEntity implements BlockEntityClientSerializable, ExtendedScreenHandlerFactory {
     protected final RegistryEntry registryEntry;
-    public ContainerInventoryComponent inventory = initializeInventoryComponent();
-    public ContainerDataProviderComponent data = initializeDataProviderComponent();
+    public Map<String, Component> comps = new HashMap<>();
+    //public ContainerInventoryComponent inventory = initializeInventoryComponent();
+    //public ContainerDataProviderComponent data = initializeDataProviderComponent();
 
     public ContainerBlockEntity(RegistryEntry registryEntry) {
         super(registryEntry.blockEntityType);
         this.registryEntry = registryEntry;
+        comps
+        comps.forEach((id, comp) -> {
+            if (comp instanceof ContainerInventoryComponent) comp.setDataProvider(data)
+        });
         inventory.setDataProvider(data);
     }
 
