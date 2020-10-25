@@ -1,3 +1,4 @@
+/*
 package de.alberteinholz.ehtech.blocks.components.container.machine;
 
 import java.util.List;
@@ -245,3 +246,4 @@ public class MachineDataProviderComponent extends ContainerDataProviderComponent
         }
     }
 }
+*/

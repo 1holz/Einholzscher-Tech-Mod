@@ -1,3 +1,4 @@
+/*
 package de.alberteinholz.ehtech.blocks.components.container;
 
 import java.util.ArrayList;
@@ -176,6 +177,7 @@ public class ContainerInventoryComponent implements InventoryComponent {
     }
     */
 
+    /*
     public boolean canInsert(int slot, Direction dir) {
         if (!canInsert(slot)) return false;
         else if (data instanceof MachineDataProviderComponent) return ((MachineDataProviderComponent) data).allowsConfig(ConfigType.ITEM, ConfigBehavior.FOREIGN_INPUT, dir);
@@ -314,3 +316,4 @@ public class ContainerInventoryComponent implements InventoryComponent {
         }
     }
 }
+*/

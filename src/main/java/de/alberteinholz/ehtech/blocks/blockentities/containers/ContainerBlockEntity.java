@@ -1,3 +1,4 @@
+/*
 package de.alberteinholz.ehtech.blocks.blockentities.containers;
 
 import java.util.ArrayList;
@@ -110,3 +111,4 @@ public abstract class ContainerBlockEntity extends BlockEntity implements BlockE
         return new ContainerDataProviderComponent("block.ehtech.container");
     }
 }
+*/

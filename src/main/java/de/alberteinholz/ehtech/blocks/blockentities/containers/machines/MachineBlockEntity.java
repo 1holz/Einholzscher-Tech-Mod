@@ -2,19 +2,15 @@ package de.alberteinholz.ehtech.blocks.blockentities.containers.machines;
 
 import java.util.Optional;
 
+import de.alberteinholz.ehmooshroom.MooshroomLib;
+import de.alberteinholz.ehmooshroom.container.blockentity.AdvancedContainer;
+import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent;
+import de.alberteinholz.ehmooshroom.container.component.item.ContainerInventoryComponent;
+import de.alberteinholz.ehmooshroom.container.component.item.ContainerInventoryComponent.Slot.Type;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
-import de.alberteinholz.ehtech.blocks.blockentities.containers.ContainerBlockEntity;
-import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent;
-import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
-import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent.Slot;
-import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent.Slot.Type;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineCapacitorComponent;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ActivationState;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigBehavior;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigType;
+import de.alberteinholz.ehtech.blocks.components.machine.MachineCapacitorComponent;
 import de.alberteinholz.ehtech.blocks.directionals.containers.machines.MachineBlock;
 import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
 import de.alberteinholz.ehtech.blocks.recipes.Input.BlockIngredient;
@@ -22,9 +18,9 @@ import de.alberteinholz.ehtech.blocks.recipes.Input.DataIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.EntityIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.FluidIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.ItemIngredient;
-import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.component.api.ActionType;
+import io.github.cottonmc.component.energy.type.EnergyType;
 import io.github.cottonmc.component.energy.type.EnergyTypes;
 import io.github.cottonmc.component.fluid.TankComponent;
 import io.netty.buffer.Unpooled;
@@ -49,15 +45,20 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public abstract class MachineBlockEntity extends ContainerBlockEntity implements Tickable {
-    public MachineCapacitorComponent capacitor = initializeCapacitorComponent();
+public abstract class MachineBlockEntity extends AdvancedContainer implements Tickable {
     public int powerBilanz = 0;
-    public int lastPower = capacitor.getCurrentEnergy();
+    public int lastPower = 0;
 
     public MachineBlockEntity(RegistryEntry registryEntry) {
+        this(registryEntry, EnergyTypes.ULTRA_LOW_VOLTAGE);
+    }
+
+    public MachineBlockEntity(RegistryEntry registryEntry, EnergyType energyType) {
         super(registryEntry);
-        capacitor.setDataProvider((MachineDataProviderComponent) data);
-        inventory.addSlots(Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER);
+        comps.put(TechMod.HELPER.makeId("capacitor"), new MachineCapacitorComponent(energyType));
+        ((MachineCapacitorComponent) comps.get(TechMod.HELPER.makeId("capacitor"))).setConfig((ConfigDataComponent) comps.get(MooshroomLib.HELPER.makeId("config")));
+        lastPower = ((MachineCapacitorComponent) comps.get(TechMod.HELPER.makeId("capacitor"))).getCurrentEnergy();
+        comps.put(TechMod.HELPER.makeId("inventory_machine"), new ContainerInventoryComponent(TechMod.HELPER.makeId("inventory_machine"), new Type[]{Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER}, new String[]{"power_input", "power_output", "upgrade", "network"}));
     }
 
     @Override
@@ -242,15 +243,6 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
         }
         return tag;
     }
-    
-    protected MachineCapacitorComponent initializeCapacitorComponent() {
-        return new MachineCapacitorComponent(EnergyTypes.ULTRA_LOW_VOLTAGE);
-    }
-
-    @Override
-    protected MachineDataProviderComponent initializeDataProviderComponent() {
-        return (MachineDataProviderComponent) super.initializeDataProviderComponent();
-    }
 
     public SideConfigScreenHandlerFactory getSideConfigScreenHandlerFactory() {
         return new SideConfigScreenHandlerFactory();
@@ -266,7 +258,7 @@ public abstract class MachineBlockEntity extends ContainerBlockEntity implements
 		public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
 			PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
             writeScreenOpeningData((ServerPlayerEntity) player, buf);
-            return RegistryHelper.getEntry(Helper.makeId("machine_config")).clientHandlerFactory.create(syncId, inv, buf);
+            return RegistryHelper.getEntry(TechMod.HELPER.makeId("machine_config")).clientHandlerFactory.create(syncId, inv, buf);
 		}
 
 		@Override

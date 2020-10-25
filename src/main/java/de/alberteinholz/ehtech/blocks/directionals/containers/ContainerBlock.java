@@ -3,7 +3,6 @@ package de.alberteinholz.ehtech.blocks.directionals.containers;
 import java.util.HashSet;
 import java.util.Set;
 
-import de.alberteinholz.ehtech.blocks.blockentities.containers.ContainerBlockEntity;
 import de.alberteinholz.ehtech.blocks.directionals.DirectionalBlock;
 import io.github.cottonmc.component.UniversalComponents;
 import nerdhub.cardinal.components.api.ComponentType;
@@ -73,7 +72,7 @@ public abstract class ContainerBlock extends DirectionalBlock implements BlockCo
         if(type == UniversalComponents.INVENTORY_COMPONENT) {
             return (T) ((ContainerBlockEntity) blockView.getBlockEntity(pos)).inventory;
         } else if (type == UniversalComponents.DATA_PROVIDER_COMPONENT) {
-            return (T) ((ContainerBlockEntity) blockView.getBlockEntity(pos)).data;
+            return (T) ((ContainerBlockEntity) blockView.getBlockEntity(pos)).config;
         } else {
             return null;
         }

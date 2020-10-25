@@ -1,3 +1,4 @@
+/*
 package de.alberteinholz.ehtech.blocks.components.container;
 
 import java.util.List;
@@ -51,3 +52,4 @@ public class ContainerDataProviderComponent implements DataProviderComponent {
         containerName.withLabel(name);
     }
 }
+*/
