@@ -11,7 +11,8 @@ import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryCo
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
-import de.alberteinholz.ehtech.blocks.components.machine.MachineCapacitorComponent;
+import de.alberteinholz.ehtech.blocks.components.machine.MachineDataComponent;
+import de.alberteinholz.ehtech.blocks.components.machine.MachineDataComponent.ActivationState;
 import de.alberteinholz.ehtech.blocks.directionals.containers.machines.MachineBlock;
 import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
 import de.alberteinholz.ehtech.blocks.recipes.Input.BlockIngredient;
@@ -56,7 +57,8 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     public MachineBlockEntity(String titelTranslationKey, RegistryEntry registryEntry, EnergyType energyType) {
         super(titelTranslationKey, registryEntry);
-        addComponent(TechMod.HELPER.makeId("capacitor_machine"), new MachineCapacitorComponent(energyType));
+        addComponent(TechMod.HELPER.makeId("data_machine"), new MachineDataComponent(TechMod.HELPER.makeId("capacitor_machine"), energyType));
+        addComponent(TechMod.HELPER.makeId("capacitor_machine"), new AdvancedCapacitorComponent(TechMod.HELPER.makeId("capacitor_machine"), energyType));
         lastPower = getMachineCapacitorComp().getCurrentEnergy();
         addComponent(TechMod.HELPER.makeId("inventory_machine"), new AdvancedInventoryComponent(TechMod.HELPER.makeId("inventory_machine"), new Type[] {Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER}, TechMod.HELPER.MOD_ID, new String[]{"power_input", "power_output", "upgrade", "network"}));
     }
@@ -68,6 +70,10 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     
     public AdvancedInventoryComponent getMachineInvComp() {
         return (AdvancedInventoryComponent) getImmutableComps().get(MooshroomLib.HELPER.makeId("inventory_machine"));
+    }
+    
+    public MachineDataComponent getMachineDataComp() {
+        return (MachineDataComponent) getImmutableComps().get(MooshroomLib.HELPER.makeId("data_machine"));
     }
 
     @Override
@@ -91,7 +97,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     public void transfer() {
         super.transfer();
         //TODO: only for early development replace with proper creative battery
-        if (getMachineInvComp().getStack("power_input").getItem() == Items.BEDROCK && getMachineCapacitorComp().getCurrentEnergy() < getMachineCapacitorComp().getMaxEnergy()) getMachineCapacitorComp().generateEnergy(world, pos, 4);
+        if (getMachineInvComp().getStack(getMachineInvComp().getIntFromId(TechMod.HELPER.makeId("power_input"))).getItem().equals(Items.BEDROCK) && getMachineCapacitorComp().getCurrentEnergy() < getMachineCapacitorComp().getMaxEnergy()) getMachineCapacitorComp().generateEnergy(world, pos, getMachineCapacitorComp().getPreferredType().getMaximumTransferSize());
     }
 
     @SuppressWarnings("unchecked")

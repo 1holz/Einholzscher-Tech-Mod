@@ -1,3 +1,4 @@
+/*
 package de.alberteinholz.ehtech.blocks.components.machine;
 
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent;
@@ -83,3 +84,4 @@ public class MachineCapacitorComponent extends SimpleCapacitorComponent {
         return tag;
     }
 }
+*/
