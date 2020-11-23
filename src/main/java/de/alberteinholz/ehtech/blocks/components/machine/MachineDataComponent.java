@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 public class MachineDataComponent implements DataProviderComponent {
     private SimpleDataElement activationState = new SimpleDataElement(ActivationState.values()[0].name());
     private SimpleDataElement efficiency = new SimpleDataElement(String.valueOf(1.0));
-    private SimpleDataElement progress = new SimpleDataElement().withBar(0.0, 0.0, 100.0, UnitManager.PERCENT);
+    public SimpleDataElement progress = new SimpleDataElement().withBar(0.0, 0.0, 100.0, UnitManager.PERCENT);
     private SimpleDataElement recipe = new SimpleDataElement((Text) null);
     //in percent per tick * fuelSpeed
     private SimpleDataElement speed = new SimpleDataElement(String.valueOf(1.0));

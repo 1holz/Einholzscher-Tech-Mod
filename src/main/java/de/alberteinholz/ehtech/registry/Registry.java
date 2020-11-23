@@ -8,7 +8,6 @@ import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.consumers.OreGrowerBlockEntity;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.generators.CoalGeneratorBlockEntity;
-import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
 import de.alberteinholz.ehtech.blocks.directionals.containers.machines.MachineBlock;
 import de.alberteinholz.ehtech.blocks.guis.guis.machines.CoalGeneratorGui;
 import de.alberteinholz.ehtech.blocks.guis.guis.machines.MachineConfigGui;

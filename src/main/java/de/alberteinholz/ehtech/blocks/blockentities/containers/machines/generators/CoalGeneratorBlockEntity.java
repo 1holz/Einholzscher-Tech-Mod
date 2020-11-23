@@ -1,14 +1,9 @@
 package de.alberteinholz.ehtech.blocks.blockentities.containers.machines.generators;
 
+import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.ConfigBehavior;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
-import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent.Slot.Type;
-import de.alberteinholz.ehtech.blocks.components.container.machine.CoalGeneratorDataProviderComponent;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigBehavior;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigType;
 import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
-import de.alberteinholz.ehtech.util.Helper;
 
 public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
     public CoalGeneratorBlockEntity() {
@@ -18,46 +13,35 @@ public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
     public CoalGeneratorBlockEntity(RegistryEntry registryEntry) {
         super(registryEntry);
         inventory.addSlots(Type.INPUT);
-        ((MachineDataProviderComponent) data).setConfigAvailability(new ConfigType[]{ConfigType.ITEM}, new ConfigBehavior[]{ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
+        getConfigComp().setConfigAvailability(new ConfigType[]{ConfigType.ITEM}, new ConfigBehavior[]{ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
 
     @Override
     public boolean process() {
-        CoalGeneratorDataProviderComponent data = (CoalGeneratorDataProviderComponent) this.data;
-        MachineRecipe recipe = (MachineRecipe) data.getRecipe(world);
+        MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
         if (recipe.generates != Double.NaN && recipe.generates > 0.0) {
-            int generation = (int) (data.getEfficiency() * data.getSpeed() * (data.getEfficiency() * data.getSpeed() * (data.heat.getBarCurrent() - data.heat.getBarMinimum()) / (data.heat.getBarMaximum() - data.heat.getBarMinimum()) * 3 + 1));
-            if (capacitor.getCurrentEnergy() + generation <= capacitor.getMaxEnergy()) {
-                capacitor.generateEnergy(world, pos, generation);
-            } else {
-                return false;
-            }
+            int generation = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * (data.heat.getBarCurrent() - data.heat.getBarMinimum()) / (data.heat.getBarMaximum() - data.heat.getBarMinimum()) * 3 + 1));
+            if (getMachineCapacitorComp().getCurrentEnergy() + generation <= getMachineCapacitorComp().getMaxEnergy()) getMachineCapacitorComp().generateEnergy(world, pos, generation);
+            else return false;
         }
-        data.addProgress(recipe.timeModifier * data.getSpeed());
+        getMachineDataComp().addProgress(recipe.timeModifier * getMachineDataComp().getSpeed());
         return true;
     }
 
     @Override
     public void task() {
         super.task();
-        CoalGeneratorDataProviderComponent data = (CoalGeneratorDataProviderComponent) this.data;
-        MachineRecipe recipe = (MachineRecipe) data.getRecipe(world);
+        MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
         if (recipe.generates != Double.NaN && recipe.generates > 0.0) {
-            data.addHeat(recipe.generates * data.getSpeed() * data.getEfficiency());
+            data.addHeat(recipe.generates * getMachineDataComp().getSpeed() * getMachineDataComp().getEfficiency());
         }
     }
 
     @Override
     public void idle() {
         super.idle();
-        CoalGeneratorDataProviderComponent data = (CoalGeneratorDataProviderComponent) this.data;
         if (data.heat.getBarCurrent() > data.heat.getBarMinimum()) {
             data.decreaseHeat();
         }
-    }
-
-    @Override
-    protected CoalGeneratorDataProviderComponent initializeDataProviderComponent() {
-        return new CoalGeneratorDataProviderComponent();
     }
 }

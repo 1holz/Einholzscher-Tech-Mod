@@ -7,6 +7,7 @@ import de.alberteinholz.ehmooshroom.container.AdvancedContainerBlockEntity;
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent;
 import de.alberteinholz.ehmooshroom.container.component.energy.AdvancedCapacitorComponent;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
+import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot.Type;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
@@ -57,7 +58,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     public MachineBlockEntity(String titelTranslationKey, RegistryEntry registryEntry, EnergyType energyType) {
         super(titelTranslationKey, registryEntry);
-        addComponent(TechMod.HELPER.makeId("data_machine"), new MachineDataComponent(TechMod.HELPER.makeId("capacitor_machine"), energyType));
+        addComponent(TechMod.HELPER.makeId("data_machine"), new MachineDataComponent());
         addComponent(TechMod.HELPER.makeId("capacitor_machine"), new AdvancedCapacitorComponent(TechMod.HELPER.makeId("capacitor_machine"), energyType));
         lastPower = getMachineCapacitorComp().getCurrentEnergy();
         addComponent(TechMod.HELPER.makeId("inventory_machine"), new AdvancedInventoryComponent(TechMod.HELPER.makeId("inventory_machine"), new Type[] {Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER}, TechMod.HELPER.MOD_ID, new String[]{"power_input", "power_output", "upgrade", "network"}));
@@ -78,16 +79,15 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     @Override
     public void tick() {
-        MachineDataProviderComponent data = (MachineDataProviderComponent) this.data;
-        boolean isRunning = data.progress.getBarCurrent() > data.progress.getBarMinimum() && isActivated();
+        boolean isRunning = getMachineDataComp().progress.getBarCurrent() > getMachineDataComp().progress.getBarMinimum() && isActivated();
         powerBilanz = getMachineCapacitorComp().getCurrentEnergy() - lastPower;
         lastPower = getMachineCapacitorComp().getCurrentEnergy();
         transfer();
         if (!isRunning && isActivated()) isRunning = checkForRecipe();
         if (isRunning) {
-            if (data.progress.getBarCurrent() == data.progress.getBarMinimum()) start();
+            if (getMachineDataComp().progress.getBarCurrent() == getMachineDataComp().progress.getBarMinimum()) start();
             if (process()) task();
-            if (data.progress.getBarCurrent() == data.progress.getBarMaximum()) finish();
+            if (getMachineDataComp().progress.getBarCurrent() == getMachineDataComp().progress.getBarMaximum()) finish();
         } else idle();
         correct();
         markDirty();
@@ -103,16 +103,15 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     @SuppressWarnings("unchecked")
     public boolean checkForRecipe() {
         Optional<MachineRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<MachineRecipe>) registryEntry.recipeType, new InventoryWrapper(pos), world);
-        ((MachineDataProviderComponent) this.data).setRecipe(optional.orElse(null));
+        getMachineDataComp().setRecipe(optional.orElse(null));
         return optional.isPresent();
     }
 
     public void start() {
-        MachineDataProviderComponent data = (MachineDataProviderComponent) this.data;
-        MachineRecipe recipe = (MachineRecipe) data.getRecipe(world);
+        MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
         boolean consumerRecipe = (recipe.consumes == Double.NaN ? 0.0 : recipe.consumes) > (recipe.generates == Double.NaN ? 0.0 : recipe.generates);
-        int consum = (int) (data.getEfficiency() * data.getSpeed() * recipe.consumes);
-        if ((consumerRecipe && capacitor.extractEnergy(capacitor.getPreferredType(), consum, ActionType.TEST) == consum) || !consumerRecipe) {
+        int consum = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.consumes);
+        if ((consumerRecipe && getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) == consum) || !consumerRecipe) {
             for (ItemIngredient ingredient : recipe.input.items) {
                 int consumingLeft = ingredient.amount;
                 for (Slot slot : inventory.getSlots(Type.INPUT)) {
@@ -132,8 +131,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     }
 
     public boolean process() {
-        MachineDataProviderComponent data = (MachineDataProviderComponent) this.data;
-        MachineRecipe recipe = (MachineRecipe) data.getRecipe(world);
+        MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
         boolean doConsum = recipe.consumes != Double.NaN && recipe.consumes > 0.0;
         boolean canConsum = true;
         int consum = 0;
@@ -142,11 +140,11 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
         int generation = 0;
         boolean canProcess = true;
         if (doConsum) {
-            consum = (int) (data.getEfficiency() * data.getSpeed() * recipe.consumes);
+            consum = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.consumes);
             if (!(getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) == consum)) canConsum = false;
         }
         if (doGenerate) {
-            generation = (int) (data.getEfficiency() * data.getSpeed() * recipe.generates);
+            generation = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.generates);
             if (!(getMachineCapacitorComp().getCurrentEnergy() + generation <= getMachineCapacitorComp().getMaxEnergy())) canGenerate = false;
         }
         if (doConsum) {
@@ -157,7 +155,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
             if (canConsum && canGenerate) getMachineCapacitorComp().generateEnergy(world, pos, generation);
             else canProcess = false;
         }
-        if (canProcess) data.addProgress(recipe.timeModifier * data.getSpeed());
+        if (canProcess) getMachineDataComp().addProgress(recipe.timeModifier * getMachineDataComp().getSpeed());
         return canProcess;
     }
 
@@ -168,9 +166,8 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     }
 
     public void cancle() {
-        MachineDataProviderComponent data = (MachineDataProviderComponent) this.data;
-        data.resetProgress();
-        data.resetRecipe();
+        getMachineDataComp().resetProgress();
+        getMachineDataComp().resetRecipe();
     }
 
     public void idle() {}
@@ -213,7 +210,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     }
 
     public boolean isActivated() {
-        ActivationState activationState = ((MachineDataProviderComponent) data).getActivationState();
+        ActivationState activationState = getMachineDataComp().getActivationState();
         if (activationState == ActivationState.ALWAYS_ON) return true;
         else if(activationState == ActivationState.REDSTONE_ON) return world.isReceivingRedstonePower(pos);
         else if(activationState == ActivationState.REDSTONE_OFF) return !world.isReceivingRedstonePower(pos);

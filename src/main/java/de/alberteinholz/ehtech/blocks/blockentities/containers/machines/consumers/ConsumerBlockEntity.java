@@ -1,14 +1,20 @@
 package de.alberteinholz.ehtech.blocks.blockentities.containers.machines.consumers;
 
-import de.alberteinholz.ehmooshroom.container.blockentity.AdvancedContainer;
+import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.ConfigBehavior;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigBehavior;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent.ConfigType;
+import de.alberteinholz.ehtech.TechMod;
+import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
+import io.github.cottonmc.component.energy.type.EnergyType;
+import io.github.cottonmc.component.energy.type.EnergyTypes;
+import net.minecraft.util.Identifier;
 
-public abstract class ConsumerBlockEntity extends AdvancedContainer {
-	public ConsumerBlockEntity(RegistryEntry registryEntry) {
-		super(registryEntry);
-		((MachineDataProviderComponent) data).setConfigAvailability(new ConfigType[]{ConfigType.POWER}, new ConfigBehavior[]{ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
-	}
+public abstract class ConsumerBlockEntity extends MachineBlockEntity {
+    public ConsumerBlockEntity(String titelTranslationKey, RegistryEntry registryEntry) {
+        this(titelTranslationKey, registryEntry, EnergyTypes.ULTRA_LOW_VOLTAGE);
+    }
+
+    public ConsumerBlockEntity(String titelTranslationKey, RegistryEntry registryEntry, EnergyType energyType) {
+        super(titelTranslationKey, registryEntry, energyType);
+        getConfigComp().setConfigAvailability(new Identifier[]{TechMod.HELPER.makeId("capacitor_machine")}, new ConfigBehavior[]{ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
+    }
 }
