@@ -44,6 +44,7 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -52,16 +53,15 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     public int powerBilanz = 0;
     public int lastPower = 0;
 
-    public MachineBlockEntity(String titelTranslationKey, RegistryEntry registryEntry) {
-        this(titelTranslationKey, registryEntry, EnergyTypes.ULTRA_LOW_VOLTAGE);
+    public MachineBlockEntity(RegistryEntry registryEntry) {
+        this(registryEntry, EnergyTypes.ULTRA_LOW_VOLTAGE);
     }
 
-    public MachineBlockEntity(String titelTranslationKey, RegistryEntry registryEntry, EnergyType energyType) {
-        super(titelTranslationKey, registryEntry);
+    public MachineBlockEntity(RegistryEntry registryEntry, EnergyType energyType) {
+        super(registryEntry);
         addComponent(TechMod.HELPER.makeId("data_machine"), new MachineDataComponent());
-        addComponent(TechMod.HELPER.makeId("capacitor_machine"), new AdvancedCapacitorComponent(TechMod.HELPER.makeId("capacitor_machine"), energyType));
-        lastPower = getMachineCapacitorComp().getCurrentEnergy();
-        addComponent(TechMod.HELPER.makeId("inventory_machine"), new AdvancedInventoryComponent(TechMod.HELPER.makeId("inventory_machine"), new Type[] {Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER}, TechMod.HELPER.MOD_ID, new String[]{"power_input", "power_output", "upgrade", "network"}));
+        addComponent(TechMod.HELPER.makeId("capacitor_machine"), new AdvancedCapacitorComponent(energyType));
+        addComponent(TechMod.HELPER.makeId("inventory_machine"), new AdvancedInventoryComponent(new Type[] {Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER}, TechMod.HELPER.MOD_ID, new String[] {"power_input", "power_output", "upgrade", "network"}));
     }
 
     //convenience access to some comps

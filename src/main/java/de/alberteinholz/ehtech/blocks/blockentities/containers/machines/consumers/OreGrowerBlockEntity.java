@@ -1,8 +1,11 @@
 package de.alberteinholz.ehtech.blocks.blockentities.containers.machines.consumers;
 
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.ConfigBehavior;
+import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
+import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot.Type;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
+import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.directionals.DirectionalBlock;
 import de.alberteinholz.ehtech.blocks.recipes.Input;
 import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
@@ -13,13 +16,17 @@ import net.minecraft.util.math.BlockPos;
 
 public class OreGrowerBlockEntity extends ConsumerBlockEntity {
     public OreGrowerBlockEntity() {
-        this(RegistryHelper.getEntry(Helper.makeId("ore_grower")));
+        this(RegistryHelper.getEntry(TechMod.HELPER.makeId("ore_grower")));
     }
 
     public OreGrowerBlockEntity(RegistryEntry registryEntry) {
         super(registryEntry);
-        inventory.addSlots(Type.INPUT);
-        getConfigComp().setConfigAvailability(new Identifier[]{ConfigType.ITEM}, new ConfigBehavior[]{ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
+        addComponent(TechMod.HELPER.makeId("ore_grower_input_inv_1"), new AdvancedInventoryComponent(new Type[] {Type.INPUT}, TechMod.HELPER.MOD_ID, new String[] {"input_seed"}));
+        getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
+    }
+
+    public AdvancedInventoryComponent getFirstInputInvComp() {
+        return (AdvancedInventoryComponent) getImmutableComps().get(TechMod.HELPER.makeId("ore_grower_input_inv_1"));
     }
 
     @Override

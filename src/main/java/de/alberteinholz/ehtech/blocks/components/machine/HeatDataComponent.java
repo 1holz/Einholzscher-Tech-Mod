@@ -10,12 +10,13 @@ import io.github.cottonmc.component.data.impl.SimpleDataElement;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.nbt.CompoundTag;
 
+//TODO: make this a TransportingComponent?
 public class HeatDataComponent implements DataProviderComponent {
     public SimpleDataElement heat = new SimpleDataElement();
 
-    //1773.15
-    public HeatDataComponent(double max) {
-        heat.withBar(273.15, 273.15, max, UnitManager.KELVIN);
+    //1500 for CoalGenerator
+    public HeatDataComponent(double maxRange) {
+        heat.withBar(273.15, 273.15, 273.15 + maxRange, UnitManager.KELVIN);
     }
 
     @Override
