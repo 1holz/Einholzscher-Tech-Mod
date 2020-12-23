@@ -20,19 +20,13 @@ public interface AdvancedTooltip {
     }
     */
 	default void addTooltip(TooltipBuilder info) {
-		if (!getTooltips().isEmpty()) {
-			for (String tooltip : getTooltips()) {
-				info.add(new TranslatableText(tooltip));
-			}
-		}
+		if (!getTooltips().isEmpty()) for (String tooltip : getTooltips()) info.add(new TranslatableText(tooltip));
 		if (!getAdvancedTooltips().isEmpty()) {
 			getAdvancedTooltips().forEach(new BiConsumer<String, Supplier<Object>[]>() {
 				@Override
 				public void accept(String label, Supplier<Object>[] values) {
 					Object[] args = new Object[values.length];
-					for (int i = 0; i < values.length; i++) {
-						args[i] = values[i].get();
-					}
+					for (int i = 0; i < values.length; i++) args[i] = values[i].get();
 					info.add(new TranslatableText(label, args));
 				}
 			});

@@ -3,8 +3,7 @@ package de.alberteinholz.ehtech.blocks.guis.guis;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.alberteinholz.ehtech.blocks.components.container.ContainerDataProviderComponent;
-import de.alberteinholz.ehtech.blocks.components.container.ContainerInventoryComponent;
+import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
 import de.alberteinholz.ehtech.blocks.guis.screens.ContainerScreen;
 import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
@@ -61,8 +60,8 @@ public abstract class ContainerGui extends SyncedGuiDescription {
         };
     }
 
-    protected ContainerInventoryComponent getInventoryComponent() {
-        return (ContainerInventoryComponent) BlockComponentProvider.get(world.getBlockState(pos)).getComponent(world, pos, UniversalComponents.INVENTORY_COMPONENT, null);
+    protected AdvancedInventoryComponent getInventoryComponent() {
+        return (AdvancedInventoryComponent) BlockComponentProvider.get(world.getBlockState(pos)).getComponent(world, pos, UniversalComponents.INVENTORY_COMPONENT, null);
     }
 
     protected ContainerDataProviderComponent getDataProviderComponent() {

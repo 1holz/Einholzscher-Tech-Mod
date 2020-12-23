@@ -34,11 +34,8 @@ public class MachineBlock extends ContainerBlock implements BlockEntityProvider 
     @SuppressWarnings("unchecked")
     @Override
     public <T extends Component> T getComponent(BlockView blockView, BlockPos pos, ComponentType<T> type, Direction side) {
-        if(type == UniversalComponents.CAPACITOR_COMPONENT) {
-            return (T) ((MachineBlockEntity) blockView.getBlockEntity(pos)).capacitor;
-        } else {
-            return super.getComponent(blockView, pos, type, side);
-        }
+        if(type == UniversalComponents.CAPACITOR_COMPONENT) return (T) ((MachineBlockEntity) blockView.getBlockEntity(pos)).getMachineCapacitorComp();
+        return super.getComponent(blockView, pos, type, side);
     }
 
     @Override

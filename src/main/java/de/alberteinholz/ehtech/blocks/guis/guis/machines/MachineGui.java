@@ -2,14 +2,12 @@ package de.alberteinholz.ehtech.blocks.guis.guis.machines;
 
 import java.util.function.Supplier;
 
+import de.alberteinholz.ehmooshroom.container.component.energy.AdvancedCapacitorComponent;
+import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
-import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineCapacitorComponent;
-import de.alberteinholz.ehtech.blocks.components.container.machine.MachineDataProviderComponent;
 import de.alberteinholz.ehtech.blocks.guis.guis.ContainerGui;
 import de.alberteinholz.ehtech.blocks.guis.widgets.Bar;
 import de.alberteinholz.ehtech.blocks.guis.widgets.Button;
-import de.alberteinholz.ehtech.util.Helper;
 import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.component.data.api.UnitManager;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
@@ -49,10 +47,10 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     protected void initWidgetsDependencies() {
         super.initWidgetsDependencies();
-        powerBarBG = Helper.makeId("textures/gui/container/machine/elements/power_bar/background.png");
-        powerBarFG = Helper.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
-        progressBarBG = Helper.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
-        progressBarFG = Helper.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
+        powerBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/background.png");
+        powerBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
+        progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
+        progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
     }
 
     @SuppressWarnings("unchecked")
@@ -107,23 +105,19 @@ public abstract class MachineGui extends ContainerGui {
             world.getBlockEntity(pos).markDirty();
             return true;
         } else if (id == buttonIds.indexOf(configurationButton)) {
-            if (!world.isClient) {
-                player.openHandledScreen(((MachineBlockEntity) world.getBlockEntity(pos)).getSideConfigScreenHandlerFactory());
-            }
+            if (!world.isClient) player.openHandledScreen(((MachineBlockEntity) world.getBlockEntity(pos)).getSideConfigScreenHandlerFactory());
             return true;
-        } else {
-            return false;
-        }
+        } else return false;
     }
 
-    protected MachineCapacitorComponent getCapacitorComponent() {
-        return (MachineCapacitorComponent) BlockComponentProvider.get(world.getBlockState(pos)).getComponent(world, pos, UniversalComponents.CAPACITOR_COMPONENT, null);
+    protected AdvancedCapacitorComponent getCapacitorComponent() {
+        return (AdvancedCapacitorComponent) BlockComponentProvider.get(world.getBlockState(pos)).getComponent(world, pos, UniversalComponents.CAPACITOR_COMPONENT, null);
     }
 
     protected class ActivationButton extends Button {
         @Override
         public Identifier setTexture(int mouseX, int mouseY) {
-            withTexture(Helper.makeId("textures/gui/container/machine/elements/activation_button/" + ((MachineDataProviderComponent) getDataProviderComponent()).getActivationState().toString().toLowerCase() + ".png"));
+            withTexture(TechMod.HELPER.makeId("textures/gui/container/machine/elements/activation_button/" + ((MachineDataProviderComponent) getDataProviderComponent()).getActivationState().toString().toLowerCase() + ".png"));
             return super.setTexture(mouseX, mouseY);
         }
     }

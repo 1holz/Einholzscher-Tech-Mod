@@ -1,5 +1,7 @@
 package de.alberteinholz.ehtech.blocks.blockentities.containers.machines;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import de.alberteinholz.ehmooshroom.MooshroomLib;
@@ -26,8 +28,10 @@ import io.github.cottonmc.component.api.ActionType;
 import io.github.cottonmc.component.energy.type.EnergyType;
 import io.github.cottonmc.component.energy.type.EnergyTypes;
 import io.github.cottonmc.component.fluid.TankComponent;
+import io.github.cottonmc.component.item.InventoryComponent;
 import io.netty.buffer.Unpooled;
 import nerdhub.cardinal.components.api.component.BlockComponentProvider;
+import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
@@ -40,6 +44,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -52,6 +57,7 @@ import net.minecraft.util.math.Direction;
 public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity implements Tickable {
     public int powerBilanz = 0;
     public int lastPower = 0;
+    public RecipeType<? extends Recipe<?>> recipeType;
 
     public MachineBlockEntity(RegistryEntry registryEntry) {
         this(registryEntry, EnergyTypes.ULTRA_LOW_VOLTAGE);
@@ -59,6 +65,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     public MachineBlockEntity(RegistryEntry registryEntry, EnergyType energyType) {
         super(registryEntry);
+        this.recipeType = registryEntry.recipeType;
         addComponent(TechMod.HELPER.makeId("data_machine"), new MachineDataComponent());
         addComponent(TechMod.HELPER.makeId("capacitor_machine"), new AdvancedCapacitorComponent(energyType));
         addComponent(TechMod.HELPER.makeId("inventory_machine"), new AdvancedInventoryComponent(new Type[] {Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER}, TechMod.HELPER.MOD_ID, new String[] {"power_input", "power_output", "upgrade", "network"}));
@@ -75,6 +82,16 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     
     public MachineDataComponent getMachineDataComp() {
         return (MachineDataComponent) getImmutableComps().get(MooshroomLib.HELPER.makeId("data_machine"));
+    }
+
+    //type can be null to don't filter
+    public List<Slot> getSlots(Type type) {
+        List<Slot> list = new ArrayList<>();
+        for (Component comp : comps.values()) {
+            if (!(comp instanceof AdvancedInventoryComponent)) continue;
+            list.addAll(((AdvancedInventoryComponent) comp).getSlots(type));
+        }
+        return list;
     }
 
     @Override
@@ -102,7 +119,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     @SuppressWarnings("unchecked")
     public boolean checkForRecipe() {
-        Optional<MachineRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<MachineRecipe>) registryEntry.recipeType, new InventoryWrapper(pos), world);
+        Optional<MachineRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<MachineRecipe>) recipeType, new InventoryWrapper(pos), world);
         getMachineDataComp().setRecipe(optional.orElse(null));
         return optional.isPresent();
     }
@@ -114,7 +131,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
         if ((consumerRecipe && getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) == consum) || !consumerRecipe) {
             for (ItemIngredient ingredient : recipe.input.items) {
                 int consumingLeft = ingredient.amount;
-                for (Slot slot : inventory.getSlots(Type.INPUT)) {
+                for (Slot slot : getSlots(Type.INPUT)) {
                     if (ingredient.ingredient.contains(slot.stack.getItem()) && NbtHelper.matches(ingredient.tag, slot.stack.getTag(), true)) {
                         if (slot.stack.getCount() >= consumingLeft) {
                             slot.stack.decrement(consumingLeft);
@@ -176,12 +193,15 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     public boolean containsItemIngredients(ItemIngredient... ingredients) {
         boolean bl = true;
+        //XXX:currently not available will change back later
+        /*
         for (ItemIngredient ingredient : ingredients) {
-            if (!inventory.containsInput(ingredient)) {
+            if (!getCombinedInvComp().containsInput(ingredient)) {
                 bl = false;
                 break;
             } 
         }
+        */
         return bl;
     }
 

@@ -3,6 +3,7 @@ package de.alberteinholz.ehtech.blocks.directionals.containers;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.alberteinholz.ehmooshroom.container.AdvancedContainerBlockEntity;
 import de.alberteinholz.ehtech.blocks.directionals.DirectionalBlock;
 import io.github.cottonmc.component.UniversalComponents;
 import nerdhub.cardinal.components.api.ComponentType;
@@ -36,28 +37,23 @@ public abstract class ContainerBlock extends DirectionalBlock implements BlockCo
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
-            player.openHandledScreen((ContainerBlockEntity) world.getBlockEntity(pos));
-        }
+        if (!world.isClient) player.openHandledScreen((AdvancedContainerBlockEntity) world.getBlockEntity(pos));
         return ActionResult.SUCCESS;
     }
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!world.isClient) {
-            ItemStack itemStack = new ItemStack(asItem());
-            CompoundTag compoundTag = world.getBlockEntity(pos).toTag(new CompoundTag());
-            compoundTag.remove("x");
-            compoundTag.remove("y");
-            compoundTag.remove("z");
-            compoundTag.remove("id");
-            if (!compoundTag.isEmpty()) {
-                itemStack.putSubTag("BlockEntityTag", compoundTag);
-            }
-            ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
-            itemEntity.setToDefaultPickupDelay();
-            world.spawnEntity(itemEntity);
-        }
+        if (world.isClient) super.onBreak(world, pos, state, player);
+        ItemStack itemStack = new ItemStack(asItem());
+        CompoundTag compoundTag = world.getBlockEntity(pos).toTag(new CompoundTag());
+        compoundTag.remove("x");
+        compoundTag.remove("y");
+        compoundTag.remove("z");
+        compoundTag.remove("id");
+        if (!compoundTag.isEmpty()) itemStack.putSubTag("BlockEntityTag", compoundTag);
+        ItemEntity itemEntity = new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), itemStack);
+        itemEntity.setToDefaultPickupDelay();
+        world.spawnEntity(itemEntity);
         super.onBreak(world, pos, state, player);
     }
 
@@ -68,14 +64,11 @@ public abstract class ContainerBlock extends DirectionalBlock implements BlockCo
 
     @SuppressWarnings("unchecked")
     @Override
+    //TODO: check wether additional componentsare needed
     public <T extends Component> T getComponent(BlockView blockView, BlockPos pos, ComponentType<T> type, Direction side) {
-        if(type == UniversalComponents.INVENTORY_COMPONENT) {
-            return (T) ((ContainerBlockEntity) blockView.getBlockEntity(pos)).inventory;
-        } else if (type == UniversalComponents.DATA_PROVIDER_COMPONENT) {
-            return (T) ((ContainerBlockEntity) blockView.getBlockEntity(pos)).config;
-        } else {
-            return null;
-        }
+        if (type == UniversalComponents.INVENTORY_COMPONENT) return (T) ((AdvancedContainerBlockEntity) blockView.getBlockEntity(pos)).getCombinedInvComp();
+        if (type == UniversalComponents.DATA_PROVIDER_COMPONENT) return (T) ((AdvancedContainerBlockEntity) blockView.getBlockEntity(pos)).getConfigComp();
+        return null;
     }
 
     @Override
