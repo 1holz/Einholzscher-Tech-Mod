@@ -10,7 +10,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
-import de.alberteinholz.ehtech.blocks.components.container.InventoryWrapper;
 import de.alberteinholz.ehtech.blocks.recipes.Input.BlockIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.DataIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.EntityIngredient;
@@ -22,6 +21,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.StringNbtReader;
@@ -78,7 +78,7 @@ public class MachineRecipe implements Recipe<Inventory> {
     public boolean matches(BlockPos pos, World world) {
         MachineBlockEntity be = (MachineBlockEntity) world.getBlockEntity(pos);
         //TODO: convert generate & consume to data ingredient
-        if (consumes != Double.NaN && be.capacitor.getCurrentEnergy() < consumes) return false;
+        if (consumes != Double.NaN && be.getMachineCapacitorComp().getCurrentEnergy() < consumes) return false;
         return input == null || (input.items == null || be.containsItemIngredients(input.items)) && (input.fluids == null || be.containsFluidIngredients(input.fluids)) && (input.blocks == null || be.containsBlockIngredients(input.blocks)) && (input.entities == null || be.containsEntityIngredients(input.entities)) && (input.data == null || be.containsDataIngredients(input.data));
     }
 
@@ -286,7 +286,7 @@ public class MachineRecipe implements Recipe<Inventory> {
     @Deprecated
     @Override
     public boolean matches(Inventory inv, World world) {
-        if (inv instanceof InventoryWrapper) return matches(((InventoryWrapper) inv).pos, world);
+        if (inv instanceof PosAsInv) return matches(((PosAsInv) inv).pos, world);
         else return false;
     }
 
@@ -307,5 +307,67 @@ public class MachineRecipe implements Recipe<Inventory> {
     @Override
     public ItemStack getOutput() {
         return (output != null && output.items != null && output.items.length > 0) ? output.items[0] : ItemStack.EMPTY;
+    }
+
+    public static final class PosAsInv implements Inventory {
+        public BlockPos pos;
+
+        public PosAsInv(BlockPos pos) {
+            this.pos = pos;
+        }
+
+		@Override
+		public void clear() {
+            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            throw e;
+        }
+
+		@Override
+		public boolean canPlayerUse(PlayerEntity player) {
+            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            throw e;
+        }
+
+		@Override
+		public ItemStack getStack(int slot) {
+            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            throw e;
+		}
+
+		@Override
+		public boolean isEmpty() {
+            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            throw e;
+		}
+
+		@Override
+		public void markDirty() {
+            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            throw e;
+		}
+
+		@Override
+		public ItemStack removeStack(int slot) {
+            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            throw e;
+        }
+
+		@Override
+		public ItemStack removeStack(int slot, int amount) {
+            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            throw e;
+		}
+
+		@Override
+		public void setStack(int slot, ItemStack stack) {
+            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            throw e;
+        }
+
+		@Override
+		public int size() {
+            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            throw e;
+        }
     }
 }

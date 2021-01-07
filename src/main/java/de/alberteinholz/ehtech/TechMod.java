@@ -19,5 +19,7 @@ public class TechMod implements ModInitializer, ClientModInitializer {
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void onInitializeClient() {}
+	public void onInitializeClient() {
+		
+	}
 }
