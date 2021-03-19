@@ -73,7 +73,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
         return (MachineDataComponent) getImmutableComps().get(MooshroomLib.HELPER.makeId("data_machine"));
     }
 
-    //type can be null to don't filter
+    //type can be null for no filter
     public List<Slot> getSlots(Type type) {
         List<Slot> list = new ArrayList<>();
         for (Component comp : comps.values()) {
@@ -168,10 +168,10 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     public void task() {}
 
     public void finish() {
-        cancle();
+        cancel();
     }
 
-    public void cancle() {
+    public void cancel() {
         getMachineDataComp().resetProgress();
         getMachineDataComp().resetRecipe();
     }
