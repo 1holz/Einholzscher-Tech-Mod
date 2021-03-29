@@ -32,7 +32,7 @@ public class OreGrowerBlockEntity extends ConsumerBlockEntity {
     @Override
     public boolean process() {
         if (!containsBlockIngredients(((MachineRecipe) getMachineDataComp().getRecipe(world)).input.blocks)) {
-            cancle();
+            cancel();
             return false;
         } else return super.process();
     }
