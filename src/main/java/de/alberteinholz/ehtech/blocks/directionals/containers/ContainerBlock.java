@@ -64,10 +64,10 @@ public abstract class ContainerBlock extends DirectionalBlock implements BlockCo
 
     @SuppressWarnings("unchecked")
     @Override
-    //TODO: check wether additional componentsare needed
+    //TODO: check wether additional components are needed
     public <T extends Component> T getComponent(BlockView blockView, BlockPos pos, ComponentType<T> type, Direction side) {
-        if (type == UniversalComponents.INVENTORY_COMPONENT) return (T) ((AdvancedContainerBlockEntity) blockView.getBlockEntity(pos)).getCombinedInvComp();
-        if (type == UniversalComponents.DATA_PROVIDER_COMPONENT) return (T) ((AdvancedContainerBlockEntity) blockView.getBlockEntity(pos)).getConfigComp();
+        if (UniversalComponents.INVENTORY_COMPONENT.equals(type)) return (T) ((AdvancedContainerBlockEntity) blockView.getBlockEntity(pos)).getCombinedInvComp();
+        if (UniversalComponents.DATA_PROVIDER_COMPONENT.equals(type)) return (T) ((AdvancedContainerBlockEntity) blockView.getBlockEntity(pos)).getConfigComp();
         return null;
     }
 
