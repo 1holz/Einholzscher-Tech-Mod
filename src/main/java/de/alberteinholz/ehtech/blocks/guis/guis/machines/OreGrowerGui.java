@@ -1,7 +1,8 @@
 package de.alberteinholz.ehtech.blocks.guis.guis.machines;
 
+import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
-import de.alberteinholz.ehtech.util.Helper;
+import de.alberteinholz.ehtech.TechMod;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
@@ -14,7 +15,7 @@ public class OreGrowerGui extends MachineGui {
 
     @SuppressWarnings("unchecked")
     public OreGrowerGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(Helper.makeId("ore_grower")).screenHandlerType, syncId, playerInv, buf);
+        this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("ore_grower")).screenHandlerType, syncId, playerInv, buf);
     }
 
     public OreGrowerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
@@ -22,14 +23,9 @@ public class OreGrowerGui extends MachineGui {
     }
 
     @Override
-    protected void initWidgetsDependencies() {
-        super.initWidgetsDependencies();
-        progressBarBG = Helper.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
-        progressBarFG = Helper.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
-    }
-
-    @Override
     protected void initWidgets() {
+        progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
+        progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
         super.initWidgets();
         oreInputSlot = WItemSlot.of(blockInventory, 4);
     }
@@ -39,5 +35,9 @@ public class OreGrowerGui extends MachineGui {
         super.drawDefault();
         ((WGridPanel) root).add(oreInputSlot, 2, 3);
         ((WGridPanel) root).add(progressBar, 3, 3, 2, 1);
+    }
+
+    protected AdvancedInventoryComponent getFirstInputInvComp() {
+        return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("ore_grower_input_inv_1"));
     }
 }

@@ -44,7 +44,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Tickable;
 
 public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity implements Tickable {
-    public int powerBilanz = 0;
+    public int powerBalance = 0;
     public int lastPower = 0;
     public RecipeType<? extends Recipe<?>> recipeType;
 
@@ -86,7 +86,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     @Override
     public void tick() {
         boolean isRunning = getMachineDataComp().progress.getBarCurrent() > getMachineDataComp().progress.getBarMinimum() && isActivated();
-        powerBilanz = getMachineCapacitorComp().getCurrentEnergy() - lastPower;
+        powerBalance = getMachineCapacitorComp().getCurrentEnergy() - lastPower;
         lastPower = getMachineCapacitorComp().getCurrentEnergy();
         transfer();
         if (!isRunning && isActivated()) isRunning = checkForRecipe();
