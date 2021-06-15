@@ -11,7 +11,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 
 public class OreGrowerGui extends MachineGui {
-    protected WItemSlot oreInputSlot;
+    protected WItemSlot oreInputSlot = WItemSlot.of(blockInventory, 4);
 
     @SuppressWarnings("unchecked")
     public OreGrowerGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
@@ -27,7 +27,6 @@ public class OreGrowerGui extends MachineGui {
         progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
         progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
         super.initWidgets();
-        oreInputSlot = WItemSlot.of(blockInventory, 4);
     }
 
     @Override

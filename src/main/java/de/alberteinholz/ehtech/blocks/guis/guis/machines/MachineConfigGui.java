@@ -48,7 +48,7 @@ public class MachineConfigGui extends ContainerGui {
     protected WLabel power;
     */
     protected Map<Integer, ConfigButton> configButtons = new HashMap<Integer, ConfigButton>();
-    protected Button cancel;
+    protected Button cancel = (Button) new Button().setLabel(new LiteralText("X"));
 
     @SuppressWarnings("unchecked")
     public MachineConfigGui(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
@@ -76,7 +76,6 @@ public class MachineConfigGui extends ContainerGui {
             else button.setOnClick(getDefaultOnButtonClick(button));
         }
         */
-        cancel = (Button) new Button().setLabel(new LiteralText("X"));
         cancel.tooltips.add("tooltip.ehtech.cancel_button");
         buttonIds.add(cancel);
         cancel.setOnClick(getDefaultOnButtonClick(cancel));
@@ -155,7 +154,6 @@ public class MachineConfigGui extends ContainerGui {
     }
 
     protected class ConfigButton extends Button {
-        //TODO: s this needed?
         public final Identifier id;
         public final Direction dir;
         public final ConfigBehavior behavior;

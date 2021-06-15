@@ -3,6 +3,7 @@ package de.alberteinholz.ehtech.registry;
 import java.util.Optional;
 import java.util.function.Function;
 
+import de.alberteinholz.ehmooshroom.container.component.item.InventoryWrapperPos;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
@@ -35,7 +36,7 @@ public class Registry {
             @SuppressWarnings("unchecked")
             @Override
             public <C extends Inventory> Optional<T> get(Recipe<C> recipe, World world, C inventory) {
-                return ((MachineRecipe) recipe).matches(((InventoryWrapper) inventory).pos, world) ? (Optional<T>) Optional.of(recipe) : Optional.empty();
+                return ((MachineRecipe) recipe).matches(((InventoryWrapperPos) inventory).pos, world) ? (Optional<T>) Optional.of(recipe) : Optional.empty();
             }
 
             @Override

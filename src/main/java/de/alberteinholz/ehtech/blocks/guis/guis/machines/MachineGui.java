@@ -2,9 +2,9 @@ package de.alberteinholz.ehtech.blocks.guis.guis.machines;
 
 import java.util.function.Supplier;
 
-import de.alberteinholz.ehmooshroom.MooshroomLib;
 import de.alberteinholz.ehmooshroom.container.component.energy.AdvancedCapacitorComponent;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
+import de.alberteinholz.ehmooshroom.container.component.item.InventoryWrapperComp;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import de.alberteinholz.ehtech.blocks.components.machine.MachineDataComponent;
@@ -33,11 +33,11 @@ public abstract class MachineGui extends ContainerGui {
     protected WItemSlot powerInputSlot;
     protected WItemSlot upgradeSlot;
     protected Bar powerBar;
-    protected Button activationButton;
+    protected Button activationButton = new ActivationButton();
     protected Bar progressBar;
     protected WItemSlot networkSlot;
     protected WItemSlot powerOutputSlot;
-    protected Button configurationButton;
+    protected Button configurationButton = (Button) new Button().setLabel(new LiteralText("CON"));
 
     public MachineGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         this(null, syncId, playerInv, buf);
@@ -51,8 +51,8 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     protected void initWidgets() {
         super.initWidgets();
-        powerInputSlot = WItemSlot.of(blockInventory, ((InventoryWrapper) blockInventory).getContainerInventoryComponent().getNumber("power_input"));
-        upgradeSlot = WItemSlot.of(blockInventory, ((InventoryWrapper) blockInventory).getContainerInventoryComponent().getNumber("upgrade"));
+        powerInputSlot = WItemSlot.of(blockInventory, ((InventoryWrapperComp) blockInventory).getAdvancedInvComp().getIntFromId(TechMod.HELPER.makeId("power_input")));
+        upgradeSlot = WItemSlot.of(blockInventory, ((InventoryWrapperComp) blockInventory).getAdvancedInvComp().getIntFromId(TechMod.HELPER.makeId("upgrade")));
         powerBar = new Bar(powerBarBG, powerBarFG, getCapacitorComp(), Direction.UP);
         powerBar.addDefaultTooltip("tooltip.ehtech.maschine.power_bar_amount");
         Supplier<?>[] powerBarTrendSuppliers = {
@@ -61,7 +61,6 @@ public abstract class MachineGui extends ContainerGui {
             }
         };
         powerBar.advancedTooltips.put("tooltip.ehtech.machine.power_bar_trend", (Supplier<Object>[]) powerBarTrendSuppliers);
-        activationButton = new ActivationButton();
         Supplier<?>[] activationButtonSuppliers = {
             () -> {
                 return getMachineDataComp().getActivationState().name().toLowerCase();
@@ -72,9 +71,8 @@ public abstract class MachineGui extends ContainerGui {
         buttonIds.add(activationButton);
         progressBar = new Bar(progressBarBG, progressBarFG, getMachineDataComp().progress, Direction.RIGHT);
         progressBar.addDefaultTooltip("tooltip.ehtech.maschine.progress_bar");
-        networkSlot = WItemSlot.of(blockInventory, ((InventoryWrapper) blockInventory).getContainerInventoryComponent().getNumber("network"));
-        powerOutputSlot = WItemSlot.of(blockInventory, ((InventoryWrapper) blockInventory).getContainerInventoryComponent().getNumber("power_output"));
-        configurationButton = (Button) new Button().setLabel(new LiteralText("CON"));
+        networkSlot = WItemSlot.of(blockInventory, ((InventoryWrapperComp) blockInventory).getAdvancedInvComp().getIntFromId(TechMod.HELPER.makeId("network")));
+        powerOutputSlot = WItemSlot.of(blockInventory, ((InventoryWrapperComp) blockInventory).getAdvancedInvComp().getIntFromId(TechMod.HELPER.makeId("power_output")));
         configurationButton.tooltips.add("tooltip.ehtech.configuration_button");
         configurationButton.setOnClick(getDefaultOnButtonClick(configurationButton));
         buttonIds.add(configurationButton);
@@ -101,7 +99,8 @@ public abstract class MachineGui extends ContainerGui {
         } else if (id == buttonIds.indexOf(configurationButton)) {
             if (!world.isClient) player.openHandledScreen(((MachineBlockEntity) world.getBlockEntity(pos)).getSideConfigScreenHandlerFactory());
             return true;
-        } else return false;
+        }
+        return false;
     }
 
     protected MachineDataComponent getMachineDataComp() {
