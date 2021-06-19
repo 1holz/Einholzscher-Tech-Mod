@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.alberteinholz.ehmooshroom.MooshroomLib;
 import de.alberteinholz.ehmooshroom.container.AdvancedContainerBlockEntity;
 import de.alberteinholz.ehmooshroom.container.component.energy.AdvancedCapacitorComponent;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
+import de.alberteinholz.ehmooshroom.container.component.item.InventoryWrapperPos;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot.Type;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
@@ -16,7 +16,6 @@ import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.components.machine.MachineDataComponent;
 import de.alberteinholz.ehtech.blocks.components.machine.MachineDataComponent.ActivationState;
 import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
-import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe.PosAsInv;
 import de.alberteinholz.ehtech.blocks.recipes.Input.BlockIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.DataIngredient;
 import de.alberteinholz.ehtech.blocks.recipes.Input.EntityIngredient;
@@ -62,15 +61,15 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     //convenience access to some comps
     public AdvancedCapacitorComponent getMachineCapacitorComp() {
-        return (AdvancedCapacitorComponent) getImmutableComps().get(MooshroomLib.HELPER.makeId("capacitor_machine"));
+        return (AdvancedCapacitorComponent) getImmutableComps().get(TechMod.HELPER.makeId("capacitor_machine"));
     }
     
     public AdvancedInventoryComponent getMachineInvComp() {
-        return (AdvancedInventoryComponent) getImmutableComps().get(MooshroomLib.HELPER.makeId("inventory_machine"));
+        return (AdvancedInventoryComponent) getImmutableComps().get(TechMod.HELPER.makeId("inventory_machine"));
     }
     
     public MachineDataComponent getMachineDataComp() {
-        return (MachineDataComponent) getImmutableComps().get(MooshroomLib.HELPER.makeId("data_machine"));
+        return (MachineDataComponent) getImmutableComps().get(TechMod.HELPER.makeId("data_machine"));
     }
 
     //type can be null for no filter
@@ -108,7 +107,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     @SuppressWarnings("unchecked")
     public boolean checkForRecipe() {
-        Optional<MachineRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<MachineRecipe>) recipeType, new PosAsInv(pos), world);
+        Optional<MachineRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<MachineRecipe>) recipeType, new InventoryWrapperPos(pos), world);
         getMachineDataComp().setRecipe(optional.orElse(null));
         return optional.isPresent();
     }

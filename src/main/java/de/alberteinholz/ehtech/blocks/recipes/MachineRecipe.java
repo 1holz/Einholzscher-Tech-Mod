@@ -309,6 +309,8 @@ public class MachineRecipe implements Recipe<Inventory> {
         return (output != null && output.items != null && output.items.length > 0) ? output.items[0] : ItemStack.EMPTY;
     }
 
+    //FIXME: use instead of InventoryWrapperPos later on
+    @Deprecated
     public static final class PosAsInv implements Inventory {
         public BlockPos pos;
 
@@ -318,56 +320,53 @@ public class MachineRecipe implements Recipe<Inventory> {
 
 		@Override
 		public void clear() {
-            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
-            throw e;
+            TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
         }
 
 		@Override
 		public boolean canPlayerUse(PlayerEntity player) {
-            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
-            throw e;
+            TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            return false;
         }
 
 		@Override
 		public ItemStack getStack(int slot) {
-            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
-            throw e;
+            TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            return ItemStack.EMPTY;
 		}
 
 		@Override
 		public boolean isEmpty() {
-            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
-            throw e;
+            TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            return true;
 		}
 
 		@Override
 		public void markDirty() {
-            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
-            throw e;
+            TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
 		}
 
 		@Override
 		public ItemStack removeStack(int slot) {
-            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
-            throw e;
+            TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            return ItemStack.EMPTY;
         }
 
 		@Override
 		public ItemStack removeStack(int slot, int amount) {
-            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
-            throw e;
+            TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            return ItemStack.EMPTY;
 		}
 
 		@Override
 		public void setStack(int slot, ItemStack stack) {
-            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
-            throw e;
+            TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
         }
 
 		@Override
 		public int size() {
-            UnsupportedOperationException e = (UnsupportedOperationException) TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
-            throw e;
+            TechMod.LOGGER.smallBug(new UnsupportedOperationException("This inventory represents a BlockPoos."));
+            return 0;
         }
     }
 }
