@@ -33,36 +33,47 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 
 public class MachineConfigGui extends ContainerGui {
-    protected WLabel down = new WLabel(new TranslatableText("block.ehtech.machine_config.down"));
-    protected WLabel up = new WLabel(new TranslatableText("block.ehtech.machine_config.up"));
-    protected WLabel north = new WLabel(new TranslatableText("block.ehtech.machine_config.north"));
-    protected WLabel south = new WLabel(new TranslatableText("block.ehtech.machine_config.south"));
-    protected WLabel west = new WLabel(new TranslatableText("block.ehtech.machine_config.west"));
-    protected WLabel east = new WLabel(new TranslatableText("block.ehtech.machine_config.east"));
+    private final Supplier<ConfigEntry> CONFIG_SUPPLIER = ConfigEntry::new;
+    protected WLabel down, up, north, south, west, east;
     protected WListPanel<Identifier, ConfigEntry> configPanel;
-    protected List<Identifier> configIds = getConfigComp().getIds();
-    protected BiConsumer<Identifier, ConfigEntry> configBuilder = (id, entry) -> entry.build(id);
+    protected List<Identifier> configIds;
+    protected BiConsumer<Identifier, ConfigEntry> configBuilder;
     /*FIXME: check this class for content that can be removed
     protected WLabel item;
     protected WLabel fluid;
     protected WLabel power;
     */
-    protected Map<Integer, ConfigButton> configButtons = new HashMap<Integer, ConfigButton>();
-    protected Button cancel = (Button) new Button().setLabel(new LiteralText("X"));
+    protected Map<Integer, ConfigButton> configButtons;
+    protected Button cancel;
 
-    @SuppressWarnings("unchecked")
-    public MachineConfigGui(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("machine_config")).screenHandlerType, syncId, playerInventory, buf);
+    protected MachineConfigGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv) {
+        super(type, syncId, playerInv);
     }
 
-    public MachineConfigGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        super(type, syncId, playerInventory, buf);
+    @SuppressWarnings("unchecked")
+    public static MachineConfigGui init(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+        return init(new MachineConfigGui((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("machine_config")).screenHandlerType, syncId, playerInventory), buf);
+    }
+
+    public static MachineConfigGui init(MachineConfigGui gui, PacketByteBuf buf) {
+        gui.down = new WLabel(new TranslatableText("block.ehtech.machine_config.down"));
+        gui.up = new WLabel(new TranslatableText("block.ehtech.machine_config.up"));
+        gui.north = new WLabel(new TranslatableText("block.ehtech.machine_config.north"));
+        gui.south = new WLabel(new TranslatableText("block.ehtech.machine_config.south"));
+        gui.west = new WLabel(new TranslatableText("block.ehtech.machine_config.west"));
+        gui.east = new WLabel(new TranslatableText("block.ehtech.machine_config.east"));
+        gui.configIds = gui.getConfigComp().getIds();
+        gui.configBuilder = (id, entry) -> entry.build(id);
+        //XXX: WHY DOES ConfigEntry::gui.new NOT WORK INNSTEAD OF gui.CONFIG_SUPPLIER??? THAT REALLY SHOULD WORK!!!!!
+        gui.configPanel = new WListPanel<>(gui.configIds, gui.CONFIG_SUPPLIER, gui.configBuilder);
+        gui.configButtons = new HashMap<Integer, ConfigButton>();
+        gui.cancel = (Button) new Button().setLabel(new LiteralText("X"));
+        return (MachineConfigGui) ContainerGui.init(gui, buf);
     }
 
     @Override
     protected void initWidgets() {
         super.initWidgets();
-        configPanel = new WListPanel<>(configIds, ConfigEntry::new, configBuilder);
         /*
         item = new WLabel(new TranslatableText("block.ehtech.machine_config.item"));
         fluid = new WLabel(new TranslatableText("block.ehtech.machine_config.fluid"));

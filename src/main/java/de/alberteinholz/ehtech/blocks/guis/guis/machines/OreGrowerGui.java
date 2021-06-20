@@ -11,22 +11,22 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 
 public class OreGrowerGui extends MachineGui {
-    protected WItemSlot oreInputSlot = WItemSlot.of(blockInventory, 4);
+    protected WItemSlot oreInputSlot;
+
+    protected OreGrowerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv) {
+        super(type, syncId, playerInv);
+    }
 
     @SuppressWarnings("unchecked")
-    public OreGrowerGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("ore_grower")).screenHandlerType, syncId, playerInv, buf);
+    public static OreGrowerGui init(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
+        return init(new OreGrowerGui((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("ore_grower")).screenHandlerType, syncId, playerInv), buf);
     }
 
-    public OreGrowerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        super(type, syncId, playerInv, buf);
-    }
-
-    @Override
-    protected void initWidgets() {
-        progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
-        progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
-        super.initWidgets();
+    public static OreGrowerGui init(OreGrowerGui gui, PacketByteBuf buf) {
+        gui.progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
+        gui.progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
+        gui.oreInputSlot = WItemSlot.of(gui.blockInventory, 4);
+        return (OreGrowerGui) MachineGui.init(gui, buf);
     }
 
     @Override

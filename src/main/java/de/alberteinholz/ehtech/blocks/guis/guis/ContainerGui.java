@@ -21,24 +21,26 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
+//FIXME: clean up guis in general
 public abstract class ContainerGui extends SyncedGuiDescription {
-    protected BlockPos pos;
-    protected WPanel root;
-    protected List<WButton> buttonIds = new ArrayList<WButton>();
+    public BlockPos pos;
+    public WPanel root;
+    public List<WButton> buttonIds;
     public ContainerScreen screen;
-
-    public ContainerGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this(null, syncId, playerInv, buf);
+    
+    protected ContainerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv) {
+        super(type, syncId, playerInv);
     }
 
-    public ContainerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        super(type, syncId, playerInv);
-        pos = buf.readBlockPos();
-        blockInventory = getInvComp().asInventory();
-        setRootPanel(root);
-        initWidgets();
-        drawDefault();
-        finish();
+    public static ContainerGui init(ContainerGui gui, PacketByteBuf buf) {
+        gui.pos = buf.readBlockPos();
+        gui.buttonIds = new ArrayList<WButton>();
+        gui.blockInventory = gui.getInvComp().asInventory();
+        gui.setRootPanel(gui.root);
+        gui.initWidgets();
+        gui.drawDefault();
+        gui.finish();
+        return gui;
     }
 
     protected void initWidgets() {}

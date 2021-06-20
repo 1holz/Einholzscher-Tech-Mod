@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import de.alberteinholz.ehmooshroom.container.component.energy.AdvancedCapacitorComponent;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
-import de.alberteinholz.ehmooshroom.container.component.item.InventoryWrapperComp;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import de.alberteinholz.ehtech.blocks.components.machine.MachineDataComponent;
@@ -26,33 +25,40 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
 public abstract class MachineGui extends ContainerGui {
-    protected Identifier powerBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/background.png");
-    protected Identifier powerBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
-    protected Identifier progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
-    protected Identifier progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
+    protected Identifier powerBarBG;
+    protected Identifier powerBarFG;
+    protected Identifier progressBarBG;
+    protected Identifier progressBarFG;
     protected WItemSlot powerInputSlot;
     protected WItemSlot upgradeSlot;
     protected Bar powerBar;
-    protected Button activationButton = new ActivationButton();
+    protected Button activationButton ;
     protected Bar progressBar;
     protected WItemSlot networkSlot;
     protected WItemSlot powerOutputSlot;
-    protected Button configurationButton = (Button) new Button().setLabel(new LiteralText("CON"));
+    protected Button configurationButton;
 
-    public MachineGui(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        this(null, syncId, playerInv, buf);
+    protected MachineGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv) {
+        super(type, syncId, playerInv);
     }
 
-    public MachineGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        super(type, syncId, playerInv, buf);
+    public static MachineGui init(MachineGui gui, PacketByteBuf buf) {
+        gui.powerBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/background.png");
+        gui.powerBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
+        gui.progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
+        gui.progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
+        gui.activationButton = gui.new ActivationButton();
+        gui.configurationButton = (Button) new Button().setLabel(new LiteralText("CON"));
+        TechMod.LOGGER.test("HERE: " + gui.powerBarBG.toString());
+        return (MachineGui) ContainerGui.init(gui, buf);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected void initWidgets() {
         super.initWidgets();
-        powerInputSlot = WItemSlot.of(blockInventory, ((InventoryWrapperComp) blockInventory).getAdvancedInvComp().getIntFromId(TechMod.HELPER.makeId("power_input")));
-        upgradeSlot = WItemSlot.of(blockInventory, ((InventoryWrapperComp) blockInventory).getAdvancedInvComp().getIntFromId(TechMod.HELPER.makeId("upgrade")));
+        powerInputSlot = WItemSlot.of(blockInventory, getMachineInvComp().getIntFromId(TechMod.HELPER.makeId("power_input")));
+        upgradeSlot = WItemSlot.of(blockInventory, getMachineInvComp().getIntFromId(TechMod.HELPER.makeId("upgrade")));
         powerBar = new Bar(powerBarBG, powerBarFG, getCapacitorComp(), Direction.UP);
         powerBar.addDefaultTooltip("tooltip.ehtech.maschine.power_bar_amount");
         Supplier<?>[] powerBarTrendSuppliers = {
@@ -71,8 +77,8 @@ public abstract class MachineGui extends ContainerGui {
         buttonIds.add(activationButton);
         progressBar = new Bar(progressBarBG, progressBarFG, getMachineDataComp().progress, Direction.RIGHT);
         progressBar.addDefaultTooltip("tooltip.ehtech.maschine.progress_bar");
-        networkSlot = WItemSlot.of(blockInventory, ((InventoryWrapperComp) blockInventory).getAdvancedInvComp().getIntFromId(TechMod.HELPER.makeId("network")));
-        powerOutputSlot = WItemSlot.of(blockInventory, ((InventoryWrapperComp) blockInventory).getAdvancedInvComp().getIntFromId(TechMod.HELPER.makeId("power_output")));
+        networkSlot = WItemSlot.of(blockInventory, getMachineInvComp().getIntFromId(TechMod.HELPER.makeId("network")));
+        powerOutputSlot = WItemSlot.of(blockInventory, getMachineInvComp().getIntFromId(TechMod.HELPER.makeId("power_output")));
         configurationButton.tooltips.add("tooltip.ehtech.configuration_button");
         configurationButton.setOnClick(getDefaultOnButtonClick(configurationButton));
         buttonIds.add(configurationButton);
