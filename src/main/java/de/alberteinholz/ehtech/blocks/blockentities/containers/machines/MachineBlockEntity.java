@@ -261,6 +261,8 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
 		@Override
 		public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+            TechMod.LOGGER.test("Here:");
+            TechMod.LOGGER.test("Here: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
 			buf.writeBlockPos(pos);
 		}
     }

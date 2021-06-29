@@ -46,16 +46,16 @@ public class MachineConfigGui extends ContainerGui {
     protected Map<Integer, ConfigButton> configButtons;
     protected Button cancel;
 
-    protected MachineConfigGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv) {
-        super(type, syncId, playerInv);
+    protected MachineConfigGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
+        super(type, syncId, playerInv, buf);
     }
 
     @SuppressWarnings("unchecked")
     public static MachineConfigGui init(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        return init(new MachineConfigGui((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("machine_config")).screenHandlerType, syncId, playerInventory), buf);
+        return init(new MachineConfigGui((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("machine_config")).screenHandlerType, syncId, playerInventory, buf));
     }
 
-    public static MachineConfigGui init(MachineConfigGui gui, PacketByteBuf buf) {
+    public static MachineConfigGui init(MachineConfigGui gui) {
         gui.down = new WLabel(new TranslatableText("block.ehtech.machine_config.down"));
         gui.up = new WLabel(new TranslatableText("block.ehtech.machine_config.up"));
         gui.north = new WLabel(new TranslatableText("block.ehtech.machine_config.north"));
@@ -68,7 +68,7 @@ public class MachineConfigGui extends ContainerGui {
         gui.configPanel = new WListPanel<>(gui.configIds, gui.CONFIG_SUPPLIER, gui.configBuilder);
         gui.configButtons = new HashMap<Integer, ConfigButton>();
         gui.cancel = (Button) new Button().setLabel(new LiteralText("X"));
-        return (MachineConfigGui) ContainerGui.init(gui, buf);
+        return (MachineConfigGui) ContainerGui.init(gui);
     }
 
     @Override

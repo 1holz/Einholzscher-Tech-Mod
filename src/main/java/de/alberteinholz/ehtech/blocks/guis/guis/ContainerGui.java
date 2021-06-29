@@ -8,6 +8,7 @@ import de.alberteinholz.ehmooshroom.container.component.data.CombinedDataCompone
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent;
 import de.alberteinholz.ehmooshroom.container.component.data.NameDataComponent;
 import de.alberteinholz.ehmooshroom.container.component.item.CombinedInventoryComponent;
+import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.guis.screens.ContainerScreen;
 import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
@@ -28,12 +29,12 @@ public abstract class ContainerGui extends SyncedGuiDescription {
     public List<WButton> buttonIds;
     public ContainerScreen screen;
     
-    protected ContainerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv) {
+    protected ContainerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv);
+        pos = buf.readBlockPos();
     }
 
-    public static ContainerGui init(ContainerGui gui, PacketByteBuf buf) {
-        gui.pos = buf.readBlockPos();
+    public static ContainerGui init(ContainerGui gui) {
         gui.buttonIds = new ArrayList<WButton>();
         gui.blockInventory = gui.getInvComp().asInventory();
         gui.setRootPanel(gui.root);

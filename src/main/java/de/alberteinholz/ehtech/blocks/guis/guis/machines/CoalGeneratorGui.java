@@ -20,21 +20,21 @@ public class CoalGeneratorGui extends MachineGui {
     protected Bar heatBar;
     protected WItemSlot coalInputSlot;
 
-    protected CoalGeneratorGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv) {
-        super(type, syncId, playerInv);
+    protected CoalGeneratorGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
+        super(type, syncId, playerInv, buf);
     }
-
+    
     @SuppressWarnings("unchecked")
     public static CoalGeneratorGui init(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        return init(new CoalGeneratorGui((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("coal_generator")).screenHandlerType, syncId, playerInv), buf);
+        return init(new CoalGeneratorGui((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("coal_generator")).screenHandlerType, syncId, playerInv, buf));
     }
 
-    public static CoalGeneratorGui init(CoalGeneratorGui gui, PacketByteBuf buf) {
+    public static CoalGeneratorGui init(CoalGeneratorGui gui) {
         gui.heatBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
         gui.heatBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
         gui.heatBar = new Bar(gui.heatBarBG, gui.heatBarFG, gui.getFirstHeatComp().heat, Direction.UP);
         gui.coalInputSlot = WItemSlot.of(gui.blockInventory, 4);
-        return (CoalGeneratorGui) MachineGui.init(gui, buf);
+        return (CoalGeneratorGui) MachineGui.init(gui);
     }
 
     @Override

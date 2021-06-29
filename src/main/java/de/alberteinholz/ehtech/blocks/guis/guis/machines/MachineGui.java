@@ -38,19 +38,18 @@ public abstract class MachineGui extends ContainerGui {
     protected WItemSlot powerOutputSlot;
     protected Button configurationButton;
 
-    protected MachineGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv) {
-        super(type, syncId, playerInv);
+    protected MachineGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
+        super(type, syncId, playerInv, buf);
     }
 
-    public static MachineGui init(MachineGui gui, PacketByteBuf buf) {
+    public static MachineGui init(MachineGui gui) {
         gui.powerBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/background.png");
         gui.powerBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
         gui.progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
         gui.progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
         gui.activationButton = gui.new ActivationButton();
         gui.configurationButton = (Button) new Button().setLabel(new LiteralText("CON"));
-        TechMod.LOGGER.test("HERE: " + gui.powerBarBG.toString());
-        return (MachineGui) ContainerGui.init(gui, buf);
+        return (MachineGui) ContainerGui.init(gui);
     }
 
     @SuppressWarnings("unchecked")
