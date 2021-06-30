@@ -41,9 +41,9 @@ public class CoalGeneratorGui extends MachineGui {
     public void drawDefault() {
         super.drawDefault();
         heatBar.addDefaultTooltip("tooltip.ehtech.coal_generator.heat_bar");
-        ((WGridPanel) root).add(heatBar, 5, 2, 3, 3);
-        ((WGridPanel) root).add(coalInputSlot, 2, 3);
-        ((WGridPanel) root).add(progressBar, 3, 3, 2, 1);
+        ((WGridPanel) rootPanel).add(heatBar, 5, 2, 3, 3);
+        ((WGridPanel) rootPanel).add(coalInputSlot, 2, 3);
+        ((WGridPanel) rootPanel).add(progressBar, 3, 3, 2, 1);
     }
 
     protected AdvancedInventoryComponent getFirstInputInvComp() {

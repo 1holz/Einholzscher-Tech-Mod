@@ -25,19 +25,17 @@ import net.minecraft.util.math.BlockPos;
 //FIXME: clean up guis in general
 public abstract class ContainerGui extends SyncedGuiDescription {
     public BlockPos pos;
-    public WPanel root;
     public List<WButton> buttonIds;
     public ContainerScreen screen;
     
     protected ContainerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv);
         pos = buf.readBlockPos();
+        blockInventory = getInvComp().asInventory();
     }
 
     public static ContainerGui init(ContainerGui gui) {
         gui.buttonIds = new ArrayList<WButton>();
-        gui.blockInventory = gui.getInvComp().asInventory();
-        gui.setRootPanel(gui.root);
         gui.initWidgets();
         gui.drawDefault();
         gui.finish();
@@ -47,7 +45,7 @@ public abstract class ContainerGui extends SyncedGuiDescription {
     protected void initWidgets() {}
 
     protected void drawDefault() {
-        ((WGridPanel) root).add(createPlayerInventoryPanel(), 0, 7);
+        ((WGridPanel) rootPanel).add(createPlayerInventoryPanel(), 0, 7);
     }
 
     public void finish() {

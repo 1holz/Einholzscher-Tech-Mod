@@ -94,22 +94,22 @@ public class MachineConfigGui extends ContainerGui {
 
     @Override
     protected void drawDefault() {
-        ((WGridPanel) root).add(createPlayerInventoryPanel(), 0, 7);
-        ((WGridPanel) root).add(down, 2, 1, 1, 1);
-        ((WGridPanel) root).add(up, 3, 1, 1, 1);
-        ((WGridPanel) root).add(north, 4, 1, 1, 1);
-        ((WGridPanel) root).add(south, 5, 1, 1, 1);
-        ((WGridPanel) root).add(west, 6, 1, 1, 1);
-        ((WGridPanel) root).add(east, 7, 1, 1, 1);
+        super.drawDefault();
+        ((WGridPanel) rootPanel).add(down, 2, 1, 1, 1);
+        ((WGridPanel) rootPanel).add(up, 3, 1, 1, 1);
+        ((WGridPanel) rootPanel).add(north, 4, 1, 1, 1);
+        ((WGridPanel) rootPanel).add(south, 5, 1, 1, 1);
+        ((WGridPanel) rootPanel).add(west, 6, 1, 1, 1);
+        ((WGridPanel) rootPanel).add(east, 7, 1, 1, 1);
         /*
-        ((WGridPanel) root).add(item, 0, 4, 4, 2);
-        ((WGridPanel) root).add(fluid, 0, 6, 4, 2);
-        ((WGridPanel) root).add(power, 0, 8, 4, 2);
+        ((WGridPanel) rootPanel).add(item, 0, 4, 4, 2);
+        ((WGridPanel) rootPanel).add(fluid, 0, 6, 4, 2);
+        ((WGridPanel) rootPanel).add(power, 0, 8, 4, 2);
         configButtons.forEach((id, button) -> {
-            ((WGridPanel) root).add(button, button.dir.ordinal() * 2 + 4 + (int) Math.floor((double) button.behavoir.ordinal() / 2.0), button.TYPE.ordinal() * 2 + 4 + (button.behavoir.ordinal() + 1) % 2);
+            ((WGridPanel) rootPanel).add(button, button.dir.ordinal() * 2 + 4 + (int) Math.floor((double) button.behavoir.ordinal() / 2.0), button.TYPE.ordinal() * 2 + 4 + (button.behavoir.ordinal() + 1) % 2);
         });
         */
-        ((WGridPanel) root).add(cancel, 9, 5, 1, 1);
+        ((WGridPanel) rootPanel).add(cancel, 9, 5, 1, 1);
     }
 
     @Override

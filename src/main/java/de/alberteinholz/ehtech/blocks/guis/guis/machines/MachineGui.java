@@ -86,13 +86,13 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     public void drawDefault() {
         super.drawDefault();
-        ((WGridPanel) root).add(powerInputSlot, 8, 1);
-        ((WGridPanel) root).add(upgradeSlot, 9, 1);
-        ((WGridPanel) root).add(powerBar, 8, 2, 1, 3);
-        ((WGridPanel) root).add(activationButton, 9, 2);
-        ((WGridPanel) root).add(networkSlot, 9, 3);
-        ((WGridPanel) root).add(powerOutputSlot, 8, 5);
-        ((WGridPanel) root).add(configurationButton, 9, 5);
+        ((WGridPanel) rootPanel).add(powerInputSlot, 8, 1);
+        ((WGridPanel) rootPanel).add(upgradeSlot, 9, 1);
+        ((WGridPanel) rootPanel).add(powerBar, 8, 2, 1, 3);
+        ((WGridPanel) rootPanel).add(activationButton, 9, 2);
+        ((WGridPanel) rootPanel).add(networkSlot, 9, 3);
+        ((WGridPanel) rootPanel).add(powerOutputSlot, 8, 5);
+        ((WGridPanel) rootPanel).add(configurationButton, 9, 5);
     }
 
     @Override

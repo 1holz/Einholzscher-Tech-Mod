@@ -32,8 +32,8 @@ public class OreGrowerGui extends MachineGui {
     @Override
     public void drawDefault() {
         super.drawDefault();
-        ((WGridPanel) root).add(oreInputSlot, 2, 3);
-        ((WGridPanel) root).add(progressBar, 3, 3, 2, 1);
+        ((WGridPanel) rootPanel).add(oreInputSlot, 2, 3);
+        ((WGridPanel) rootPanel).add(progressBar, 3, 3, 2, 1);
     }
 
     protected AdvancedInventoryComponent getFirstInputInvComp() {
