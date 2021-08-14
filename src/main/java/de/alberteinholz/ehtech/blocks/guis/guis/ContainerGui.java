@@ -8,13 +8,11 @@ import de.alberteinholz.ehmooshroom.container.component.data.CombinedDataCompone
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent;
 import de.alberteinholz.ehmooshroom.container.component.data.NameDataComponent;
 import de.alberteinholz.ehmooshroom.container.component.item.CombinedInventoryComponent;
-import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.guis.screens.ContainerScreen;
 import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WButton;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
-import io.github.cottonmc.cotton.gui.widget.WPanel;
 import nerdhub.cardinal.components.api.component.BlockComponentProvider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerInventory;

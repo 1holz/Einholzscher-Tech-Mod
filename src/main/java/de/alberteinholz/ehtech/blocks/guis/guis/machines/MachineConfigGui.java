@@ -64,7 +64,7 @@ public class MachineConfigGui extends ContainerGui {
         gui.east = new WLabel(new TranslatableText("block.ehtech.machine_config.east"));
         gui.configIds = gui.getConfigComp().getIds();
         gui.configBuilder = (id, entry) -> entry.build(id);
-        //XXX: WHY DOES ConfigEntry::gui.new NOT WORK INNSTEAD OF gui.CONFIG_SUPPLIER??? THAT REALLY SHOULD WORK!!!!!
+        //XXX: WHY DOES ConfigEntry::gui.new NOT WORK INSTEAD OF gui.CONFIG_SUPPLIER??? THIS REALLY SHOULD WORK!!!!!
         gui.configPanel = new WListPanel<>(gui.configIds, gui.CONFIG_SUPPLIER, gui.configBuilder);
         gui.configButtons = new HashMap<Integer, ConfigButton>();
         gui.cancel = (Button) new Button().setLabel(new LiteralText("X"));
@@ -109,6 +109,7 @@ public class MachineConfigGui extends ContainerGui {
             ((WGridPanel) rootPanel).add(button, button.dir.ordinal() * 2 + 4 + (int) Math.floor((double) button.behavoir.ordinal() / 2.0), button.TYPE.ordinal() * 2 + 4 + (button.behavoir.ordinal() + 1) % 2);
         });
         */
+        ((WGridPanel) rootPanel).add(configPanel, 0, 2, 9, 5);
         ((WGridPanel) rootPanel).add(cancel, 9, 5, 1, 1);
     }
 
@@ -141,7 +142,7 @@ public class MachineConfigGui extends ContainerGui {
 
     protected class ConfigEntry extends WGridPanel {
         public Identifier id;
-        //is this needed?
+        //TODO: is this needed?
         public List<ConfigButton> buttons = new ArrayList<>();
 
         public ConfigEntry() {
@@ -156,7 +157,7 @@ public class MachineConfigGui extends ContainerGui {
                 buttonIds.add(button);
                 //FIXME: delete: button.id = buttonIds.indexOf(button);
                 configButtons.put(buttonIds.indexOf(button), button);
-                if (getConfigComp().isAvailable(id, behavior, dir)) button.setEnabled(false);
+                if (!(getConfigComp().isAvailable(id, behavior, dir))) button.setEnabled(false);
                 else button.setOnClick(getDefaultOnButtonClick(button));
                 add(button, button.dir.ordinal() * 2 + 4 + (int) Math.floor((double) button.behavior.ordinal() / 2.0), (button.behavior.ordinal() + 1) % 2);
             }
