@@ -88,7 +88,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
         if (isRunning) {
             if (getMachineDataComp().progress.getBarCurrent() == getMachineDataComp().progress.getBarMinimum()) start();
             if (process()) task();
-            if (getMachineDataComp().progress.getBarCurrent() == getMachineDataComp().progress.getBarMaximum()) finish();
+            if (getMachineDataComp().progress.getBarCurrent() == getMachineDataComp().progress.getBarMaximum()) complete();
         } else idle();
         correct();
         markDirty();
@@ -138,22 +138,22 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
         int consum = 0;
         boolean doGenerate = recipe.generates != Double.NaN && recipe.generates > 0.0;
         boolean canGenerate = true;
-        int generation = 0;
+        int generate = 0;
         boolean canProcess = true;
         if (doConsum) {
             consum = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.consumes);
             if (getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) < consum) canConsum = false;
         }
         if (doGenerate) {
-            generation = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.generates);
-            if (getMachineCapacitorComp().getCurrentEnergy() + generation > getMachineCapacitorComp().getMaxEnergy()) canGenerate = false;
+            generate = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.generates);
+            if (getMachineCapacitorComp().getCurrentEnergy() + generate > getMachineCapacitorComp().getMaxEnergy()) canGenerate = false;
         }
         if (doConsum) {
             if (canConsum && canGenerate) getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.PERFORM);
             else canProcess = false;
         }
         if (doGenerate) {
-            if (canConsum && canGenerate) getMachineCapacitorComp().generateEnergy(world, pos, generation);
+            if (canConsum && canGenerate) getMachineCapacitorComp().generateEnergy(world, pos, generate);
             else canProcess = false;
         }
         if (canProcess) getMachineDataComp().addProgress(recipe.timeModifier * getMachineDataComp().getSpeed());
@@ -162,7 +162,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     public void task() {}
 
-    public void finish() {
+    public void complete() {
         cancel();
     }
 

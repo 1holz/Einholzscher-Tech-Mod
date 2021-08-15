@@ -30,10 +30,9 @@ public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
         return (HeatDataComponent) getImmutableComps().get(TechMod.HELPER.makeId("coal_generator_heat_1"));
     }
 
-    /*XXX
     @Override
     public boolean process() {
-        MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
+        AdvancedRecipe recipe = (AdvancedRecipe) getMachineDataComp().getRecipe(world);
         if (recipe.generates != Double.NaN && recipe.generates > 0.0) {
             int generation = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * (getFirstHeatComp().heat.getBarCurrent() - getFirstHeatComp().heat.getBarMinimum()) / (getFirstHeatComp().heat.getBarMaximum() - getFirstHeatComp().heat.getBarMinimum()) * 3 + 1));
             if (getMachineCapacitorComp().getCurrentEnergy() + generation <= getMachineCapacitorComp().getMaxEnergy()) getMachineCapacitorComp().generateEnergy(world, pos, generation);
@@ -42,7 +41,6 @@ public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
         getMachineDataComp().addProgress(recipe.timeModifier * getMachineDataComp().getSpeed());
         return true;
     }
-    */
 
     @Override
     public void task() {

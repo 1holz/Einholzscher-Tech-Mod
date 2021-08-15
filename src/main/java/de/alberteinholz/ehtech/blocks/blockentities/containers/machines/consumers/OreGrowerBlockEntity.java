@@ -53,9 +53,9 @@ public class OreGrowerBlockEntity extends ConsumerBlockEntity {
     }
 
     @Override
-    public void finish() {
+    public void complete() {
         world.setBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING)), ((AdvancedRecipe) getMachineDataComp().getRecipe(world)).output.blocks[0]);
-        super.finish();
+        super.complete();
     }
 
     @Override
