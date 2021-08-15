@@ -1,3 +1,4 @@
+/*
 package de.alberteinholz.ehtech.blocks.recipes;
 
 import java.util.ArrayList;
@@ -370,3 +371,4 @@ public class MachineRecipe implements Recipe<Inventory> {
         }
     }
 }
+*/

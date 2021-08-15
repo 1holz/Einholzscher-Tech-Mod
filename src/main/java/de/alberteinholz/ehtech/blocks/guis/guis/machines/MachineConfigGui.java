@@ -46,6 +46,7 @@ public class MachineConfigGui extends ContainerGui {
     protected Map<Integer, ConfigButton> configButtons;
     protected Button cancel;
 
+    //FIXME: buttons and/or labels are misaligned
     protected MachineConfigGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
     }
@@ -157,11 +158,10 @@ public class MachineConfigGui extends ContainerGui {
                 buttonIds.add(button);
                 //FIXME: delete: button.id = buttonIds.indexOf(button);
                 configButtons.put(buttonIds.indexOf(button), button);
-                if (!(getConfigComp().isAvailable(id, behavior, dir))) button.setEnabled(false);
+                if (!getConfigComp().isAvailable(id, behavior, dir)) button.setEnabled(false);
                 else button.setOnClick(getDefaultOnButtonClick(button));
                 add(button, button.dir.ordinal() * 2 + 4 + (int) Math.floor((double) button.behavior.ordinal() / 2.0), (button.behavior.ordinal() + 1) % 2);
             }
-            
         }
     }
 

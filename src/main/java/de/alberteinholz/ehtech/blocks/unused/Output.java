@@ -1,3 +1,4 @@
+/*
 package de.alberteinholz.ehtech.blocks.recipes;
 
 import io.github.fablabsmc.fablabs.api.fluidvolume.v1.FluidVolume;
@@ -129,3 +130,4 @@ public class Output {
         return new Output(items, fluids, blocks, entities, data);
     }
 }
+*/

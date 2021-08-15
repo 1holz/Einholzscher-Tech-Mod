@@ -3,11 +3,11 @@ package de.alberteinholz.ehtech.blocks.blockentities.containers.machines.generat
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.ConfigBehavior;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot.Type;
+import de.alberteinholz.ehmooshroom.recipes.AdvancedRecipe;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.components.machine.HeatDataComponent;
-import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
 import net.minecraft.util.Identifier;
 
 public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
@@ -30,6 +30,7 @@ public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
         return (HeatDataComponent) getImmutableComps().get(TechMod.HELPER.makeId("coal_generator_heat_1"));
     }
 
+    /*XXX
     @Override
     public boolean process() {
         MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
@@ -41,11 +42,12 @@ public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
         getMachineDataComp().addProgress(recipe.timeModifier * getMachineDataComp().getSpeed());
         return true;
     }
+    */
 
     @Override
     public void task() {
         super.task();
-        MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
+        AdvancedRecipe recipe = (AdvancedRecipe) getMachineDataComp().getRecipe(world);
         if (recipe.generates != Double.NaN && recipe.generates > 0.0) {
             getFirstHeatComp().addHeat(recipe.generates * getMachineDataComp().getSpeed() * getMachineDataComp().getEfficiency());
         }

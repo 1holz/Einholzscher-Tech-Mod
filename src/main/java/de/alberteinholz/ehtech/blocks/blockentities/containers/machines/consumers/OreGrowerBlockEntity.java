@@ -3,11 +3,11 @@ package de.alberteinholz.ehtech.blocks.blockentities.containers.machines.consume
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.ConfigBehavior;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot.Type;
+import de.alberteinholz.ehmooshroom.recipes.AdvancedRecipe;
+import de.alberteinholz.ehmooshroom.recipes.Input.BlockIngredient;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
-import de.alberteinholz.ehtech.blocks.recipes.Input;
-import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.state.property.Properties;
@@ -31,7 +31,7 @@ public class OreGrowerBlockEntity extends ConsumerBlockEntity {
 
     @Override
     public boolean process() {
-        if (!containsBlockIngredients(((MachineRecipe) getMachineDataComp().getRecipe(world)).input.blocks)) {
+        if (!containsBlockIngredients(((AdvancedRecipe) getMachineDataComp().getRecipe(world)).input.blocks)) {
             cancel();
             return false;
         } else return super.process();
@@ -40,7 +40,7 @@ public class OreGrowerBlockEntity extends ConsumerBlockEntity {
     @Override
     public void task() {
         super.task();
-        MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
+        AdvancedRecipe recipe = (AdvancedRecipe) getMachineDataComp().getRecipe(world);
         BlockPos target = pos.offset(world.getBlockState(pos).get(Properties.FACING));
         //TODO: Make particle amount configurable?
         for (int i = 0; i < 4; i++) {
@@ -54,12 +54,12 @@ public class OreGrowerBlockEntity extends ConsumerBlockEntity {
 
     @Override
     public void finish() {
-        world.setBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING)), ((MachineRecipe) getMachineDataComp().getRecipe(world)).output.blocks[0]);
+        world.setBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING)), ((AdvancedRecipe) getMachineDataComp().getRecipe(world)).output.blocks[0]);
         super.finish();
     }
 
     @Override
-    public boolean containsBlockIngredients(Input.BlockIngredient... ingredients) {
+    public boolean containsBlockIngredients(BlockIngredient... ingredients) {
         return ingredients[0].ingredient.contains(world.getBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING))).getBlock());
     }
 }

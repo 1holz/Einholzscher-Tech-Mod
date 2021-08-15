@@ -4,6 +4,8 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import de.alberteinholz.ehmooshroom.container.component.item.InventoryWrapperPos;
+import de.alberteinholz.ehmooshroom.recipes.AdvancedRecipe;
+import de.alberteinholz.ehmooshroom.recipes.AdvancedRecipe.Serializer;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
@@ -14,8 +16,6 @@ import de.alberteinholz.ehtech.blocks.guis.guis.machines.CoalGeneratorGui;
 import de.alberteinholz.ehtech.blocks.guis.guis.machines.MachineConfigGui;
 import de.alberteinholz.ehtech.blocks.guis.guis.machines.OreGrowerGui;
 import de.alberteinholz.ehtech.blocks.guis.screens.ContainerScreen;
-import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
-import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe.Serializer;
 import de.alberteinholz.ehtech.items.Wrench;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.AbstractBlock;
@@ -36,7 +36,7 @@ public class Registry {
             @SuppressWarnings("unchecked")
             @Override
             public <C extends Inventory> Optional<T> get(Recipe<C> recipe, World world, C inventory) {
-                return ((MachineRecipe) recipe).matches(((InventoryWrapperPos) inventory).pos, world) ? (Optional<T>) Optional.of(recipe) : Optional.empty();
+                return ((AdvancedRecipe) recipe).matches(((InventoryWrapperPos) inventory).pos, world) ? (Optional<T>) Optional.of(recipe) : Optional.empty();
             }
 
             @Override

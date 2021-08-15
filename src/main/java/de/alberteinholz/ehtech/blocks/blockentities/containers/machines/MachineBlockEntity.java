@@ -10,17 +10,13 @@ import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryCo
 import de.alberteinholz.ehmooshroom.container.component.item.InventoryWrapperPos;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot.Type;
+import de.alberteinholz.ehmooshroom.recipes.AdvancedRecipe;
+import de.alberteinholz.ehmooshroom.recipes.Input.ItemIngredient;
 import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.alberteinholz.ehtech.TechMod;
 import de.alberteinholz.ehtech.blocks.components.machine.MachineDataComponent;
 import de.alberteinholz.ehtech.blocks.components.machine.MachineDataComponent.ActivationState;
-import de.alberteinholz.ehtech.blocks.recipes.MachineRecipe;
-import de.alberteinholz.ehtech.blocks.recipes.Input.BlockIngredient;
-import de.alberteinholz.ehtech.blocks.recipes.Input.DataIngredient;
-import de.alberteinholz.ehtech.blocks.recipes.Input.EntityIngredient;
-import de.alberteinholz.ehtech.blocks.recipes.Input.FluidIngredient;
-import de.alberteinholz.ehtech.blocks.recipes.Input.ItemIngredient;
 import io.github.cottonmc.component.api.ActionType;
 import io.github.cottonmc.component.energy.type.EnergyType;
 import io.github.cottonmc.component.energy.type.EnergyTypes;
@@ -107,13 +103,13 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
 
     @SuppressWarnings("unchecked")
     public boolean checkForRecipe() {
-        Optional<MachineRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<MachineRecipe>) recipeType, new InventoryWrapperPos(pos), world);
+        Optional<AdvancedRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<AdvancedRecipe>) recipeType, new InventoryWrapperPos(pos), world);
         getMachineDataComp().setRecipe(optional.orElse(null));
         return optional.isPresent();
     }
 
     public void start() {
-        MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
+        AdvancedRecipe recipe = (AdvancedRecipe) getMachineDataComp().getRecipe(world);
         boolean consumerRecipe = (recipe.consumes == Double.NaN ? 0.0 : recipe.consumes) > (recipe.generates == Double.NaN ? 0.0 : recipe.generates);
         int consum = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.consumes);
         if ((consumerRecipe && getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) == consum) || !consumerRecipe) {
@@ -136,7 +132,7 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     }
 
     public boolean process() {
-        MachineRecipe recipe = (MachineRecipe) getMachineDataComp().getRecipe(world);
+        AdvancedRecipe recipe = (AdvancedRecipe) getMachineDataComp().getRecipe(world);
         boolean doConsum = recipe.consumes != Double.NaN && recipe.consumes > 0.0;
         boolean canConsum = true;
         int consum = 0;
@@ -146,11 +142,11 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
         boolean canProcess = true;
         if (doConsum) {
             consum = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.consumes);
-            if (!(getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) == consum)) canConsum = false;
+            if (getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) < consum) canConsum = false;
         }
         if (doGenerate) {
             generation = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.generates);
-            if (!(getMachineCapacitorComp().getCurrentEnergy() + generation <= getMachineCapacitorComp().getMaxEnergy())) canGenerate = false;
+            if (getMachineCapacitorComp().getCurrentEnergy() + generation > getMachineCapacitorComp().getMaxEnergy()) canGenerate = false;
         }
         if (doConsum) {
             if (canConsum && canGenerate) getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.PERFORM);
@@ -178,44 +174,6 @@ public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity im
     public void idle() {}
 
     public void correct() {}
-
-    public boolean containsItemIngredients(ItemIngredient... ingredients) {
-        boolean bl = true;
-        //XXX:currently not available will change back later
-        /*
-        for (ItemIngredient ingredient : ingredients) {
-            if (!getCombinedInvComp().containsInput(ingredient)) {
-                bl = false;
-                break;
-            } 
-        }
-        */
-        return bl;
-    }
-
-    public boolean containsFluidIngredients(FluidIngredient... ingredients) {
-        boolean bl = true;
-        for (FluidIngredient ingredient : ingredients) {
-            TechMod.LOGGER.wip("Containment Check for " + ingredient);
-            //TODO:fluid
-        }
-        return bl;
-    }
-
-    //only by overriding
-    public boolean containsBlockIngredients(BlockIngredient... ingredients) {
-        return true;
-    }
-
-    //only by overriding
-    public boolean containsEntityIngredients(EntityIngredient... ingredients) {
-        return true;
-    }
-
-    //only by overriding
-    public boolean containsDataIngredients(DataIngredient... ingredients) {
-        return true;
-    }
 
     public boolean isActivated() {
         ActivationState activationState = getMachineDataComp().getActivationState();

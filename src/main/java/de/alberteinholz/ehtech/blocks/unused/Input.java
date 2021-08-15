@@ -1,3 +1,4 @@
+/*
 package de.alberteinholz.ehtech.blocks.recipes;
 
 import io.github.fablabsmc.fablabs.api.fluidvolume.v1.Fraction;
@@ -219,3 +220,4 @@ public class Input {
         }
     }
 }
+*/
