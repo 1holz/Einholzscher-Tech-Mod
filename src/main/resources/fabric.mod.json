@@ -9,17 +9,17 @@
         "Albert_Einholz"
     ],
     "contact": {
-        "homepage": "https://www.curseforge.com/minecraft/mc-mods/einholzscher-tech-mod",
+        "homepage": "https://curseforge.com/minecraft/mc-mods/einholzscher-tech-mod",
         "sources": "https://github.com/Albert-Einholz/Einholzscher-Tech-Mod"
     },
     "license": "Apache-2.0 Licence",
     "environment": "*",
     "entrypoints": {
         "main": [
-            "de.alberteinholz.ehtech.TechMod"
+            "de.einholz.ehtech.TechMod"
         ],
         "client": [
-            "de.alberteinholz.ehtech.TechMod"
+            "de.einholz.ehtech.TechMod"
         ]
     },
     "mixins": [],
