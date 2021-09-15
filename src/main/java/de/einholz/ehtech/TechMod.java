@@ -1,7 +1,7 @@
 package de.einholz.ehtech;
 
-import de.alberteinholz.ehmooshroom.util.Helper;
-import de.alberteinholz.ehmooshroom.util.LoggerHelper;
+import de.einholz.ehmooshroom.util.Helper;
+import de.einholz.ehmooshroom.util.LoggerHelper;
 import de.einholz.ehtech.registry.Registry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
