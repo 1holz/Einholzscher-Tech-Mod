@@ -24,11 +24,8 @@ dependencies {
 
 	include modImplementation("io.github.cottonmc:LibGui:${project.lib_gui_version}+${project.minecraft_version}")
 	include modImplementation("io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_components_api_version}")
-	//include modImplementation("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_components_api_version}")
-	//include modImplementation("io.github.onyxstudios.Cardinal-Components-API:cardinal-components-block:${project.cardinal_components_api_version}")
-    //include modImplementation("io.github.cottonmc:UniversalComponents:${project.universalcomponents_version}+${project.minecraft_version}")
-	compile files("libs/universalcomponents-${project.universalcomponents_version}+${project.minecraft_version}-dev.jar")
-	include files("libs/universalcomponents-${project.universalcomponents_version}+${project.minecraft_version}-dev.jar")
+	//include modImplementation("io.github.onyxstudios:Cardinal-Components-API:cardinal-components-base:${project.cardinal_components_api_version}")
+	//include modImplementation("io.github.onyxstudios:Cardinal-Components-API:cardinal-components-block:${project.cardinal_components_api_version}")
 	compile files("libs/ehmooshroom-${project.ehmooshroom_version}+${project.minecraft_version}-dev.jar")
 	include files("libs/ehmooshroom-${project.ehmooshroom_version}+${project.minecraft_version}-dev.jar")
 }
@@ -43,7 +40,11 @@ repositories {
         url = "https://ladysnake.jfrog.io/artifactory/mods"
     }
     maven {
-        name = "OnyxStudios"
+        name = "Ladysnake Libs Alt"
+        url = "https://dl.bintray.com/ladysnake/libs"
+    }
+    maven {
+        name = "OnyxStudios Alt Alt"
         url = "https://maven.onyxstudios.dev"
     }
 }

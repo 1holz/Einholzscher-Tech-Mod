@@ -3,11 +3,10 @@ package de.einholz.ehtech.registry;
 import java.util.Optional;
 import java.util.function.Function;
 
-import de.alberteinholz.ehmooshroom.container.component.item.InventoryWrapperPos;
-import de.alberteinholz.ehmooshroom.recipes.AdvancedRecipe;
-import de.alberteinholz.ehmooshroom.recipes.AdvancedRecipe.Serializer;
-import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
-import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
+import de.einholz.ehmooshroom.recipes.AdvancedRecipe;
+import de.einholz.ehmooshroom.recipes.AdvancedRecipe.Serializer;
+import de.einholz.ehmooshroom.registry.RegistryEntry;
+import de.einholz.ehmooshroom.registry.RegistryHelper;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.blocks.MachineBlock;
 import de.einholz.ehtech.blocks.blockentities.containers.machines.consumers.OreGrowerBlockEntity;
@@ -21,11 +20,11 @@ import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -62,8 +61,8 @@ public class Registry {
         Function<RegistryEntry, RegistryEntry> simpleBlockTemplate = entry -> {
             return entry.withBlockItemBuild(new Item.Settings().group(RegistryHelper.getEntry(TechMod.HELPER.makeId("wrench")).itemGroup));
         };
-        FuelRegistry.INSTANCE.add(RegistryHelper.create(TechMod.HELPER.makeId("charcoal_block")).withBlock(new Block(AbstractBlock.Settings.of(Material.STONE, MaterialColor.BLACK).requiresTool().strength(5.0F, 6.0F))).applyTemplate(simpleBlockTemplate).item, 16000);
-        FuelRegistry.INSTANCE.add(RegistryHelper.create(TechMod.HELPER.makeId("coke_coal_block")).withBlock(new Block(AbstractBlock.Settings.of(Material.STONE, MaterialColor.GRAY).requiresTool().strength(5.0F, 6.0F))).applyTemplate(simpleBlockTemplate).item, 32000);
+        FuelRegistry.INSTANCE.add(RegistryHelper.create(TechMod.HELPER.makeId("charcoal_block")).withBlock(new Block(AbstractBlock.Settings.of(Material.STONE, DyeColor.BLACK).requiresTool().strength(5.0F, 6.0F))).applyTemplate(simpleBlockTemplate).item, 16000);
+        FuelRegistry.INSTANCE.add(RegistryHelper.create(TechMod.HELPER.makeId("coke_coal_block")).withBlock(new Block(AbstractBlock.Settings.of(Material.STONE, DyeColor.GRAY).requiresTool().strength(5.0F, 6.0F))).applyTemplate(simpleBlockTemplate).item, 32000);
         RegistryHelper.create(TechMod.HELPER.makeId("machine_frame_1")).withBlock(new Block(AbstractBlock.Settings.of(Material.METAL).requiresTool().strength(5, 10))).applyTemplate(simpleBlockTemplate);
         //machines:
         Function<RegistryEntry, RegistryEntry> machineTemplate = entry -> {

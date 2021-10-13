@@ -2,7 +2,7 @@ package de.einholz.ehtech.items;
 
 import java.util.List;
 
-import de.alberteinholz.ehmooshroom.block.DirectionalBlock;
+import de.einholz.ehmooshroom.block.DirectionalBlock;
 import de.einholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
@@ -13,7 +13,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.property.Properties;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -31,8 +31,8 @@ public class Wrench extends Tool {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!user.isSneaking()) return super.use(world, user, hand);
-        CompoundTag compoundTag = user.getStackInHand(hand).getOrCreateTag();
-        compoundTag.putString("Mode", WrenchMode.fromString(compoundTag.getString("Mode"), true).toString());
+        NbtCompound nbt = user.getStackInHand(hand).getOrCreateTag();
+        nbt.putString("Mode", WrenchMode.fromString(nbt.getString("Mode"), true).toString());
         if (world.isClient) ((ClientPlayerEntity) user).sendMessage((Text)(new TranslatableText("title.ehtech.wrench", user.getStackInHand(hand).getTag().getString("Mode"))), true);
         return new TypedActionResult<>(ActionResult.SUCCESS, user.getStackInHand(hand));
     }

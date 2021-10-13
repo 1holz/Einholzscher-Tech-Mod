@@ -1,5 +1,5 @@
-package de.einholz.ehtech.blocks.components.machine;
-
+package de.einholz.ehtech.blocks.components.unused;
+/*
 import java.util.List;
 
 import io.github.cottonmc.component.data.DataProviderComponent;
@@ -53,3 +53,4 @@ public class HeatDataComponent implements DataProviderComponent {
         return tag;
     }
 }
+*/

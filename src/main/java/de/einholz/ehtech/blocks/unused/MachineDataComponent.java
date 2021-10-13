@@ -1,19 +1,12 @@
-package de.einholz.ehtech.blocks.components.machine;
-
+package de.einholz.ehtech.blocks.unused;
+/*XXX delete
 import java.util.List;
 import java.util.Optional;
 
 import com.google.gson.JsonParseException;
 
-import de.alberteinholz.ehmooshroom.MooshroomLib;
-import io.github.cottonmc.component.data.DataProviderComponent;
-import io.github.cottonmc.component.data.api.DataElement;
-import io.github.cottonmc.component.data.api.Unit;
-import io.github.cottonmc.component.data.api.UnitManager;
-import io.github.cottonmc.component.data.impl.SimpleDataElement;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -26,20 +19,6 @@ public class MachineDataComponent implements DataProviderComponent {
     private SimpleDataElement recipe = new SimpleDataElement((Text) null);
     //in percent per tick * fuelSpeed
     private SimpleDataElement speed = new SimpleDataElement(String.valueOf(1.0));
-
-    @Override
-    public void provideData(List<DataElement> data) {
-        data.add(activationState);
-        data.add(efficiency);
-        data.add(progress);
-        data.add(recipe);
-        data.add(speed);
-    }
-
-    @Override
-    public DataElement getElementFor(Unit unit) {
-        return progress.getBarUnit().equals(unit) ? progress : null;
-    }
 
     @Override
     public void fromTag(CompoundTag tag) {
@@ -155,3 +134,4 @@ public class MachineDataComponent implements DataProviderComponent {
         }
     }
 }
+*/
