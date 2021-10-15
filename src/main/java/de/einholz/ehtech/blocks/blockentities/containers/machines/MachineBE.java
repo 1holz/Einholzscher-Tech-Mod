@@ -1,35 +1,50 @@
 package de.einholz.ehtech.blocks.blockentities.containers.machines;
 
-import de.einholz.ehmooshroom.container.AdvancedContainerBE;
-import de.einholz.ehmooshroom.registry.RegistryEntry;
-import net.minecraft.util.Tickable;
+import java.util.Optional;
 
-public abstract class MachineBE<T> extends AdvancedContainerBE implements Tickable {
+import de.einholz.ehmooshroom.container.AdvancedContainerBE;
+import de.einholz.ehmooshroom.container.component.config.SideConfigComponent.SideConfigType;
+import de.einholz.ehmooshroom.container.component.energy.EnergyComponent;
+import de.einholz.ehmooshroom.container.component.item.ItemComponent;
+import de.einholz.ehmooshroom.recipes.AdvancedRecipe;
+import de.einholz.ehmooshroom.recipes.Ingrediets.ItemIngredient;
+import de.einholz.ehmooshroom.registry.RegistryEntry;
+import de.einholz.ehtech.TechMod;
+import de.einholz.ehtech.blocks.components.machine.MachineComponent;
+import net.fabricmc.fabric.api.lookup.v1.block.BlockApiCache;
+import net.minecraft.nbt.NbtHelper;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Tickable;
+import net.minecraft.util.math.Direction;
+
+public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContainerBE<T> implements Tickable {
+    public final BlockApiCache<EnergyComponent, Direction> ENERGY_CACHE;
+    public final BlockApiCache<ItemComponent, SideConfigType> ITEM_INTERNAL_CACHE;
+    public final BlockApiCache<MachineComponent, Void> MACHINE_CACHE;
 
     public MachineBE(RegistryEntry registryEntry) {
         super(registryEntry);
-        //TODO Auto-generated constructor stub
+        ENERGY_CACHE =  createCache(EnergyComponent.ENERGY_LOOKUP);
+        ITEM_INTERNAL_CACHE =  createCache(ItemComponent.ITEM_INTERNAL_LOOKUP);
+        MACHINE_CACHE =  createCache(MachineComponent.MACHINE_LOOKUP);
     }
 
     @Override
     public void tick() {
-        boolean isRunning = getMachineDataComp().progress.getBarCurrent() > getMachineDataComp().progress.getBarMinimum() && isActivated();
-        powerBalance = getMachineCapacitorComp().getCurrentEnergy() - lastPower;
-        lastPower = getMachineCapacitorComp().getCurrentEnergy();
+        boolean isRunning = MACHINE_CACHE.find(null).getCur() > MACHINE_CACHE.find(null).getMin() && isActivated();
         transfer();
         if (!isRunning && isActivated()) isRunning = checkForRecipe();
         if (isRunning) {
-            if (getMachineDataComp().progress.getBarCurrent() == getMachineDataComp().progress.getBarMinimum()) start();
+            if (MACHINE_CACHE.find(null).getCur() == MACHINE_CACHE.find(null).getMin()) start();
             if (process()) task();
-            if (getMachineDataComp().progress.getBarCurrent() == getMachineDataComp().progress.getBarMaximum()) complete();
+            if (MACHINE_CACHE.find(null).getCur() == MACHINE_CACHE.find(null).getMax()) complete();
         } else idle();
         correct();
         markDirty();
     }
 
-    @Override
     public void transfer() {
-        super.transfer();
         //TODO: only for early development replace with proper creative battery
         if (getMachineInvComp().getStack(getMachineInvComp().getIntFromId(TechMod.HELPER.makeId("power_input"))).getItem().equals(Items.BEDROCK) && getMachineCapacitorComp().getCurrentEnergy() < getMachineCapacitorComp().getMaxEnergy()) getMachineCapacitorComp().generateEnergy(world, pos, getMachineCapacitorComp().getPreferredType().getMaximumTransferSize());
     }
@@ -37,14 +52,14 @@ public abstract class MachineBE<T> extends AdvancedContainerBE implements Tickab
     @SuppressWarnings("unchecked")
     public boolean checkForRecipe() {
         Optional<AdvancedRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<AdvancedRecipe>) recipeType, new InventoryWrapperPos(pos), world);
-        getMachineDataComp().setRecipe(optional.orElse(null));
+        MACHINE_CACHE.find(null).setRecipe(optional.orElse(null));
         return optional.isPresent();
     }
 
     public void start() {
-        AdvancedRecipe recipe = (AdvancedRecipe) getMachineDataComp().getRecipe(world);
+        AdvancedRecipe recipe = (AdvancedRecipe) MACHINE_CACHE.find(null).getRecipe(world);
         boolean consumerRecipe = (recipe.consumes == Double.NaN ? 0.0 : recipe.consumes) > (recipe.generates == Double.NaN ? 0.0 : recipe.generates);
-        int consum = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.consumes);
+        int consum = (int) (MACHINE_CACHE.find(null).getEfficiency() * MACHINE_CACHE.find(null).getSpeed() * recipe.consumes);
         if ((consumerRecipe && getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) == consum) || !consumerRecipe) {
             for (ItemIngredient ingredient : recipe.input.items) {
                 int consumingLeft = ingredient.amount;
@@ -65,7 +80,7 @@ public abstract class MachineBE<T> extends AdvancedContainerBE implements Tickab
     }
 
     public boolean process() {
-        AdvancedRecipe recipe = (AdvancedRecipe) getMachineDataComp().getRecipe(world);
+        AdvancedRecipe recipe = (AdvancedRecipe) MACHINE_CACHE.find(null).getRecipe(world);
         boolean doConsum = recipe.consumes != Double.NaN && recipe.consumes > 0.0;
         boolean canConsum = true;
         int consum = 0;
@@ -74,11 +89,11 @@ public abstract class MachineBE<T> extends AdvancedContainerBE implements Tickab
         int generate = 0;
         boolean canProcess = true;
         if (doConsum) {
-            consum = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.consumes);
+            consum = (int) (MACHINE_CACHE.find(null).getEfficiency() * MACHINE_CACHE.find(null).getSpeed() * recipe.consumes);
             if (getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) < consum) canConsum = false;
         }
         if (doGenerate) {
-            generate = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * recipe.generates);
+            generate = (int) (MACHINE_CACHE.find(null).getEfficiency() * MACHINE_CACHE.find(null).getSpeed() * recipe.generates);
             if (getMachineCapacitorComp().getCurrentEnergy() + generate > getMachineCapacitorComp().getMaxEnergy()) canGenerate = false;
         }
         if (doConsum) {
@@ -89,7 +104,7 @@ public abstract class MachineBE<T> extends AdvancedContainerBE implements Tickab
             if (canConsum && canGenerate) getMachineCapacitorComp().generateEnergy(world, pos, generate);
             else canProcess = false;
         }
-        if (canProcess) getMachineDataComp().addProgress(recipe.timeModifier * getMachineDataComp().getSpeed());
+        if (canProcess) MACHINE_CACHE.find(null).addProgress(recipe.timeModifier * MACHINE_CACHE.find(null).getSpeed());
         return canProcess;
     }
 
@@ -100,11 +115,19 @@ public abstract class MachineBE<T> extends AdvancedContainerBE implements Tickab
     }
 
     public void cancel() {
-        getMachineDataComp().resetProgress();
-        getMachineDataComp().resetRecipe();
+        MACHINE_CACHE.find(null).resetProgress();
+        MACHINE_CACHE.find(null).resetRecipe();
     }
 
     public void idle() {}
 
     public void correct() {}
+
+    public boolean isActivated() {
+        short activationState = MACHINE_CACHE.find(null).getActivationState();
+        if (activationState == 0) return true;
+        else if(activationState == 1) return world.isReceivingRedstonePower(pos);
+        else if(activationState == 2) return !world.isReceivingRedstonePower(pos);
+        else return false;
+    }
 }

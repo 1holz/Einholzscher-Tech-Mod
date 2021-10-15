@@ -3,7 +3,7 @@ package de.einholz.ehtech.items;
 import java.util.List;
 
 import de.einholz.ehmooshroom.block.DirectionalBlock;
-import de.einholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
+import de.einholz.ehtech.blocks.blockentities.containers.machines.MachineBE;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -43,13 +43,13 @@ public class Wrench extends Tool {
         BlockState blockState = context.getWorld().getBlockState(context.getBlockPos());
         Block block = blockState.getBlock();
         BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
-        if(!context.getPlayer().isSneaking() || !(blockEntity instanceof MachineBlockEntity) || !wrench.hasTag() || !wrench.getTag().contains("Mode", NbtType.STRING)) return super.useOnBlock(context);
+        if(!context.getPlayer().isSneaking() || !(blockEntity instanceof MachineBE) || !wrench.hasTag() || !wrench.getTag().contains("Mode", NbtType.STRING)) return super.useOnBlock(context);
         WrenchMode mode = WrenchMode.fromString(wrench.getOrCreateTag().getString("Mode"), false);
         if (mode == WrenchMode.ROTATE && block instanceof DirectionalBlock) context.getWorld().setBlockState(context.getBlockPos(), blockState.with(Properties.FACING, Direction.values()[(blockState.get(Properties.FACING).ordinal() + 1) % Direction.values().length]));
         else if (mode == WrenchMode.POWER && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.ITEM && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.FLUID && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
-        else if (mode == WrenchMode.CONFIGURE && !context.getWorld().isClient()) context.getPlayer().openHandledScreen(((MachineBlockEntity) context.getWorld().getBlockEntity(context.getBlockPos())).getSideConfigScreenHandlerFactory());
+        else if (mode == WrenchMode.CONFIGURE && !context.getWorld().isClient()) context.getPlayer().openHandledScreen(((MachineBE) context.getWorld().getBlockEntity(context.getBlockPos())).getSideConfigScreenHandlerFactory());
         //else if (mode == WrenchMode.BREAK && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.BLOCK_SPECIFIC && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         //else return super.useOnBlock(context);
