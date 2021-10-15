@@ -1,6 +1,6 @@
 package de.einholz.ehtech.blocks.components.machine;
 
-import de.einholz.ehmooshroom.container.component.util.CustomComponent;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.Identifier;
 
 public class SimpleMachineComponent implements MachineComponent {
@@ -13,11 +13,7 @@ public class SimpleMachineComponent implements MachineComponent {
     //in percent per tick * fuelSpeed
     private float speed = 1.0F;
 
-    @Override
-    public <P> CustomComponent of(P arg0) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public SimpleMachineComponent(BlockEntity be) {}
 
     @Override
     public float getCur() {

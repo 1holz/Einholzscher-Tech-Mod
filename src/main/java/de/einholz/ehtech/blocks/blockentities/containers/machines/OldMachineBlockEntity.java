@@ -4,31 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.alberteinholz.ehmooshroom.container.AdvancedContainerBlockEntity;
-import de.alberteinholz.ehmooshroom.container.component.energy.AdvancedCapacitorComponent;
-import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
-import de.alberteinholz.ehmooshroom.container.component.item.InventoryWrapperPos;
-import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot;
-import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent.Slot.Type;
-import de.alberteinholz.ehmooshroom.recipes.AdvancedRecipe;
-import de.alberteinholz.ehmooshroom.recipes.Input.ItemIngredient;
-import de.alberteinholz.ehmooshroom.registry.RegistryEntry;
-import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
+import de.einholz.ehmooshroom.container.AdvancedContainerBE;
 import de.einholz.ehtech.TechMod;
-import de.einholz.ehtech.blocks.components.machine.MachineDataComponent;
-import de.einholz.ehtech.blocks.components.machine.MachineDataComponent.ActivationState;
-import io.github.cottonmc.component.api.ActionType;
-import io.github.cottonmc.component.energy.type.EnergyType;
-import io.github.cottonmc.component.energy.type.EnergyTypes;
 import io.netty.buffer.Unpooled;
-import nerdhub.cardinal.components.api.component.Component;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
@@ -38,7 +22,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Tickable;
 
-public abstract class MachineBlockEntity extends AdvancedContainerBlockEntity implements Tickable {
+public abstract class OldMachineBlockEntity extends AdvancedContainerBE implements Tickable {
     public int powerBalance = 0;
     public int lastPower = 0;
     public RecipeType<? extends Recipe<?>> recipeType;
