@@ -3,42 +3,51 @@ package de.einholz.ehtech.blocks.blockentities.containers.machines;
 import java.util.Optional;
 
 import de.einholz.ehmooshroom.container.AdvancedContainerBE;
+import de.einholz.ehmooshroom.container.component.config.SideConfigComponent;
+import de.einholz.ehmooshroom.container.component.config.SideConfigComponent.SideConfigBehavior;
 import de.einholz.ehmooshroom.container.component.config.SideConfigComponent.SideConfigType;
 import de.einholz.ehmooshroom.container.component.energy.EnergyComponent;
 import de.einholz.ehmooshroom.container.component.item.ItemComponent;
+import de.einholz.ehmooshroom.container.component.util.TransportingComponent;
+import de.einholz.ehmooshroom.container.component.util.TransportingComponent.Action;
 import de.einholz.ehmooshroom.recipes.AdvancedRecipe;
 import de.einholz.ehmooshroom.recipes.Ingrediets.ItemIngredient;
 import de.einholz.ehmooshroom.registry.RegistryEntry;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.blocks.components.machine.MachineComponent;
+import dev.onyxstudios.cca.api.v3.component.Component;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import net.fabricmc.fabric.api.lookup.v1.block.BlockApiCache;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
 public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContainerBE<T> implements Tickable {
-    public final BlockApiCache<EnergyComponent, Direction> ENERGY_CACHE;
-    public final BlockApiCache<ItemComponent, SideConfigType> ITEM_INTERNAL_CACHE;
-    public final BlockApiCache<MachineComponent, Void> MACHINE_CACHE;
+    public RecipeType<? extends Recipe<?>> recipeType;
 
     public MachineBE(RegistryEntry registryEntry) {
         super(registryEntry);
-        ENERGY_CACHE =  createCache(EnergyComponent.ENERGY_LOOKUP);
-        ITEM_INTERNAL_CACHE =  createCache(ItemComponent.ITEM_INTERNAL_LOOKUP);
-        MACHINE_CACHE =  createCache(MachineComponent.MACHINE_LOOKUP);
+        recipeType = registryEntry.recipeType;
+        createCache(EnergyComponent.ENERGY, EnergyComponent.ENERGY_LOOKUP);
+        createCache(ItemComponent.ITEM_INTERNAL, ItemComponent.ITEM_INTERNAL_LOOKUP);
+        createCache(MachineComponent.MACHINE, MachineComponent.MACHINE_LOOKUP);
     }
 
     @Override
     public void tick() {
-        boolean isRunning = MACHINE_CACHE.find(null).getCur() > MACHINE_CACHE.find(null).getMin() && isActivated();
+        boolean isRunning = getCache(MachineComponent.MACHINE).find(null).getCur() > getCache(MachineComponent.MACHINE).find(null).getMin() && isActivated();
         transfer();
         if (!isRunning && isActivated()) isRunning = checkForRecipe();
         if (isRunning) {
-            if (MACHINE_CACHE.find(null).getCur() == MACHINE_CACHE.find(null).getMin()) start();
+            if (getCache(MachineComponent.MACHINE).find(null).getCur() == getCache(MachineComponent.MACHINE).find(null).getMin()) start();
             if (process()) task();
-            if (MACHINE_CACHE.find(null).getCur() == MACHINE_CACHE.find(null).getMax()) complete();
+            if (getCache(MachineComponent.MACHINE).find(null).getCur() == getCache(MachineComponent.MACHINE).find(null).getMax()) complete();
         } else idle();
         correct();
         markDirty();
@@ -46,20 +55,43 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
 
     public void transfer() {
         //TODO: only for early development replace with proper creative battery
-        if (getMachineInvComp().getStack(getMachineInvComp().getIntFromId(TechMod.HELPER.makeId("power_input"))).getItem().equals(Items.BEDROCK) && getMachineCapacitorComp().getCurrentEnergy() < getMachineCapacitorComp().getMaxEnergy()) getMachineCapacitorComp().generateEnergy(world, pos, getMachineCapacitorComp().getPreferredType().getMaximumTransferSize());
+        if (getCache(ItemComponent.ITEM_INTERNAL).find(null).getStack(0).getItem().equals(Items.BEDROCK) && ENERGY_CACHE.find(null).getCur() < ENERGY_CACHE.find(null).getMax()) ENERGY_CACHE.find(null).change(ENERGY_CACHE.find(null).getMaxTransfer(), Action.PERFORM, null);
+        for (Direction dir : Direction.values()) {
+            BlockPos targetPos = pos.offset(dir);
+            Direction targetDir = dir.getOpposite();
+            AdvancedContainerBE<?> targetBE = (AdvancedContainerBE<?>) getWorld().getBlockEntity(targetPos);
+            for (ComponentKey<?> key : getComponentContainer().keys()) {
+                Component comp = (Component) key.get(this);
+                Component targetComp = (Component) key.get(targetBE);
+                if (!(comp instanceof TransportingComponent && comp instanceof TransportingComponent)) continue;
+                Identifier id = key.getId();
+                //@SuppressWarnings("unchecked")
+                //TransportingComponent<Component> comp = (TransportingComponent<Component>) entry.getValue();
+                //BlockComponentHook hook = BlockComponentHook.INSTANCE;
+                ((TransportingComponent) comp).pull(targetComp, dir, Action.PERFORM, type)
+                //if (comp instanceof InventoryComponent && hook.hasInvComponent(world, targetPos, targetDir)) comp.pull(hook.getInvComponent(world, targetPos, targetDir), dir, Action.PERFORM);
+                //if (comp instanceof TankComponent && hook.hasTankComponent(world, targetPos, targetDir)) comp.pull(hook.getTankComponent(world, targetPos, targetDir), dir, Action.PERFORM);
+                //if (comp instanceof CapacitorComponent && hook.hasCapComponent(world, targetPos, targetDir)) comp.pull(hook.getCapComponent(world, targetPos, targetDir), dir, Action.PERFORM);
+                //TODO push
+                //if (comp instanceof InventoryComponent && hook.hasInvComponent(world, targetPos, targetDir)) comp.push(hook.getInvComponent(world, targetPos, targetDir), dir, Action.PERFORM);
+                //if (comp instanceof TankComponent && hook.hasTankComponent(world, targetPos, targetDir)) comp.push(hook.getTankComponent(world, targetPos, targetDir), dir, Action.PERFORM);
+                //if (comp instanceof CapacitorComponent && hook.hasCapComponent(world, targetPos, targetDir)) comp.push(hook.getCapComponent(world, targetPos, targetDir), dir, Action.PERFORM);
+                }
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
     public boolean checkForRecipe() {
         Optional<AdvancedRecipe> optional = world.getRecipeManager().getFirstMatch((RecipeType<AdvancedRecipe>) recipeType, new InventoryWrapperPos(pos), world);
-        MACHINE_CACHE.find(null).setRecipe(optional.orElse(null));
+        getCache(MachineComponent.MACHINE).find(null).setRecipe(optional.orElse(null));
         return optional.isPresent();
     }
 
     public void start() {
-        AdvancedRecipe recipe = (AdvancedRecipe) MACHINE_CACHE.find(null).getRecipe(world);
+        AdvancedRecipe recipe = (AdvancedRecipe) getCache(MachineComponent.MACHINE).find(null).getRecipe(world);
         boolean consumerRecipe = (recipe.consumes == Double.NaN ? 0.0 : recipe.consumes) > (recipe.generates == Double.NaN ? 0.0 : recipe.generates);
-        int consum = (int) (MACHINE_CACHE.find(null).getEfficiency() * MACHINE_CACHE.find(null).getSpeed() * recipe.consumes);
+        int consum = (int) (getCache(MachineComponent.MACHINE).find(null).getEfficiency() * getCache(MachineComponent.MACHINE).find(null).getSpeed() * recipe.consumes);
         if ((consumerRecipe && getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) == consum) || !consumerRecipe) {
             for (ItemIngredient ingredient : recipe.input.items) {
                 int consumingLeft = ingredient.amount;
@@ -80,7 +112,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
     }
 
     public boolean process() {
-        AdvancedRecipe recipe = (AdvancedRecipe) MACHINE_CACHE.find(null).getRecipe(world);
+        AdvancedRecipe recipe = (AdvancedRecipe) getCache(MachineComponent.MACHINE).find(null).getRecipe(world);
         boolean doConsum = recipe.consumes != Double.NaN && recipe.consumes > 0.0;
         boolean canConsum = true;
         int consum = 0;
@@ -89,11 +121,11 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
         int generate = 0;
         boolean canProcess = true;
         if (doConsum) {
-            consum = (int) (MACHINE_CACHE.find(null).getEfficiency() * MACHINE_CACHE.find(null).getSpeed() * recipe.consumes);
+            consum = (int) (getCache(MachineComponent.MACHINE).find(null).getEfficiency() * getCache(MachineComponent.MACHINE).find(null).getSpeed() * recipe.consumes);
             if (getMachineCapacitorComp().extractEnergy(getMachineCapacitorComp().getPreferredType(), consum, ActionType.TEST) < consum) canConsum = false;
         }
         if (doGenerate) {
-            generate = (int) (MACHINE_CACHE.find(null).getEfficiency() * MACHINE_CACHE.find(null).getSpeed() * recipe.generates);
+            generate = (int) (getCache(MachineComponent.MACHINE).find(null).getEfficiency() * getCache(MachineComponent.MACHINE).find(null).getSpeed() * recipe.generates);
             if (getMachineCapacitorComp().getCurrentEnergy() + generate > getMachineCapacitorComp().getMaxEnergy()) canGenerate = false;
         }
         if (doConsum) {
@@ -104,7 +136,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
             if (canConsum && canGenerate) getMachineCapacitorComp().generateEnergy(world, pos, generate);
             else canProcess = false;
         }
-        if (canProcess) MACHINE_CACHE.find(null).addProgress(recipe.timeModifier * MACHINE_CACHE.find(null).getSpeed());
+        if (canProcess) getCache(MachineComponent.MACHINE).find(null).addProgress(recipe.timeModifier * getCache(MachineComponent.MACHINE).find(null).getSpeed());
         return canProcess;
     }
 
@@ -115,8 +147,8 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
     }
 
     public void cancel() {
-        MACHINE_CACHE.find(null).resetProgress();
-        MACHINE_CACHE.find(null).resetRecipe();
+        getCache(MachineComponent.MACHINE).find(null).resetProgress();
+        getCache(MachineComponent.MACHINE).find(null).resetRecipe();
     }
 
     public void idle() {}
@@ -124,7 +156,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
     public void correct() {}
 
     public boolean isActivated() {
-        short activationState = MACHINE_CACHE.find(null).getActivationState();
+        short activationState = getCache(MachineComponent.MACHINE).find(null).getActivationState();
         if (activationState == 0) return true;
         else if(activationState == 1) return world.isReceivingRedstonePower(pos);
         else if(activationState == 2) return !world.isReceivingRedstonePower(pos);
