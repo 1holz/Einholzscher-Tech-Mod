@@ -40,10 +40,10 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
         recipeType = registryEntry.recipeType;
         addComponent(this, MachineComponent.MACHINE, SimpleMachineComponent::new, null);
         addComponent(this, EnergyComponent.ENERGY, SimpleEnergyComponent::new, new Integer[] {160000, 4});
-        addComponent(this, ItemComponent.ITEM_INTERNAL, SimpleItemComponent::new, new Integer[] {0, 4, 4}); //, new AdvancedInventoryComponent(new Type[] {Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER}, TechMod.HELPER.MOD_ID, new String[] {"power_input", "power_output", "upgrade", "network"}));
+        addComponent(this, ItemComponent.ITEM, SimpleItemComponent::new, new Integer[] {4, new SlotFactory()}); //, new AdvancedInventoryComponent(new Type[] {Type.OTHER, Type.OTHER, Type.OTHER, Type.OTHER}, TechMod.HELPER.MOD_ID, new String[] {"power_input", "power_output", "upgrade", "network"}));
         createCache(MachineComponent.MACHINE, MachineComponent.MACHINE_LOOKUP);
         createCache(EnergyComponent.ENERGY, EnergyComponent.ENERGY_LOOKUP);
-        createCache(ItemComponent.ITEM_INTERNAL, ItemComponent.ITEM_INTERNAL_LOOKUP);
+        createCache(ItemComponent.ITEM, ItemComponent.ITEM_LOOKUP);
     }
 
     //conveniant access to some comps
@@ -58,7 +58,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
 
     @SuppressWarnings("unchecked")
     public ItemComponent getItemInternalComp(SideConfigType type) {
-        return ((BlockApiCache<ItemComponent, SideConfigType>) getCache(ItemComponent.ITEM_INTERNAL)).find(type);
+        return ((BlockApiCache<ItemComponent, SideConfigType>) getCache(ItemComponent.ITEM)).find(type);
     }
 
     @Override
@@ -77,7 +77,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
 
     public void transfer() {
         //TODO: only for early development replace with proper creative battery
-        if (getCache(ItemComponent.ITEM_INTERNAL).find(null).getStack(0).getItem().equals(Items.BEDROCK) && ENERGY_CACHE.find(null).getCur() < ENERGY_CACHE.find(null).getMax()) ENERGY_CACHE.find(null).change(ENERGY_CACHE.find(null).getMaxTransfer(), Action.PERFORM, null);
+        if (getCache(ItemComponent.ITEM).find(null).getStack(0).getItem().equals(Items.BEDROCK) && ENERGY_CACHE.find(null).getCur() < ENERGY_CACHE.find(null).getMax()) ENERGY_CACHE.find(null).change(ENERGY_CACHE.find(null).getMaxTransfer(), Action.PERFORM, null);
         for (Direction dir : Direction.values()) {
             BlockPos targetPos = pos.offset(dir);
             Direction targetDir = dir.getOpposite();
@@ -116,7 +116,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
         if ((consumingRecipe && getEnergyComp(null).getSpace() == consum) || !consumingRecipe) {
             for (ItemIngredient ingredient : recipe.input.items) {
                 int consumingLeft = ingredient.amount;
-                for (Slot slot : getSlots(Type.INPUT)) {
+                for (Slot slot : getSlots(1)) {
                     if (ingredient.ingredient.contains(slot.stack.getItem()) && NbtHelper.matches(ingredient.tag, slot.stack.getTag(), true)) {
                         if (slot.stack.getCount() >= consumingLeft) {
                             slot.stack.decrement(consumingLeft);
@@ -128,7 +128,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
                     }
                 }
             }
-            //TODO: Fluids
+            //TODO: Fluids etc.
         }
     }
 
