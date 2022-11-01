@@ -32,9 +32,9 @@ public class Wrench extends Tool {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if (!user.isSneaking()) return super.use(world, user, hand);
-        NbtCompound nbt = user.getStackInHand(hand).getOrCreateTag();
+        NbtCompound nbt = user.getStackInHand(hand).getOrCreateNbt();
         nbt.putString("Mode", WrenchMode.fromString(nbt.getString("Mode"), true).toString());
-        if (world.isClient) ((ClientPlayerEntity) user).sendMessage((Text)(new TranslatableText("title.ehtech.wrench", user.getStackInHand(hand).getTag().getString("Mode"))), true);
+        if (world.isClient) ((ClientPlayerEntity) user).sendMessage((Text)(new TranslatableText("title.ehtech.wrench", user.getStackInHand(hand).getNbt().getString("Mode"))), true);
         return new TypedActionResult<>(ActionResult.SUCCESS, user.getStackInHand(hand));
     }
 
@@ -45,7 +45,7 @@ public class Wrench extends Tool {
         Block block = blockState.getBlock();
         BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
         if(!context.getPlayer().isSneaking() || !(blockEntity instanceof MachineBE) || !wrench.hasTag() || !wrench.getTag().contains("Mode", NbtType.STRING)) return super.useOnBlock(context);
-        WrenchMode mode = WrenchMode.fromString(wrench.getOrCreateTag().getString("Mode"), false);
+        WrenchMode mode = WrenchMode.fromString(wrench.getOrCreateNbt().getString("Mode"), false);
         if (mode == WrenchMode.ROTATE && block instanceof DirectionalBlock) context.getWorld().setBlockState(context.getBlockPos(), blockState.with(Properties.FACING, Direction.values()[(blockState.get(Properties.FACING).ordinal() + 1) % Direction.values().length]));
         else if (mode == WrenchMode.POWER && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.ITEM && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
@@ -59,7 +59,7 @@ public class Wrench extends Tool {
 
     @Override
     public void appendTooltip(ItemStack itemStack, World world, List<Text> tooltip, TooltipContext tooltipContext) {
-        if (itemStack.getTag() != null && itemStack.getTag().getString("Mode") != null) tooltip.add(new TranslatableText("tooltip.ehtech.wrench.withmode", itemStack.getTag().getString("Mode")));
+        if (itemStack.getNbt() != null && itemStack.getNbt().getString("Mode") != null) tooltip.add(new TranslatableText("tooltip.ehtech.wrench.withmode", itemStack.getNbt().getString("Mode")));
         else tooltip.add(new TranslatableText("tooltip.ehtech.wrench.withoutmode"));
     }
 
