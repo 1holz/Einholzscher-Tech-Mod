@@ -5,17 +5,17 @@ import java.util.function.Function;
 
 import de.einholz.ehmooshroom.recipes.AdvancedRecipe;
 import de.einholz.ehmooshroom.recipes.AdvancedRecipe.Serializer;
-import de.einholz.ehmooshroom.registry.RegistryEntry;
-import de.einholz.ehmooshroom.registry.RegistryHelper;
+import de.einholz.ehmooshroom.registry.deprecated.RegistryEntry;
+import de.einholz.ehmooshroom.registry.deprecated.RegistryHelper;
 import de.einholz.ehtech.TechMod;
-import de.einholz.ehtech.blocks.MachineBlock;
+import de.einholz.ehtech.block.MachineBlock;
 import de.einholz.ehtech.blocks.blockentities.containers.machines.consumers.OreGrowerBlockEntity;
 import de.einholz.ehtech.blocks.blockentities.containers.machines.generators.CoalGeneratorBlockEntity;
 import de.einholz.ehtech.blocks.guis.guis.machines.CoalGeneratorGui;
 import de.einholz.ehtech.blocks.guis.guis.machines.MachineConfigGui;
 import de.einholz.ehtech.blocks.guis.guis.machines.OreGrowerGui;
 import de.einholz.ehtech.blocks.guis.screens.ContainerScreen;
-import de.einholz.ehtech.items.Wrench;
+import de.einholz.ehtech.item.Wrench;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -28,8 +28,10 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
+@Deprecated
 public class Registry {
     //temp:
+    /*
     private static <T extends Recipe<?>> RecipeType<T> getDefaultRecipeType(Identifier id) {
         return new RecipeType<T>() {
             @SuppressWarnings("unchecked")
@@ -44,6 +46,7 @@ public class Registry {
             }
         };
     }
+    */
 
     //TODO: optimize for newer Mooshroom versions
     public static void register() {

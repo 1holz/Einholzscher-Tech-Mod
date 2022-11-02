@@ -7,6 +7,8 @@ import de.einholz.ehmooshroom.container.component.item.ItemComponent;
 import de.einholz.ehmooshroom.registry.RegistryHelper;
 import de.einholz.ehmooshroom.util.Helper;
 import de.einholz.ehmooshroom.util.LoggerHelper;
+import de.einholz.ehtech.block.Blocks;
+import de.einholz.ehtech.blocks.BlockRegistry;
 import de.einholz.ehtech.blocks.components.machine.MachineComponent;
 import de.einholz.ehtech.registry.Registry;
 import dev.onyxstudios.cca.api.v3.block.BlockComponents;
@@ -21,6 +23,9 @@ public class TechMod implements ModInitializer, ClientModInitializer {
 
 	@Override
 	public void onInitialize() {
+        Blocks.load();
+
+        // XXX Old:
 		Registry.register();
 		//TODO make better
 		//Component registration
@@ -64,7 +69,5 @@ public class TechMod implements ModInitializer, ClientModInitializer {
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public void onInitializeClient() {
-		
-	}
+	public void onInitializeClient() {}
 }
