@@ -8,11 +8,11 @@ import io.github.cottonmc.component.energy.type.EnergyTypes;
 import net.minecraft.util.Identifier;
 
 public abstract class GeneratorBlockEntity extends MachineBlockEntity {
-    public GeneratorBlockEntity(RegistryEntry registryEntry) {
+    public GeneratorBlockEntity(RegistryEntryBuilder registryEntry) {
         this(registryEntry, EnergyTypes.ULTRA_LOW_VOLTAGE);
     }
 
-    public GeneratorBlockEntity(RegistryEntry registryEntry, EnergyType energyType) {
+    public GeneratorBlockEntity(RegistryEntryBuilder registryEntry, EnergyType energyType) {
         super(registryEntry, energyType);
         getConfigComp().setConfigAvailability(new Identifier[] {getMachineCapacitorComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_OUTPUT, ConfigBehavior.FOREIGN_OUTPUT}, null, true);
     }

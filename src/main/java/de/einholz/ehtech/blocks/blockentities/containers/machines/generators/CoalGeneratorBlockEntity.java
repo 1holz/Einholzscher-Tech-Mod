@@ -15,7 +15,7 @@ public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
         this(RegistryHelper.getEntry(TechMod.HELPER.makeId("coal_generator")));
     }
 
-    public CoalGeneratorBlockEntity(RegistryEntry registryEntry) {
+    public CoalGeneratorBlockEntity(RegistryEntryBuilder registryEntry) {
         super(registryEntry);
         addComponent(TechMod.HELPER.makeId("coal_generator_input_inv_1"), new AdvancedInventoryComponent(new Type[] {Type.INPUT}, TechMod.HELPER.MOD_ID, new String[] {"input_coal"}));
         getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);

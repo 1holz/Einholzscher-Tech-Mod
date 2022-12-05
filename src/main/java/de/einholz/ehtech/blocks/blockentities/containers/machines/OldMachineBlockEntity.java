@@ -27,11 +27,11 @@ public abstract class OldMachineBlockEntity extends AdvancedContainerBE implemen
     public int lastPower = 0;
     public RecipeType<? extends Recipe<?>> recipeType;
 
-    public MachineBlockEntity(RegistryEntry registryEntry) {
+    public MachineBlockEntity(RegistryEntryBuilder registryEntry) {
         this(registryEntry, EnergyTypes.ULTRA_LOW_VOLTAGE);
     }
 
-    public MachineBlockEntity(RegistryEntry registryEntry, EnergyType energyType) {
+    public MachineBlockEntity(RegistryEntryBuilder registryEntry, EnergyType energyType) {
         super(registryEntry);
         this.recipeType = registryEntry.recipeType;
         addComponent(TechMod.HELPER.makeId("data_machine"), new MachineDataComponent());

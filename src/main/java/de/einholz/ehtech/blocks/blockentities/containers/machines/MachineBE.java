@@ -35,7 +35,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
     public int lastPower = 0;
     public RecipeType<? extends Recipe<?>> recipeType;
 
-    public MachineBE(RegistryEntry registryEntry) {
+    public MachineBE(RegistryEntryBuilder registryEntry) {
         super(registryEntry);
         recipeType = registryEntry.recipeType;
         addComponent(this, MachineComponent.MACHINE, SimpleMachineComponent::new, null);

@@ -19,7 +19,7 @@ public class OreGrowerBlockEntity extends ConsumerBlockEntity {
         this(RegistryHelper.getEntry(TechMod.HELPER.makeId("ore_grower")));
     }
 
-    public OreGrowerBlockEntity(RegistryEntry registryEntry) {
+    public OreGrowerBlockEntity(RegistryEntryBuilder registryEntry) {
         super(registryEntry);
         addComponent(TechMod.HELPER.makeId("ore_grower_input_inv_1"), new AdvancedInventoryComponent(new Type[] {Type.INPUT}, TechMod.HELPER.MOD_ID, new String[] {"input_seed"}));
         getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);

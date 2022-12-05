@@ -1,17 +1,8 @@
 package de.einholz.ehtech;
 
-import de.einholz.ehmooshroom.container.component.config.SideConfigComponent;
-import de.einholz.ehmooshroom.container.component.energy.EnergyComponent;
-import de.einholz.ehmooshroom.container.component.heat.HeatComponent;
-import de.einholz.ehmooshroom.container.component.item.ItemComponent;
-import de.einholz.ehmooshroom.registry.RegistryHelper;
 import de.einholz.ehmooshroom.util.Helper;
 import de.einholz.ehmooshroom.util.LoggerHelper;
-import de.einholz.ehtech.block.Blocks;
-import de.einholz.ehtech.blocks.BlockRegistry;
-import de.einholz.ehtech.blocks.components.machine.MachineComponent;
 import de.einholz.ehtech.registry.Registry;
-import dev.onyxstudios.cca.api.v3.block.BlockComponents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,9 +14,6 @@ public class TechMod implements ModInitializer, ClientModInitializer {
 
 	@Override
 	public void onInitialize() {
-        Blocks.load();
-
-        // XXX Old:
 		Registry.register();
 		//TODO make better
 		//Component registration
@@ -47,6 +35,7 @@ public class TechMod implements ModInitializer, ClientModInitializer {
 		}, RegistryHelper.getEntry(TechMod.HELPER.makeId("coal_generator")).blockEntityType, RegistryHelper.getEntry(TechMod.HELPER.makeId("ore_grower")).blockEntityType);
 		*/
 		//Api expose
+        /*
 		BlockComponents.exposeApi(SideConfigComponent.SIDE_CONFIG, SideConfigComponent.SIDE_CONFIG_LOOKUP, (comp, v) -> {
 			return comp;
 		}, RegistryHelper.getEntry(TechMod.HELPER.makeId("coal_generator")).blockEntityType, RegistryHelper.getEntry(TechMod.HELPER.makeId("ore_grower")).blockEntityType);
@@ -65,7 +54,8 @@ public class TechMod implements ModInitializer, ClientModInitializer {
 		BlockComponents.exposeApi(MachineComponent.MACHINE, MachineComponent.MACHINE_LOOKUP, (comp, v) -> {
 			return comp;
 		}, RegistryHelper.getEntry(TechMod.HELPER.makeId("coal_generator")).blockEntityType, RegistryHelper.getEntry(TechMod.HELPER.makeId("ore_grower")).blockEntityType);
-	}
+        */
+    }
 
 	@Environment(EnvType.CLIENT)
 	@Override
