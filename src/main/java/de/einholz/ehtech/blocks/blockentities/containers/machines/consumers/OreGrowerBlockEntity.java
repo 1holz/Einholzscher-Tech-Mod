@@ -1,3 +1,4 @@
+/*
 package de.einholz.ehtech.blocks.blockentities.containers.machines.consumers;
 
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.ConfigBehavior;
@@ -63,3 +64,4 @@ public class OreGrowerBlockEntity extends ConsumerBlockEntity {
         return ingredients[0].ingredient.contains(world.getBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING))).getBlock());
     }
 }
+*/

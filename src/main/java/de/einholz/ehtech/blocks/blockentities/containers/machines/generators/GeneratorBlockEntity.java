@@ -1,3 +1,4 @@
+/*
 package de.einholz.ehtech.blocks.blockentities.containers.machines.generators;
 
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.ConfigBehavior;
@@ -17,3 +18,4 @@ public abstract class GeneratorBlockEntity extends MachineBlockEntity {
         getConfigComp().setConfigAvailability(new Identifier[] {getMachineCapacitorComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_OUTPUT, ConfigBehavior.FOREIGN_OUTPUT}, null, true);
     }
 }
+*/

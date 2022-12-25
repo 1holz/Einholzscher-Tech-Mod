@@ -1,3 +1,4 @@
+/*
 package de.einholz.ehtech.blocks.blockentities.containers.machines;
 
 import java.util.ArrayList;
@@ -207,3 +208,4 @@ public abstract class OldMachineBlockEntity extends AdvancedContainerBE implemen
 		}
     }
 }
+*/

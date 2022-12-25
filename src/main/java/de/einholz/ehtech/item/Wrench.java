@@ -3,9 +3,8 @@ package de.einholz.ehtech.item;
 import java.util.List;
 
 import de.einholz.ehmooshroom.block.DirectionalBlock;
-import de.einholz.ehmooshroom.container.AdvancedContainerBE;
+import de.einholz.ehmooshroom.block.entity.ContainerBE;
 import de.einholz.ehmooshroom.item.Tool;
-import de.einholz.ehtech.blocks.blockentities.containers.machines.MachineBE;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -45,7 +44,7 @@ public class Wrench extends Tool {
         BlockState blockState = context.getWorld().getBlockState(context.getBlockPos());
         Block block = blockState.getBlock();
         BlockEntity blockEntity = context.getWorld().getBlockEntity(context.getBlockPos());
-        if(!context.getPlayer().isSneaking() || !(blockEntity instanceof MachineBE) || !wrench.hasNbt() || !wrench.getNbt().contains("Mode", NbtType.STRING)) return super.useOnBlock(context);
+        if(!context.getPlayer().isSneaking() || !(blockEntity instanceof ContainerBE) || !wrench.hasNbt() || !wrench.getNbt().contains("Mode", NbtType.STRING)) return super.useOnBlock(context);
         WrenchMode mode = WrenchMode.fromString(wrench.getOrCreateNbt().getString("Mode"), false);
         if (mode == WrenchMode.ROTATE && block instanceof DirectionalBlock) context.getWorld().setBlockState(context.getBlockPos(), blockState.with(Properties.FACING, Direction.values()[(blockState.get(Properties.FACING).ordinal() + 1) % Direction.values().length]));
         else if (mode == WrenchMode.POWER && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);

@@ -1,3 +1,4 @@
+/*
 package de.einholz.ehtech.blocks.blockentities.containers.machines.generators;
 
 import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.ConfigBehavior;
@@ -59,3 +60,4 @@ public class CoalGeneratorBlockEntity extends GeneratorBlockEntity {
         }
     }
 }
+*/

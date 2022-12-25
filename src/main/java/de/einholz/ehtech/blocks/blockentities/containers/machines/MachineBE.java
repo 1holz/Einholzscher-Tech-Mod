@@ -1,3 +1,4 @@
+/*
 package de.einholz.ehtech.blocks.blockentities.containers.machines;
 
 import java.util.Optional;
@@ -184,3 +185,4 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
         else return false;
     }
 }
+*/
