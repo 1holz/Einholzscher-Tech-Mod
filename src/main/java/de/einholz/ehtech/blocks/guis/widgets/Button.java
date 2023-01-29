@@ -66,10 +66,10 @@ public class Button extends WButton implements AdvancedTooltip {
         int widthCeil = (int) Math.ceil((double) width / 2.0);
         int heightFloor = (int) Math.floor((double) height / 2.0);
         int heightCeil = (int) Math.ceil((double) height / 2.0);
-        ScreenDrawing.texturedRect(x, y, widthFloor, heightFloor, texture, 0F, 0F, (float) widthFloor / max, (float) heightFloor / max, tint);
-        ScreenDrawing.texturedRect(x + widthFloor, y, widthCeil, heightFloor, texture, 1F - (float) heightCeil / max, 0F, 1F, (float) widthFloor / max, tint);
-        ScreenDrawing.texturedRect(x, y + heightFloor, widthFloor, heightCeil, texture, 0F, 1F - (float) widthCeil / max,  (float) heightFloor / max, 1F, tint);
-        ScreenDrawing.texturedRect(x + widthFloor, y + heightFloor, widthCeil, heightCeil, texture, 1F - (float) heightCeil / max, 1F - (float) widthCeil / max, 1F, 1F, tint);
+        ScreenDrawing.texturedRect(matrices, x, y, widthFloor, heightFloor, texture, 0F, 0F, (float) widthFloor / max, (float) heightFloor / max, tint);
+        ScreenDrawing.texturedRect(matrices, x + widthFloor, y, widthCeil, heightFloor, texture, 1F - (float) heightCeil / max, 0F, 1F, (float) widthFloor / max, tint);
+        ScreenDrawing.texturedRect(matrices, x, y + heightFloor, widthFloor, heightCeil, texture, 0F, 1F - (float) widthCeil / max,  (float) heightFloor / max, 1F, tint);
+        ScreenDrawing.texturedRect(matrices, x + widthFloor, y + heightFloor, widthCeil, heightCeil, texture, 1F - (float) heightCeil / max, 1F - (float) widthCeil / max, 1F, 1F, tint);
         if (overlay != null) {
             overlay.paint(matrices, x, y, mouseX, mouseY);
         }

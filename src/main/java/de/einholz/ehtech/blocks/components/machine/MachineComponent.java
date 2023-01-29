@@ -1,3 +1,4 @@
+/*
 package de.einholz.ehtech.blocks.components.machine;
 
 import java.util.Optional;
@@ -96,3 +97,4 @@ public interface MachineComponent extends BarComponent {
         if (nbt.contains("Speed", NbtType.NUMBER)) setSpeed(nbt.getFloat("Speed"));
     }
 }
+*/

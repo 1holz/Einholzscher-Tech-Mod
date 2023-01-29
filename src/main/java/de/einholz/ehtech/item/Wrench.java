@@ -50,7 +50,7 @@ public class Wrench extends Tool {
         else if (mode == WrenchMode.POWER && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.ITEM && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.FLUID && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
-        else if (mode == WrenchMode.CONFIGURE && !context.getWorld().isClient()) context.getPlayer().openHandledScreen((AdvancedContainerBE<?>) context.getWorld().getBlockEntity(context.getBlockPos()));
+        else if (mode == WrenchMode.CONFIGURE && !context.getWorld().isClient()) context.getPlayer().openHandledScreen((ContainerBE) context.getWorld().getBlockEntity(context.getBlockPos()));
         //else if (mode == WrenchMode.BREAK && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         else if (mode == WrenchMode.BLOCK_SPECIFIC && context.getWorld().isClient()) ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
         //else return super.useOnBlock(context);

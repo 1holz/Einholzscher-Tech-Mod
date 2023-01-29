@@ -43,7 +43,7 @@ public class OreGrowerBlockEntity extends ConsumerBlockEntity {
         super.task();
         AdvancedRecipe recipe = (AdvancedRecipe) getMachineDataComp().getRecipe(world);
         BlockPos target = pos.offset(world.getBlockState(pos).get(Properties.FACING));
-        //TODO: Make particle amount configurable?
+        // todo Make particle amount configurable?
         for (int i = 0; i < 4; i++) {
             int side = world.random.nextInt(5);
             double x = side == 0 ? 0 : side == 1 ? 1 : world.random.nextDouble();

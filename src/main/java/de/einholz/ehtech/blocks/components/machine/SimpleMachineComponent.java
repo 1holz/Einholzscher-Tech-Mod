@@ -1,3 +1,4 @@
+/*
 package de.einholz.ehtech.blocks.components.machine;
 
 import de.einholz.ehtech.blocks.blockentities.containers.machines.MachineBE;
@@ -80,3 +81,4 @@ public class SimpleMachineComponent implements MachineComponent {
         speed = value;
     }
 }
+*/

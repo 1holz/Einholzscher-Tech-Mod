@@ -7,10 +7,11 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.ConfigBehavior;
+import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.SideConfigType;
 import de.alberteinholz.ehmooshroom.container.component.energy.AdvancedCapacitorComponent;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
+import de.einholz.ehmooshroom.storage.SidedStorageManager.SideConfigType;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import de.einholz.ehtech.blocks.components.machine.MachineDataComponent;
@@ -31,14 +32,15 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.registry.Registry;
 
 public class MachineConfigGui extends ContainerGui {
     private final Supplier<ConfigEntry> CONFIG_SUPPLIER = ConfigEntry::new;
-    protected WLabel down, up, north, south, west, east;
+    protected WLabel down, up, north, south, west, east, internal;
     protected WListPanel<Identifier, ConfigEntry> configPanel;
     protected List<Identifier> configIds;
     protected BiConsumer<Identifier, ConfigEntry> configBuilder;
-    /*FIXME: check this class for content that can be removed
+    /* FIXME: check this class for content that can be removed
     protected WLabel item;
     protected WLabel fluid;
     protected WLabel power;
@@ -46,14 +48,14 @@ public class MachineConfigGui extends ContainerGui {
     protected Map<Integer, ConfigButton> configButtons;
     protected Button cancel;
 
-    //FIXME: buttons and/or labels are misaligned
+    // FIXME: buttons and/or labels are misaligned
     protected MachineConfigGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
     }
 
     @SuppressWarnings("unchecked")
     public static MachineConfigGui init(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
-        return init(new MachineConfigGui((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("machine_config")).screenHandlerType, syncId, playerInventory, buf));
+        return init(new MachineConfigGui((ScreenHandlerType<SyncedGuiDescription>) Registry.SCREEN_HANDLER.get(TechMod.HELPER.makeId("machine_config")), syncId, playerInventory, buf));
     }
 
     public static MachineConfigGui init(MachineConfigGui gui) {
@@ -63,9 +65,10 @@ public class MachineConfigGui extends ContainerGui {
         gui.south = new WLabel(new TranslatableText("block.ehtech.machine_config.south"));
         gui.west = new WLabel(new TranslatableText("block.ehtech.machine_config.west"));
         gui.east = new WLabel(new TranslatableText("block.ehtech.machine_config.east"));
+        gui.internal = new WLabel(new TranslatableText("block.ehtech.machine_config.internal"));
         gui.configIds = gui.getConfigComp().getIds();
         gui.configBuilder = (id, entry) -> entry.build(id);
-        //XXX: WHY DOES ConfigEntry::gui.new NOT WORK INSTEAD OF gui.CONFIG_SUPPLIER??? THIS REALLY SHOULD WORK!!!!!
+        // XXX: WHY DOES ConfigEntry::gui.new NOT WORK INSTEAD OF gui.CONFIG_SUPPLIER??? THIS REALLY SHOULD WORK!!!!!
         gui.configPanel = new WListPanel<>(gui.configIds, gui.CONFIG_SUPPLIER, gui.configBuilder);
         gui.configButtons = new HashMap<Integer, ConfigButton>();
         gui.cancel = (Button) new Button().setLabel(new LiteralText("X"));
@@ -79,7 +82,7 @@ public class MachineConfigGui extends ContainerGui {
         item = new WLabel(new TranslatableText("block.ehtech.machine_config.item"));
         fluid = new WLabel(new TranslatableText("block.ehtech.machine_config.fluid"));
         power = new WLabel(new TranslatableText("block.ehtech.machine_config.power"));
-        for (Identifier id : ConfigType.values()) for (Direction dir : Direction.values()) for (ConfigBehavior behavior : ConfigBehavior.values()) {
+        for (Identifier id : ConfigType.values()) for (Direction dir : Direction.values()) for (SideConfigType behavior : SideConfigType.values()) {
             ConfigButton button = new ConfigButton(id, dir, behavior);
             buttonIds.add(button);
             button.id = buttonIds.indexOf(button);
@@ -102,6 +105,7 @@ public class MachineConfigGui extends ContainerGui {
         ((WGridPanel) rootPanel).add(south, 5, 1, 1, 1);
         ((WGridPanel) rootPanel).add(west, 6, 1, 1, 1);
         ((WGridPanel) rootPanel).add(east, 7, 1, 1, 1);
+        // TODO internal
         /*
         ((WGridPanel) rootPanel).add(item, 0, 4, 4, 2);
         ((WGridPanel) rootPanel).add(fluid, 0, 6, 4, 2);
@@ -119,7 +123,7 @@ public class MachineConfigGui extends ContainerGui {
         if (configButtons.containsKey(id)) {
             ConfigButton button = configButtons.get(id);
             if (button.isEnabled()) {
-                getConfigComp().changeConfig(button.id, button.behavior, button.dir);
+                getConfigComp().changeConfig(button.id, button.configType, button.dir);
                 return true;
             }
         } else if (id == buttonIds.indexOf(cancel)) {
@@ -153,14 +157,14 @@ public class MachineConfigGui extends ContainerGui {
         public void build(Identifier id) {
             this.id = id;
             add(new WLabel(new TranslatableText("block." + id.getNamespace() + ".machine_config." + id.getPath())), 0, 0, 4, 2);
-            for (Direction dir : Direction.values()) for (ConfigBehavior behavior : ConfigBehavior.values()) {
+            for (Direction dir : Direction.values()) for (SideConfigType behavior : SideConfigType.values()) {
                 ConfigButton button = new ConfigButton(id, dir, behavior);
                 buttonIds.add(button);
                 //FIXME: delete: button.id = buttonIds.indexOf(button);
                 configButtons.put(buttonIds.indexOf(button), button);
                 if (!getConfigComp().isAvailable(id, behavior, dir)) button.setEnabled(false);
                 else button.setOnClick(getDefaultOnButtonClick(button));
-                add(button, button.dir.ordinal() * 2 + 4 + (int) Math.floor((double) button.behavior.ordinal() / 2.0), (button.behavior.ordinal() + 1) % 2);
+                add(button, button.dir.ordinal() * 2 + 4 + (int) Math.floor((double) button.configType.ordinal() / 2.0), (button.configType.ordinal() + 1) % 2);
             }
         }
     }
@@ -168,23 +172,23 @@ public class MachineConfigGui extends ContainerGui {
     protected class ConfigButton extends Button {
         public final Identifier id;
         public final Direction dir;
-        public final ConfigBehavior behavior;
+        public final SideConfigType configType;
 
         @SuppressWarnings("unchecked")
-        public ConfigButton(Identifier id, Direction dir, ConfigBehavior behavior) {
+        public ConfigButton(Identifier id, Direction dir, SideConfigType configType) {
             this.id = id;
             this.dir = dir;
-            this.behavior = behavior;
+            this.configType = configType;
             setSize(8, 8);
             resizeability = false;
             if (!isEnabled()) return;
             Supplier<?>[] suppliers = {
                 () -> {
-                    return behavior.name().toLowerCase();
+                    return configType.name().toLowerCase();
                 }, () -> {
                     return dir.getName();
                 }, () -> {
-                    return String.valueOf(getConfigComp().allowsConfig(id, behavior, dir));
+                    return String.valueOf(getConfigComp().allowsConfig(id, configType, dir));
                 }, () -> {
                     return id.toString();
                 }
@@ -194,7 +198,7 @@ public class MachineConfigGui extends ContainerGui {
 
         @Override
         public void draw(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
-            if (isEnabled()) withTint(getConfigComp().allowsConfig(id, behavior, dir) ? 0xFFFFFF00 : 0xFFFF0000);
+            if (isEnabled()) withTint(getConfigComp().allowsConfig(id, configType, dir) ? 0xFFFFFF00 : 0xFFFF0000);
             else advancedTooltips.remove("tooltip.ehtech.config_button");
             super.draw(matrices, x, y, mouseX, mouseY);
         }

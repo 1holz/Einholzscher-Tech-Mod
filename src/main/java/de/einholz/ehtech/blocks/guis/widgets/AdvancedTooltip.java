@@ -19,6 +19,7 @@ public interface AdvancedTooltip {
 		AdvancedTooltip.super.addTooltip(info);
     }
     */
+    
 	default void addTooltip(TooltipBuilder info) {
 		if (!getTooltips().isEmpty()) for (String tooltip : getTooltips()) info.add(new TranslatableText(tooltip));
 		if (!getAdvancedTooltips().isEmpty()) {
