@@ -1,4 +1,4 @@
-package de.einholz.ehtech.blocks.guis.widgets;
+package de.einholz.ehtech.gui.widget;
 
 import java.util.List;
 import java.util.Map;
@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import net.minecraft.text.TranslatableText;
 
+// TODO onlyy for client?
 public interface AdvancedTooltip {
     List<String> getTooltips();
     Map<String, Supplier<Object>[]> getAdvancedTooltips();

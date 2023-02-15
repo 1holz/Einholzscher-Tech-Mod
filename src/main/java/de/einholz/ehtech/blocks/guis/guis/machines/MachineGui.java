@@ -7,9 +7,9 @@ import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryCo
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
 import de.einholz.ehtech.blocks.components.machine.MachineDataComponent;
-import de.einholz.ehtech.blocks.guis.guis.ContainerGui;
-import de.einholz.ehtech.blocks.guis.widgets.Bar;
-import de.einholz.ehtech.blocks.guis.widgets.Button;
+import de.einholz.ehtech.blocks.guis.guis.deprecated.ContainerGui;
+import de.einholz.ehtech.gui.widget.Bar;
+import de.einholz.ehtech.gui.widget.Button;
 import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.component.data.api.UnitManager;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;

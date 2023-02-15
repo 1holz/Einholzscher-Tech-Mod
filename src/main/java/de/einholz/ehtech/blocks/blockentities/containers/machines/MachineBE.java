@@ -77,7 +77,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
     }
 
     public void transfer() {
-        //TODO: only for early development replace with proper creative battery
+        // todo only for early development replace with proper creative battery
         if (getCache(ItemComponent.ITEM).find(null).getStack(0).getItem().equals(Items.BEDROCK) && ENERGY_CACHE.find(null).getCur() < ENERGY_CACHE.find(null).getMax()) ENERGY_CACHE.find(null).change(ENERGY_CACHE.find(null).getMaxTransfer(), Action.PERFORM, null);
         for (Direction dir : Direction.values()) {
             BlockPos targetPos = pos.offset(dir);
@@ -95,7 +95,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
                 //if (comp instanceof InventoryComponent && hook.hasInvComponent(world, targetPos, targetDir)) comp.pull(hook.getInvComponent(world, targetPos, targetDir), dir, Action.PERFORM);
                 //if (comp instanceof TankComponent && hook.hasTankComponent(world, targetPos, targetDir)) comp.pull(hook.getTankComponent(world, targetPos, targetDir), dir, Action.PERFORM);
                 //if (comp instanceof CapacitorComponent && hook.hasCapComponent(world, targetPos, targetDir)) comp.pull(hook.getCapComponent(world, targetPos, targetDir), dir, Action.PERFORM);
-                //TODO push
+                // todo push
                 //if (comp instanceof InventoryComponent && hook.hasInvComponent(world, targetPos, targetDir)) comp.push(hook.getInvComponent(world, targetPos, targetDir), dir, Action.PERFORM);
                 //if (comp instanceof TankComponent && hook.hasTankComponent(world, targetPos, targetDir)) comp.push(hook.getTankComponent(world, targetPos, targetDir), dir, Action.PERFORM);
                 //if (comp instanceof CapacitorComponent && hook.hasCapComponent(world, targetPos, targetDir)) comp.push(hook.getCapComponent(world, targetPos, targetDir), dir, Action.PERFORM);
@@ -129,7 +129,7 @@ public abstract class MachineBE<T extends MachineBE<T>> extends AdvancedContaine
                     }
                 }
             }
-            //TODO: Fluids etc.
+            // todo Fluids etc.
         }
     }
 

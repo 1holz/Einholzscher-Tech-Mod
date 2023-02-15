@@ -1,4 +1,4 @@
-package de.einholz.ehtech.blocks.guis.widgets;
+package de.einholz.ehtech.gui.widget;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import io.github.cottonmc.component.data.api.UnitManager;
-import io.github.cottonmc.component.data.impl.SimpleDataElement;
-import io.github.cottonmc.component.energy.impl.SimpleCapacitorComponent;
 import io.github.cottonmc.cotton.gui.client.ScreenDrawing;
 import io.github.cottonmc.cotton.gui.widget.TooltipBuilder;
 import io.github.cottonmc.cotton.gui.widget.WBar;
@@ -21,6 +18,7 @@ import net.minecraft.util.Identifier;
 @Environment(EnvType.CLIENT)
 public class Bar extends WBar implements AdvancedTooltip {
 	public SimpleDataElement element;
+    @Deprecated
 	public SimpleCapacitorComponent capacitor;
 	public List<String> tooltips = new ArrayList<String>();
 	public Map<String, Supplier<Object>[]> advancedTooltips = new LinkedHashMap<String, Supplier<Object>[]>();
@@ -30,6 +28,7 @@ public class Bar extends WBar implements AdvancedTooltip {
 		this.element = element;
 	}
 	
+    @Deprecated
 	public Bar(Identifier bg, Identifier fg, SimpleCapacitorComponent capacitor, Direction dir) {
 		super(bg, fg, 0, 0, dir);
 		this.capacitor = capacitor;
@@ -51,62 +50,38 @@ public class Bar extends WBar implements AdvancedTooltip {
 	@SuppressWarnings("unchecked")
 	public void addDefaultTooltip(String label) {
 		Supplier<?>[] suppliers = {
-			() -> {
-				return getMin();
-			},
-			() -> {
-				return getCur();
-			},
-			() -> {
-				return getMax();
-			}
+			() -> getMin(),
+			() -> getCur(),
+			() -> getMax(),
 		};
 		advancedTooltips.put(label, (Supplier<Object>[]) suppliers);
 	}
 
 	@Override
 	public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
-		if (bg!=null) {
-			ScreenDrawing.texturedRect(x, y, getWidth(), getHeight(), bg, 0xFFFFFFFF);
-		} else {
-			ScreenDrawing.coloredRect(x, y, getWidth(), getHeight(), ScreenDrawing.colorAtOpacity(0x000000, 0.25f));
-		}
+		if (bg!=null) ScreenDrawing.texturedRect(matrices, x, y, getWidth(), getHeight(), bg, 0xFFFFFFFF);
+		else ScreenDrawing.coloredRect(matrices, x, y, getWidth(), getHeight(), ScreenDrawing.colorAtOpacity(0x000000, 0.25f));
 		double percent = element != null ? (element.getBarCurrent() - element.getBarMinimum()) / (element.getBarMaximum() - element.getBarMinimum()) : (double) capacitor.getCurrentEnergy() / (double) (capacitor.getMaxEnergy());
 		int barMax;
-		if (direction == Direction.RIGHT || direction == Direction.LEFT) {
-            barMax = getWidth();
-        } else {
-            barMax = getHeight();
-        }
+		if (Direction.RIGHT.equals(direction) || Direction.LEFT.equals(direction)) barMax = getWidth();
+        else barMax = getHeight();
         int barSize = (int) (barMax * percent);
-		if (direction == Direction.UP) {
+		if (Direction.UP.equals(direction)) {
 			int left = x;
 			int top = y + getHeight() - barSize;
-			if (bar!=null) {
-				ScreenDrawing.texturedRect(left, top, getWidth(), barSize, bar.image, 0, (float) (1 - percent), 1, 1, 0xFFFFFFFF);
-			} else {
-				ScreenDrawing.coloredRect(left, top, getWidth(), barSize,  ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
-			}
-		} else if (direction == Direction.RIGHT) {
-			if (bar!=null) {
-				ScreenDrawing.texturedRect(x, y, barSize, getHeight(), bar.image, 0, 0, (float) percent, 1, 0xFFFFFFFF);
-			} else {
-				ScreenDrawing.coloredRect(x, y, barSize, getHeight(), ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
-			}
-		} else if (direction == Direction.DOWN) {
-			if (bar!=null) {
-				ScreenDrawing.texturedRect(x, y, getWidth(), barSize, bar.image, 0, 0, 1, (float) percent, 0xFFFFFFFF);
-			} else {
-				ScreenDrawing.coloredRect(x, y, getWidth(), barSize, ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
-			}
-		} else if (direction == Direction.LEFT) {
+			if (bar != null) ScreenDrawing.texturedRect(left, top, getWidth(), barSize, bar.image, 0, (float) (1 - percent), 1, 1, 0xFFFFFFFF);
+			else ScreenDrawing.coloredRect(matrices, left, top, getWidth(), barSize,  ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
+		} else if (Direction.RIGHT.equals(direction)) {
+			if (bar != null) ScreenDrawing.texturedRect(x, y, barSize, getHeight(), bar.image, 0, 0, (float) percent, 1, 0xFFFFFFFF);
+			else ScreenDrawing.coloredRect(matrices, x, y, barSize, getHeight(), ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
+		} else if (Direction.DOWN.equals(direction)) {
+			if (bar != null) ScreenDrawing.texturedRect(x, y, getWidth(), barSize, bar.image, 0, 0, 1, (float) percent, 0xFFFFFFFF);
+			else ScreenDrawing.coloredRect(matrices, x, y, getWidth(), barSize, ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
+		} else if (Direction.LEFT.equals(direction)) {
 			int left = x + getWidth() - barSize;
 			int top = y;
-			if (bar!=null) {
-				ScreenDrawing.texturedRect(left, top, barSize, getHeight(), bar.image, (float) (1 - percent), 0, 1, 1, 0xFFFFFFFF);
-			} else {
-				ScreenDrawing.coloredRect(left, top, barSize, getHeight(), ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
-			}
+			if (bar != null) ScreenDrawing.texturedRect(left, top, barSize, getHeight(), bar.image, (float) (1 - percent), 0, 1, 1, 0xFFFFFFFF);
+			else ScreenDrawing.coloredRect(matrices, left, top, barSize, getHeight(), ScreenDrawing.colorAtOpacity(getColor(), 0.5f));
 		}
 	}
 	
@@ -138,12 +113,8 @@ public class Bar extends WBar implements AdvancedTooltip {
 	}
 
 	protected int getColor() {
-		if (element != null) {
-			return element.getBarUnit().getBarColor();
-		} else if (capacitor != null) {
-			return UnitManager.WORK_UNITS.getBarColor();
-		} else {
-			return 0;
-		}
+		if (element != null) return element.getBarUnit().getBarColor();
+		else if (capacitor != null) return UnitManager.WORK_UNITS.getBarColor();
+		else return 0;
 	}
 }

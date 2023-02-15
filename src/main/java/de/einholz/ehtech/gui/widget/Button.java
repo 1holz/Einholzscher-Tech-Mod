@@ -1,4 +1,4 @@
-package de.einholz.ehtech.blocks.guis.widgets;
+package de.einholz.ehtech.gui.widget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,9 +59,7 @@ public class Button extends WButton implements AdvancedTooltip {
 
     public void draw(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
         float max = 256;
-        if (width > max || height > max) {
-            TechMod.LOGGER.smallBug(new Exception("Maximum size for a widget is 256"));
-        }
+        if (width > max || height > max) TechMod.LOGGER.smallBug(new Exception("Maximum size for a widget is 256"));
         int widthFloor = (int) Math.floor((double) width / 2.0);
         int widthCeil = (int) Math.ceil((double) width / 2.0);
         int heightFloor = (int) Math.floor((double) height / 2.0);
@@ -70,9 +68,7 @@ public class Button extends WButton implements AdvancedTooltip {
         ScreenDrawing.texturedRect(matrices, x + widthFloor, y, widthCeil, heightFloor, texture, 1F - (float) heightCeil / max, 0F, 1F, (float) widthFloor / max, tint);
         ScreenDrawing.texturedRect(matrices, x, y + heightFloor, widthFloor, heightCeil, texture, 0F, 1F - (float) widthCeil / max,  (float) heightFloor / max, 1F, tint);
         ScreenDrawing.texturedRect(matrices, x + widthFloor, y + heightFloor, widthCeil, heightCeil, texture, 1F - (float) heightCeil / max, 1F - (float) widthCeil / max, 1F, 1F, tint);
-        if (overlay != null) {
-            overlay.paint(matrices, x, y, mouseX, mouseY);
-        }
+        if (overlay != null) overlay.paint(matrices, x, y, mouseX, mouseY);
         if (getLabel() != null) {
 		    int color = isEnabled() ? 0xE0E0E0 : 0xA0A0A0;
 		    ScreenDrawing.drawStringWithShadow(matrices, getLabel().getString(), alignment, x, y + ((20 - 8) / 2), width, color);
@@ -102,17 +98,13 @@ public class Button extends WButton implements AdvancedTooltip {
     @Override
     public void setLocation(int x, int y) {
         super.setLocation(x, y);
-        if (overlay != null) {
-            overlay.setLocation(x, y);
-        }
+        if (overlay != null) overlay.setLocation(x, y);
     }
 
     @Override
 	public void setSize(int width, int height) {
 		this.width = width;
         this.height = height;
-        if (overlay != null) {
-            overlay.setSize(width, height);
-        }
+        if (overlay != null) overlay.setSize(width, height);
     }
 }

@@ -1,26 +1,20 @@
-package de.einholz.ehtech.blocks.guis.guis;
+package de.einholz.ehtech.blocks.guis.guis.deprecated;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.alberteinholz.ehmooshroom.MooshroomLib;
-import de.alberteinholz.ehmooshroom.container.component.data.CombinedDataComponent;
-import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent;
-import de.alberteinholz.ehmooshroom.container.component.data.NameDataComponent;
-import de.alberteinholz.ehmooshroom.container.component.item.CombinedInventoryComponent;
-import de.einholz.ehtech.blocks.guis.screens.ContainerScreen;
-import io.github.cottonmc.component.UniversalComponents;
+import de.einholz.ehmooshroom.gui.screens.ContainerScreen;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WButton;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
-import nerdhub.cardinal.components.api.component.BlockComponentProvider;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.math.BlockPos;
 
-//FIXME: clean up guis in general
+// fixme: clean up guis in general
+@Deprecated
 public abstract class ContainerGui extends SyncedGuiDescription {
     public BlockPos pos;
     public List<WButton> buttonIds;
@@ -29,7 +23,7 @@ public abstract class ContainerGui extends SyncedGuiDescription {
     protected ContainerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv);
         pos = buf.readBlockPos();
-        blockInventory = getInvComp().asInventory();
+        // blockInventory = getInvComp().asInventory();
     }
 
     public static ContainerGui init(ContainerGui gui) {
@@ -58,6 +52,7 @@ public abstract class ContainerGui extends SyncedGuiDescription {
         };
     }
 
+    /*
     protected CombinedInventoryComponent getInvComp() {
         return (CombinedInventoryComponent) BlockComponentProvider.get(world.getBlockState(pos)).getComponent(world, pos, UniversalComponents.INVENTORY_COMPONENT, null);
     }
@@ -73,4 +68,5 @@ public abstract class ContainerGui extends SyncedGuiDescription {
     protected NameDataComponent getNameComp() {
         return (NameDataComponent) getDataComp().getComp(MooshroomLib.HELPER.makeId("name"));
     }
+    */
 }
