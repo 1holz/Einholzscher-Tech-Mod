@@ -4,6 +4,7 @@ import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryCo
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.blocks.components.machine.HeatDataComponent;
+import de.einholz.ehtech.gui.gui.MachineGui;
 import de.einholz.ehtech.gui.widget.Bar;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;

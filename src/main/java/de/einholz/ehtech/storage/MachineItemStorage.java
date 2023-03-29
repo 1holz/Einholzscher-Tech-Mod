@@ -29,7 +29,7 @@ public class MachineItemStorage extends AdvInventory {
     public boolean isValid(int slot, ItemStack stack) {
         switch (slot) {
             case 0, 1:
-                return stack.getItem() == Items.BEDROCK;
+                return Items.BEDROCK.equals(stack.getItem());
             case 2, 3:
                 return false;
             default:

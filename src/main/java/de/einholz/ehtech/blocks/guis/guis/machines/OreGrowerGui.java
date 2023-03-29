@@ -3,6 +3,7 @@ package de.einholz.ehtech.blocks.guis.guis.machines;
 import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
 import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
 import de.einholz.ehtech.TechMod;
+import de.einholz.ehtech.gui.gui.MachineGui;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;

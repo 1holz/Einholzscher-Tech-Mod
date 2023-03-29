@@ -1,24 +1,22 @@
-package de.einholz.ehtech.blocks.guis.guis.machines;
+package de.einholz.ehtech.gui.gui;
 
 import java.util.function.Supplier;
 
-import de.alberteinholz.ehmooshroom.container.component.energy.AdvancedCapacitorComponent;
-import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
+import de.einholz.ehmooshroom.block.entity.ContainerBE;
+import de.einholz.ehmooshroom.gui.gui.ContainerGui;
+import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehmooshroom.storage.SidedStorageMgr;
 import de.einholz.ehtech.TechMod;
-import de.einholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
-import de.einholz.ehtech.blocks.components.machine.MachineDataComponent;
-import de.einholz.ehtech.blocks.guis.guis.deprecated.ContainerGui;
 import de.einholz.ehtech.gui.widget.Bar;
 import de.einholz.ehtech.gui.widget.Button;
-import io.github.cottonmc.component.UniversalComponents;
-import io.github.cottonmc.component.data.api.UnitManager;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
+import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
-import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
-import nerdhub.cardinal.components.api.component.BlockComponentProvider;
+import net.fabricmc.fabric.impl.transfer.item.InventoryStorageImpl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.LiteralText;
@@ -56,6 +54,14 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     protected void initWidgets() {
         super.initWidgets();
+        Inventory inv = new SimpleInventory(0);
+        if (getStorageMgr().getStorageEntry(TransferablesReg.ITEMS).storage instanceof InventoryStorageImpl impl) {
+            inv = ((InventoryStorageImplA) impl)
+        } else {
+            IllegalStateException e = new IllegalStateException("Item Storage must be of the type InventoryStorageImpl")
+            TechMod.LOGGER.bigBug(e);
+            return;
+        }
         powerInputSlot = WItemSlot.of(blockInventory, getMachineInvComp().getIntFromId(TechMod.HELPER.makeId("power_input")));
         upgradeSlot = WItemSlot.of(blockInventory, getMachineInvComp().getIntFromId(TechMod.HELPER.makeId("upgrade")));
         powerBar = new Bar(powerBarBG, powerBarFG, getCapacitorComp(), Direction.UP);
@@ -108,14 +114,25 @@ public abstract class MachineGui extends ContainerGui {
         return false;
     }
 
+    @Deprecated // TODO replace with MooshroomLib methode
+    protected SidedStorageMgr getStorageMgr() {
+        SidedStorageMgr mgr = getBE().getStorageMgr();
+        if (mgr != null) return mgr;
+        TechMod.LOGGER.smallBug(new IllegalStateException("Can only retrieve StorageMgr from ContainerBE"));
+        return null;
+    }
+
+    @Deprecated
     protected MachineDataComponent getMachineDataComp() {
         return (MachineDataComponent) getDataComp().getComp(TechMod.HELPER.makeId("data_machine"));
     }
 
+    @Deprecated
     protected AdvancedCapacitorComponent getCapacitorComp() {
         return (AdvancedCapacitorComponent) BlockComponentProvider.get(world.getBlockState(pos)).getComponent(world, pos, UniversalComponents.CAPACITOR_COMPONENT, null);
     }
 
+    @Deprecated
     protected AdvancedInventoryComponent getMachineInvComp() {
         return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("inventory_machine"));
     }

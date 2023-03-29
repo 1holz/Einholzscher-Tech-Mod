@@ -1,4 +1,4 @@
-package de.einholz.ehtech.blocks.guis.guis.machines;
+package de.einholz.ehtech.gui.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,22 +7,13 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import de.alberteinholz.ehmooshroom.container.component.data.ConfigDataComponent.SideConfigType;
-import de.alberteinholz.ehmooshroom.container.component.energy.AdvancedCapacitorComponent;
-import de.alberteinholz.ehmooshroom.container.component.item.AdvancedInventoryComponent;
-import de.alberteinholz.ehmooshroom.registry.RegistryHelper;
-import de.einholz.ehmooshroom.storage.SidedStorageManager.SideConfigType;
+import de.einholz.ehmooshroom.gui.gui.ContainerGui;
 import de.einholz.ehtech.TechMod;
-import de.einholz.ehtech.blocks.blockentities.containers.machines.MachineBlockEntity;
-import de.einholz.ehtech.blocks.components.machine.MachineDataComponent;
-import de.einholz.ehtech.blocks.guis.guis.deprecated.ContainerGui;
 import de.einholz.ehtech.gui.widget.Button;
-import io.github.cottonmc.component.UniversalComponents;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WLabel;
 import io.github.cottonmc.cotton.gui.widget.WListPanel;
-import nerdhub.cardinal.components.api.component.BlockComponentProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
