@@ -6,13 +6,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 public class MachineItemStorage extends AdvInventory {
+    public static final int ELECTRIC_IN = 0;
+    public static final int ELECTRIC_OUT = 0;
+    public static final int UPGRADE = 0;
+    public static final int NETWORK = 0;
+
     public static InventoryStorage of() {
         return InventoryStorage.of(new MachineItemStorage(), null);
     }
 
     /*
-     * 0: electricity input
-     * 1: electricity output
+     * 0: electricity in
+     * 1: electricity out
      * 2: upgrade
      * 3: network
      */
