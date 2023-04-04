@@ -4,6 +4,8 @@ import java.util.function.Supplier;
 
 import de.einholz.ehmooshroom.gui.gui.ContainerGui;
 import de.einholz.ehmooshroom.gui.gui.Unit;
+import de.einholz.ehmooshroom.gui.widget.Bar;
+import de.einholz.ehmooshroom.gui.widget.Button;
 import de.einholz.ehmooshroom.mixin.InventoryStorageImplA;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
 import de.einholz.ehmooshroom.storage.ElectricityStorage;
@@ -11,8 +13,6 @@ import de.einholz.ehmooshroom.storage.SidedStorageMgr.StorageEntry;
 import de.einholz.ehmooshroom.storage.transferable.ElectricityVariant;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.MachineBE;
-import de.einholz.ehtech.gui.widget.Bar;
-import de.einholz.ehtech.gui.widget.Button;
 import de.einholz.ehtech.storage.MachineItemStorage;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
