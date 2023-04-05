@@ -3,24 +3,19 @@ package de.einholz.ehtech.block.entity;
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
 import de.einholz.ehmooshroom.storage.HeatStorage;
-import de.einholz.ehmooshroom.storage.SidedStorageMgr.StorageEntry;
-import de.einholz.ehmooshroom.storage.transferable.HeatVariant;
-import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.registry.Registry;
 import de.einholz.ehtech.storage.MachineInv;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
-import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 public class CoalGeneratorBE extends MachineBE {
-    public CoalGeneratorBE() {
-        this(Registry.COAL_GENERATOR.BLOCK_ENTITY_TYPE, null, null, null);
+    public CoalGeneratorBE(BlockPos pos, BlockState state) {
+        this(Registry.COAL_GENERATOR.BLOCK_ENTITY_TYPE, pos, state, null);
     }
 
     public CoalGeneratorBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {

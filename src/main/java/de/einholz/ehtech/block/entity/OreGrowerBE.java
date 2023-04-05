@@ -14,8 +14,8 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 
 public class OreGrowerBE extends MachineBE {
-    public OreGrowerBE() {
-        this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, null, null, null);
+    public OreGrowerBE(BlockPos pos, BlockState state) {
+        this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, null);
     }
 
     public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
