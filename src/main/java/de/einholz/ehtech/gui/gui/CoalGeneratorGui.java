@@ -1,8 +1,12 @@
-package de.einholz.ehtech.blocks.guis.guis.machines;
+package de.einholz.ehtech.gui.gui;
 
+import de.einholz.ehmooshroom.gui.gui.Unit;
 import de.einholz.ehmooshroom.gui.widget.Bar;
+import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehmooshroom.storage.BarStorage;
+import de.einholz.ehmooshroom.storage.HeatStorage;
 import de.einholz.ehtech.TechMod;
-import de.einholz.ehtech.gui.gui.MachineGui;
+import de.einholz.ehtech.registry.Registry;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
@@ -24,13 +28,13 @@ public class CoalGeneratorGui extends MachineGui {
     
     @SuppressWarnings("unchecked")
     public static CoalGeneratorGui init(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        return init(new CoalGeneratorGui((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("coal_generator")).screenHandlerType, syncId, playerInv, buf));
+        return init(new CoalGeneratorGui((ScreenHandlerType<SyncedGuiDescription>) Registry.COAL_GENERATOR.GUI, syncId, playerInv, buf));
     }
 
     public static CoalGeneratorGui init(CoalGeneratorGui gui) {
         gui.heatBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
         gui.heatBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
-        gui.heatBar = new Bar(gui.heatBarBG, gui.heatBarFG, gui.getFirstHeatComp().heat, Direction.UP);
+        gui.heatBar = new Bar(gui.heatBarBG, gui.heatBarFG, Unit.KELVIN.getColor(), BarStorage.MIN, () -> gui.getHeat().getAmount(), gui.getHeat().getMax(), Direction.UP);
         gui.coalInputSlot = WItemSlot.of(gui.blockInventory, 4);
         return (CoalGeneratorGui) MachineGui.init(gui);
     }
@@ -44,11 +48,16 @@ public class CoalGeneratorGui extends MachineGui {
         ((WGridPanel) rootPanel).add(progressBar, 3, 3, 2, 1);
     }
 
-    protected AdvancedInventoryComponent getFirstInputInvComp() {
-        return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("coal_generator_input_inv_1"));
+    public HeatStorage getHeat() {
+        return (HeatStorage) getStorageMgr().getStorageEntry(TransferablesReg.HEAT).storage;
     }
 
-    protected HeatDataComponent getFirstHeatComp() {
-        return (HeatDataComponent) getDataComp().getComp(TechMod.HELPER.makeId("coal_generator_heat_1"));
-    }
+    // TODO del
+    //protected AdvancedInventoryComponent getFirstInputInvComp() {
+    //    return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("coal_generator_input_inv_1"));
+    //}
+
+    //protected HeatDataComponent getFirstHeatComp() {
+    //    return (HeatDataComponent) getDataComp().getComp(TechMod.HELPER.makeId("coal_generator_heat_1"));
+    //}
 }

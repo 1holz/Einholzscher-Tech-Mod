@@ -1,7 +1,7 @@
-package de.einholz.ehtech.blocks.guis.guis.machines;
+package de.einholz.ehtech.gui.gui;
 
 import de.einholz.ehtech.TechMod;
-import de.einholz.ehtech.gui.gui.MachineGui;
+import de.einholz.ehtech.registry.Registry;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
@@ -18,7 +18,7 @@ public class OreGrowerGui extends MachineGui {
 
     @SuppressWarnings("unchecked")
     public static OreGrowerGui init(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        return init(new OreGrowerGui((ScreenHandlerType<SyncedGuiDescription>) RegistryHelper.getEntry(TechMod.HELPER.makeId("ore_grower")).screenHandlerType, syncId, playerInv, buf));
+        return init(new OreGrowerGui((ScreenHandlerType<SyncedGuiDescription>) Registry.ORE_GROWER.GUI, syncId, playerInv, buf));
     }
 
     public static OreGrowerGui init(OreGrowerGui gui) {
@@ -35,7 +35,8 @@ public class OreGrowerGui extends MachineGui {
         ((WGridPanel) rootPanel).add(progressBar, 3, 3, 2, 1);
     }
 
-    protected AdvancedInventoryComponent getFirstInputInvComp() {
-        return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("ore_grower_input_inv_1"));
-    }
+    // TODO del
+    //protected AdvancedInventoryComponent getFirstInputInvComp() {
+    //    return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("ore_grower_input_inv_1"));
+    //}
 }

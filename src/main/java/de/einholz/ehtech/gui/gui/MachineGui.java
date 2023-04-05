@@ -2,6 +2,7 @@ package de.einholz.ehtech.gui.gui;
 
 import java.util.function.Supplier;
 
+import de.einholz.ehmooshroom.block.entity.ProcessingBE;
 import de.einholz.ehmooshroom.gui.gui.ContainerGui;
 import de.einholz.ehmooshroom.gui.gui.Unit;
 import de.einholz.ehmooshroom.gui.widget.Bar;
@@ -13,11 +14,11 @@ import de.einholz.ehmooshroom.storage.SidedStorageMgr.StorageEntry;
 import de.einholz.ehmooshroom.storage.transferable.ElectricityVariant;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.MachineBE;
-import de.einholz.ehtech.storage.MachineItemStorage;
+import de.einholz.ehtech.storage.MachineInv;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
-import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
+import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
 import net.fabricmc.fabric.impl.transfer.item.InventoryStorageImpl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -60,14 +61,14 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     protected void initWidgets() {
         super.initWidgets();
-        powerInputSlot = WItemSlot.of(blockInventory, MachineItemStorage.ELECTRIC_IN);
-        upgradeSlot = WItemSlot.of(blockInventory, MachineItemStorage.UPGRADE);
+        powerInputSlot = WItemSlot.of(blockInventory, MachineInv.ELECTRIC_IN);
+        upgradeSlot = WItemSlot.of(blockInventory, MachineInv.UPGRADE);
         ElectricityStorage electricityStorage = ((ElectricityStorage) getElectricity().storage);
         powerBar = new Bar(powerBarBG, powerBarFG, Unit.ELECTRICITY.getColor(), 0L, () -> electricityStorage.getCapacity(), electricityStorage.getAmount(), Direction.UP);
         powerBar.addDefaultTooltip("tooltip.ehtech.maschine.power_bar_amount");
         Supplier<?>[] powerBarTrendSuppliers = {
             () -> {
-                return Unit.ELECTRICITY_PER_TICK.format(((MachineBlockEntity) world.getBlockEntity(pos)).powerBalance);
+                return Unit.ELECTRICITY_PER_TICK.format(((ElectricityStorage) getBE().getStorageMgr().getStorageEntry(TransferablesReg.ELECTRICITY).storage).getBal());
             }
         };
         powerBar.getAdvancedTooltips().put("tooltip.ehtech.machine.power_bar_trend", (Supplier<Object>[]) powerBarTrendSuppliers);
@@ -79,10 +80,10 @@ public abstract class MachineGui extends ContainerGui {
         activationButton.advancedTooltips.put("tooltip.ehtech.activation_button", (Supplier<Object>[]) activationButtonSuppliers);
         activationButton.setOnClick(getDefaultOnButtonClick(activationButton));
         buttonIds.add(activationButton);
-        progressBar = new Bar(progressBarBG, progressBarFG, getMachineDataComp().progress, Direction.RIGHT);
+        progressBar = new Bar(progressBarBG, progressBarFG, Unit.PERCENT.getColor(), (long) ProcessingBE.PROGRESS_MIN, () -> (long) getBE().getProgress(), (long) ProcessingBE.PROGRESS_MAX, Direction.RIGHT);
         progressBar.addDefaultTooltip("tooltip.ehtech.maschine.progress_bar");
-        networkSlot = WItemSlot.of(blockInventory, MachineItemStorage.NETWORK);
-        powerOutputSlot = WItemSlot.of(blockInventory, MachineItemStorage.ELECTRIC_OUT);
+        networkSlot = WItemSlot.of(blockInventory, MachineInv.NETWORK);
+        powerOutputSlot = WItemSlot.of(blockInventory, MachineInv.ELECTRIC_OUT);
         configurationButton.tooltips.add("tooltip.ehtech.configuration_button");
         configurationButton.setOnClick(getDefaultOnButtonClick(configurationButton));
         buttonIds.add(configurationButton);
@@ -107,7 +108,7 @@ public abstract class MachineGui extends ContainerGui {
             world.getBlockEntity(pos).markDirty();
             return true;
         } else if (id == buttonIds.indexOf(configurationButton)) {
-            if (!world.isClient) player.openHandledScreen(new SideConfig getBE().getSideConfigScreenHandlerFactory());
+            if (!world.isClient) player.openHandledScreen(getBE().new SideConfigScreenHandlerFactory());
             return true;
         }
         return false;
@@ -128,6 +129,7 @@ public abstract class MachineGui extends ContainerGui {
         return (MachineBE) super.getBE();
     }
 
+    // XXX protected?
     public Inventory getInv() {
         if (getStorageMgr().getStorageEntry(TransferablesReg.ITEMS).storage instanceof InventoryStorageImpl impl)
             return ((InventoryStorageImplA) impl).getInventory();
@@ -135,6 +137,7 @@ public abstract class MachineGui extends ContainerGui {
         return new SimpleInventory(0);
     }
 
+    // XXX protected?
     public StorageEntry<ElectricityVariant> getElectricity() {
         return getStorageMgr().getStorageEntry(TransferablesReg.ELECTRICITY);
     }
