@@ -2,6 +2,7 @@ package de.einholz.ehtech.block.entity;
 
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehtech.gui.gui.OreGrowerGui;
 import de.einholz.ehtech.registry.Registry;
 import de.einholz.ehtech.storage.MachineInv;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
@@ -15,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class OreGrowerBE extends MachineBE {
     public OreGrowerBE(BlockPos pos, BlockState state) {
-        this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, null);
+        this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, OreGrowerGui::init);
     }
 
     public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {

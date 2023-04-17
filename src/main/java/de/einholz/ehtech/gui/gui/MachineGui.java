@@ -43,7 +43,7 @@ public abstract class MachineGui extends ContainerGui {
     protected WItemSlot powerOutputSlot;
     protected Button configurationButton;
 
-    protected MachineGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
+    protected MachineGui(ScreenHandlerType<? extends SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
     }
 
@@ -61,8 +61,8 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     protected void initWidgets() {
         super.initWidgets();
-        powerInputSlot = WItemSlot.of(blockInventory, MachineInv.ELECTRIC_IN);
-        upgradeSlot = WItemSlot.of(blockInventory, MachineInv.UPGRADE);
+        powerInputSlot = WItemSlot.of(getInv(), MachineInv.ELECTRIC_IN);
+        upgradeSlot = WItemSlot.of(getInv(), MachineInv.UPGRADE);
         ElectricityStorage electricityStorage = ((ElectricityStorage) getElectricity().storage);
         powerBar = new Bar(powerBarBG, powerBarFG, Unit.ELECTRICITY.getColor(), 0L, () -> electricityStorage.getCapacity(), electricityStorage.getAmount(), Direction.UP);
         powerBar.addDefaultTooltip("tooltip.ehtech.maschine.power_bar_amount");
@@ -82,8 +82,8 @@ public abstract class MachineGui extends ContainerGui {
         buttonIds.add(activationButton);
         progressBar = new Bar(progressBarBG, progressBarFG, Unit.PERCENT.getColor(), (long) ProcessingBE.PROGRESS_MIN, () -> (long) getBE().getProgress(), (long) ProcessingBE.PROGRESS_MAX, Direction.RIGHT);
         progressBar.addDefaultTooltip("tooltip.ehtech.maschine.progress_bar");
-        networkSlot = WItemSlot.of(blockInventory, MachineInv.NETWORK);
-        powerOutputSlot = WItemSlot.of(blockInventory, MachineInv.ELECTRIC_OUT);
+        networkSlot = WItemSlot.of(getInv(), MachineInv.NETWORK);
+        powerOutputSlot = WItemSlot.of(getInv(), MachineInv.ELECTRIC_OUT);
         configurationButton.tooltips.add("tooltip.ehtech.configuration_button");
         configurationButton.setOnClick(getDefaultOnButtonClick(configurationButton));
         buttonIds.add(configurationButton);
@@ -105,7 +105,7 @@ public abstract class MachineGui extends ContainerGui {
     public boolean onButtonClick(PlayerEntity player, int id) {
         if (id == buttonIds.indexOf(activationButton)) {
             getBE().nextActivationState();
-            world.getBlockEntity(pos).markDirty();
+            world.getBlockEntity(POS).markDirty();
             return true;
         } else if (id == buttonIds.indexOf(configurationButton)) {
             if (!world.isClient) player.openHandledScreen(getBE().new SideConfigScreenHandlerFactory());

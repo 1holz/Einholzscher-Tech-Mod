@@ -3,7 +3,7 @@ package de.einholz.ehtech.blocks.guis.guis.deprecated;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.einholz.ehmooshroom.gui.screens.ContainerScreen;
+import de.einholz.ehmooshroom.gui.screen.ContainerScreen;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WButton;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 public abstract class ContainerGui extends SyncedGuiDescription {
     public BlockPos pos;
     public List<WButton> buttonIds;
-    public ContainerScreen screen;
+    public ContainerScreen<ContainerGui> screen;
     
     protected ContainerGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv);

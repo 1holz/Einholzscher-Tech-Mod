@@ -3,6 +3,7 @@ package de.einholz.ehtech.block.entity;
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
 import de.einholz.ehmooshroom.storage.HeatStorage;
+import de.einholz.ehtech.gui.gui.CoalGeneratorGui;
 import de.einholz.ehtech.registry.Registry;
 import de.einholz.ehtech.storage.MachineInv;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
@@ -15,7 +16,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class CoalGeneratorBE extends MachineBE {
     public CoalGeneratorBE(BlockPos pos, BlockState state) {
-        this(Registry.COAL_GENERATOR.BLOCK_ENTITY_TYPE, pos, state, null);
+        this(Registry.COAL_GENERATOR.BLOCK_ENTITY_TYPE, pos, state, CoalGeneratorGui::init);
     }
 
     public CoalGeneratorBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {

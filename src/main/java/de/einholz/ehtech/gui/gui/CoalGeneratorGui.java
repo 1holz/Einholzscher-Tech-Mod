@@ -7,7 +7,6 @@ import de.einholz.ehmooshroom.storage.BarStorage;
 import de.einholz.ehmooshroom.storage.HeatStorage;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.registry.Registry;
-import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
@@ -22,20 +21,19 @@ public class CoalGeneratorGui extends MachineGui {
     protected Bar heatBar;
     protected WItemSlot coalInputSlot;
 
-    protected CoalGeneratorGui(ScreenHandlerType<SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
+    protected CoalGeneratorGui(ScreenHandlerType<? extends CoalGeneratorGui> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
     }
     
-    @SuppressWarnings("unchecked")
     public static CoalGeneratorGui init(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        return init(new CoalGeneratorGui((ScreenHandlerType<SyncedGuiDescription>) Registry.COAL_GENERATOR.GUI, syncId, playerInv, buf));
+        return init(new CoalGeneratorGui(Registry.COAL_GENERATOR.GUI, syncId, playerInv, buf));
     }
 
     public static CoalGeneratorGui init(CoalGeneratorGui gui) {
         gui.heatBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
         gui.heatBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
         gui.heatBar = new Bar(gui.heatBarBG, gui.heatBarFG, Unit.KELVIN.getColor(), BarStorage.MIN, () -> gui.getHeat().getAmount(), gui.getHeat().getMax(), Direction.UP);
-        gui.coalInputSlot = WItemSlot.of(gui.blockInventory, 4);
+        gui.coalInputSlot = WItemSlot.of(gui.getInv(), 4);
         return (CoalGeneratorGui) MachineGui.init(gui);
     }
 
