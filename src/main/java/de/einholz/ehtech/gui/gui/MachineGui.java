@@ -9,6 +9,7 @@ import de.einholz.ehmooshroom.gui.widget.Bar;
 import de.einholz.ehmooshroom.gui.widget.Button;
 import de.einholz.ehmooshroom.mixin.InventoryStorageImplA;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehmooshroom.storage.BarStorage;
 import de.einholz.ehmooshroom.storage.ElectricityStorage;
 import de.einholz.ehmooshroom.storage.SidedStorageMgr.StorageEntry;
 import de.einholz.ehmooshroom.storage.transferable.ElectricityVariant;
@@ -64,7 +65,7 @@ public abstract class MachineGui extends ContainerGui {
         powerInputSlot = WItemSlot.of(getInv(), MachineInv.ELECTRIC_IN);
         upgradeSlot = WItemSlot.of(getInv(), MachineInv.UPGRADE);
         ElectricityStorage electricityStorage = ((ElectricityStorage) getElectricity().storage);
-        powerBar = new Bar(powerBarBG, powerBarFG, Unit.ELECTRICITY.getColor(), 0L, () -> electricityStorage.getCapacity(), electricityStorage.getAmount(), Direction.UP);
+        powerBar = new Bar(powerBarBG, powerBarFG, Unit.ELECTRICITY.getColor(), BarStorage.MIN, () -> electricityStorage.getAmount(), electricityStorage.getMax(), Direction.UP);
         powerBar.addDefaultTooltip("tooltip.ehtech.maschine.power_bar_amount");
         Supplier<?>[] powerBarTrendSuppliers = {
             () -> {
