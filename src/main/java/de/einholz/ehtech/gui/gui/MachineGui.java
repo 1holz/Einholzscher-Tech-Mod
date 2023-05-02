@@ -54,6 +54,7 @@ public abstract class MachineGui extends ContainerGui {
         gui.progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
         gui.progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
         gui.activationButton = gui.new ActivationButton();
+        // TODO use translateable text
         gui.configurationButton = (Button) new Button().setLabel(new LiteralText("CON"));
         return (MachineGui) ContainerGui.init(gui);
     }
@@ -106,13 +107,14 @@ public abstract class MachineGui extends ContainerGui {
     public boolean onButtonClick(PlayerEntity player, int id) {
         if (id == buttonIds.indexOf(activationButton)) {
             getBE().nextActivationState();
-            world.getBlockEntity(POS).markDirty();
+            getBE().markDirty();
             return true;
-        } else if (id == buttonIds.indexOf(configurationButton)) {
+        }
+        if (id == buttonIds.indexOf(configurationButton)) {
             if (!world.isClient) player.openHandledScreen(getBE().new SideConfigScreenHandlerFactory());
             return true;
         }
-        return false;
+        return super.onButtonClick(player, id);
     }
 
     /* TODO del
