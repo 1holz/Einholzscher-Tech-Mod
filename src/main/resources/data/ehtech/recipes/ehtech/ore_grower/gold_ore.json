@@ -1,24 +1,31 @@
 {
     "type": "ehtech:ore_grower",
-    "input": {
-        "items": [
-            {
-                "item": "ehtech:machine_recipes/ore_grower/gold_ore_seed"
-            }
-        ],
-        "blocks": [
-            {
-                "block": "ehtech:machine_recipes/ore_grower/default_overworld_base"
-            }
-        ]
-    },
-    "output": {
-        "blocks": [
-            {
-                "block": "minecraft:gold_ore"
-            }
-        ]
-    },
-    "consumes": 1.0,
+    "input": [
+        {
+            "type": "ehmooshroom:items",
+            "tagRegId": "minecraft:item",
+            "dataType": "tags/items",
+            "tagId": "ehtech:machine_recipes/ore_grower/gold_ore_seed",
+            "amount": 1
+        },
+        {
+            "type": "ehmooshroom:blocks",
+            "tagRegId": "minecraft:block",
+            "dataType": "tags/blocks",
+            "tagId": "minecraft:stone_ore_replaceables",
+            "amount": 1
+        },
+        {
+            "type": "ehmooshroom:electricity",
+            "amount": 1
+        }
+    ],
+    "output": [
+        {
+            "type": "ehmooshroom:blocks",
+            "id": "minecraft:coal_ore",
+            "amount": 1
+        }
+    ],
     "timeModifier": 0.0078125
 }

@@ -1,12 +1,19 @@
 {
     "type": "ehtech:coal_generator",
-    "input": {
-        "items": [
-            {
-                "item": "ehtech:machine_recipes/coal_generator/charcoal_block"
-            }
-        ]
-    },
-    "generates": 0.1,
+    "input": [
+        {
+            "type": "ehmooshroom:items",
+            "tagRegId": "minecraft:item",
+            "dataType": "tags/items",
+            "tagId": "ehtech:machine_recipes/coal_generator/charcoal_block",
+            "amount": 1
+        }
+    ],
+    "output": [
+        {
+            "type": "ehmooshroom:electricity",
+            "amount": 1
+        }
+    ],
     "timeModifier": 0.0125
 }

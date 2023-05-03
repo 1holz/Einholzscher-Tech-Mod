@@ -1,12 +1,19 @@
 {
     "type": "ehtech:coal_generator",
-    "input": {
-        "items": [
-            {
-                "item": "ehtech:machine_recipes/coal_generator/coke_coal_block"
-            }
-        ]
-    },
-    "generates": 0.15,
+    "input": [
+        {
+            "type": "ehmooshroom:items",
+            "tagRegId": "minecraft:item",
+            "dataType": "tags/items",
+            "tagId": "ehtech:machine_recipes/coal_generator/coke_coal_block",
+            "amount": 1
+        }
+    ],
+    "output": [
+        {
+            "type": "ehmooshroom:electricity",
+            "amount": 1
+        }
+    ],
     "timeModifier": 0.0125
 }
