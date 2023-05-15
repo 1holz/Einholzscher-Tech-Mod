@@ -1,29 +1,42 @@
 package de.einholz.ehtech.block.entity;
 
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
+import de.einholz.ehmooshroom.recipe.Exgredient;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehmooshroom.storage.AdvInv;
+import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.OreGrowerGui;
 import de.einholz.ehtech.registry.Registry;
 import de.einholz.ehtech.storage.MachineInv;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 
 public class OreGrowerBE extends MachineBE {
     public OreGrowerBE(BlockPos pos, BlockState state) {
-        this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, OreGrowerGui::init);
+        this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, OreGrowerGui::init, Registry.ORE_GROWER.RECIPE_TYPE);
     }
 
-    public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
-        super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(TransferablesReg.ITEMS, OreGrowerInv.of());
+    public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory, RecipeType<? extends AdvRecipe> recipeType) {
+        super(type, pos, state, clientHandlerFactory, recipeType);
+        getStorageMgr().withStorage(TechMod.HELPER.makeId("ore_grower_items"), TransferablesReg.ITEMS, OreGrowerInv.of());
 
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
+    }
+
+    // XXX protected?
+    public Inventory getOreGrowerInv() {
+        return AdvInv.itemStorageToInv(getStorageMgr().getEntry(TechMod.HELPER.makeId("ore_grower_items")));
     }
 
     /* TODO del
@@ -41,10 +54,20 @@ public class OreGrowerBE extends MachineBE {
         return super.process();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void task() {
         super.task();
         AdvRecipe recipe = getRecipe();
+        Exgredient<Block> blockEx = null;
+        for (Exgredient<?> ex : recipe.output) if (TransferablesReg.BLOCKS.equals(ex.getType())) {
+            blockEx = (Exgredient<Block>) ex;
+            break;
+        }
+        if (blockEx == null) {
+            TechMod.LOGGER.smallBug(new NullPointerException("The recipe " + recipe.getId().toString() + " has no block output which is needed for the OreGrower to generate particles."));
+            return;
+        }
         BlockPos target = pos.offset(world.getBlockState(pos).get(Properties.FACING));
         // TODO Make particle amount configurable?
         for (int i = 0; i < 4; i++) {
@@ -52,7 +75,7 @@ public class OreGrowerBE extends MachineBE {
             double x = side == 0 ? 0 : side == 1 ? 1 : world.random.nextDouble();
             double y = side == 2 ? 0 : side == 3 ? 1 : world.random.nextDouble();
             double z = side == 4 ? 0 : side == 5 ? 1 : world.random.nextDouble();
-            //world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, recipe.output.blocks[0]), target.getX() + x, target.getY() + y, target.getZ() + z, 0.1, 0.1, 0.1);
+            world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockEx.getOutput().getDefaultState()), target.getX() + x, target.getY() + y, target.getZ() + z, 0.1, 0.1, 0.1);
         }
     }
 
@@ -69,8 +92,8 @@ public class OreGrowerBE extends MachineBE {
 
 
     public static class OreGrowerInv extends MachineInv {
-        public static final int SIZE = MachineInv.SIZE + 1;
-        public static final int ORE_IN = MachineInv.SIZE + 0;
+        public static final int SIZE = AdvInv.SIZE + 1;
+        public static final int ORE_IN = SIZE - 1;
 
         public static InventoryStorage of() {
             return InventoryStorage.of(new OreGrowerInv(), null);

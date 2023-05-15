@@ -1,6 +1,7 @@
 package de.einholz.ehtech.gui.gui;
 
 import de.einholz.ehtech.TechMod;
+import de.einholz.ehtech.block.entity.OreGrowerBE.OreGrowerInv;
 import de.einholz.ehtech.registry.Registry;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
@@ -10,7 +11,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 
 public class OreGrowerGui extends MachineGui {
-    protected WItemSlot oreInputSlot;
+    protected WItemSlot oreInSlot;
 
     protected OreGrowerGui(ScreenHandlerType<? extends SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
@@ -23,14 +24,14 @@ public class OreGrowerGui extends MachineGui {
     public static OreGrowerGui init(OreGrowerGui gui) {
         gui.progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
         gui.progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
-        gui.oreInputSlot = WItemSlot.of(gui.getInv(), 4);
+        gui.oreInSlot = WItemSlot.of(gui.getMachineInv(), OreGrowerInv.ORE_IN);
         return (OreGrowerGui) MachineGui.init(gui);
     }
 
     @Override
     public void drawDefault() {
         super.drawDefault();
-        ((WGridPanel) rootPanel).add(oreInputSlot, 2, 3);
+        ((WGridPanel) rootPanel).add(oreInSlot, 2, 3);
         ((WGridPanel) rootPanel).add(progressBar, 3, 3, 2, 1);
     }
 

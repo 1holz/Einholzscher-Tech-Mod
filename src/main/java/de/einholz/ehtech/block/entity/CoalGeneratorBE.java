@@ -2,7 +2,9 @@ package de.einholz.ehtech.block.entity;
 
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.HeatStorage;
+import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.CoalGeneratorGui;
 import de.einholz.ehtech.registry.Registry;
 import de.einholz.ehtech.storage.MachineInv;
@@ -10,25 +12,33 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedCl
 import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.math.BlockPos;
 
 public class CoalGeneratorBE extends MachineBE {
     public CoalGeneratorBE(BlockPos pos, BlockState state) {
-        this(Registry.COAL_GENERATOR.BLOCK_ENTITY_TYPE, pos, state, CoalGeneratorGui::init);
+        this(Registry.COAL_GENERATOR.BLOCK_ENTITY_TYPE, pos, state, CoalGeneratorGui::init, Registry.COAL_GENERATOR.RECIPE_TYPE);
     }
 
-    public CoalGeneratorBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
-        super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(TransferablesReg.ITEMS, CoalGeneratorInv.of());
-        getStorageMgr().withStorage(TransferablesReg.HEAT, new HeatStorage());
+    public CoalGeneratorBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory, RecipeType<? extends AdvRecipe> recipeType) {
+        super(type, pos, state, clientHandlerFactory, recipeType);
+        getStorageMgr().withStorage(TechMod.HELPER.makeId("coal_generator_items"), TransferablesReg.ITEMS, CoalGeneratorInv.of());
+        getStorageMgr().withStorage(TechMod.HELPER.makeId("coal_generator_heat"), TransferablesReg.HEAT, new HeatStorage());
     
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
 
-    public HeatStorage getHeat() {
-        return (HeatStorage) getStorageMgr().getStorageEntry(TransferablesReg.HEAT).storage;
+    // XXX protected?
+    public Inventory getCoalGeneratorInv() {
+        return AdvInv.itemStorageToInv(getStorageMgr().getEntry(TechMod.HELPER.makeId("coal_generator_items")));
+    }
+
+    // XXX protected?
+    public HeatStorage getCoalGeneratorHeat() {
+        return (HeatStorage) getStorageMgr().getEntry(TechMod.HELPER.makeId("coal_generator_heat")).storage;
     }
 
     /* TODO del
@@ -69,12 +79,12 @@ public class CoalGeneratorBE extends MachineBE {
     @Override
     public void idle() {
         super.idle();
-        if (!getHeat().isResourceBlank()) getHeat().decrease();
+        if (!getCoalGeneratorHeat().isResourceBlank()) getCoalGeneratorHeat().decrease();
     }
 
     public static class CoalGeneratorInv extends MachineInv {
-        public static final int SIZE = MachineInv.SIZE + 1;
-        public static final int COAL_IN = MachineInv.SIZE + 0;
+        public static final int SIZE = AdvInv.SIZE + 1;
+        public static final int COAL_IN = SIZE - 1;
 
         public static InventoryStorage of() {
             return InventoryStorage.of(new CoalGeneratorInv(), null);

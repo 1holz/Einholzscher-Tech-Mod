@@ -7,11 +7,10 @@ import de.einholz.ehmooshroom.gui.gui.ContainerGui;
 import de.einholz.ehmooshroom.gui.gui.Unit;
 import de.einholz.ehmooshroom.gui.widget.Bar;
 import de.einholz.ehmooshroom.gui.widget.Button;
-import de.einholz.ehmooshroom.mixin.InventoryStorageImplA;
-import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.BarStorage;
 import de.einholz.ehmooshroom.storage.ElectricityStorage;
-import de.einholz.ehmooshroom.storage.SidedStorageMgr.StorageEntry;
+import de.einholz.ehmooshroom.storage.StorageEntry;
 import de.einholz.ehmooshroom.storage.transferable.ElectricityVariant;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.MachineBE;
@@ -20,28 +19,26 @@ import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
-import net.fabricmc.fabric.impl.transfer.item.InventoryStorageImpl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
 public abstract class MachineGui extends ContainerGui {
-    protected Identifier powerBarBG;
-    protected Identifier powerBarFG;
+    protected Identifier electricityBarBG;
+    protected Identifier electricityBarFG;
     protected Identifier progressBarBG;
     protected Identifier progressBarFG;
-    protected WItemSlot powerInputSlot;
+    protected WItemSlot electricityInSlot;
     protected WItemSlot upgradeSlot;
-    protected Bar powerBar;
+    protected Bar electricityBar;
     protected Button activationButton ;
     protected Bar progressBar;
     protected WItemSlot networkSlot;
-    protected WItemSlot powerOutputSlot;
+    protected WItemSlot electricityOutSlot;
     protected Button configurationButton;
 
     protected MachineGui(ScreenHandlerType<? extends SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
@@ -49,8 +46,8 @@ public abstract class MachineGui extends ContainerGui {
     }
 
     public static MachineGui init(MachineGui gui) {
-        gui.powerBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/background.png");
-        gui.powerBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
+        gui.electricityBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/background.png");
+        gui.electricityBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
         gui.progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
         gui.progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
         gui.activationButton = gui.new ActivationButton();
@@ -63,17 +60,17 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     protected void initWidgets() {
         super.initWidgets();
-        powerInputSlot = WItemSlot.of(getInv(), MachineInv.ELECTRIC_IN);
-        upgradeSlot = WItemSlot.of(getInv(), MachineInv.UPGRADE);
-        ElectricityStorage electricityStorage = ((ElectricityStorage) getElectricity().storage);
-        powerBar = new Bar(powerBarBG, powerBarFG, Unit.ELECTRICITY.getColor(), BarStorage.MIN, () -> electricityStorage.getAmount(), electricityStorage.getMax(), Direction.UP);
-        powerBar.addDefaultTooltip("tooltip.ehtech.maschine.power_bar_amount");
+        electricityInSlot = WItemSlot.of(getMachineInv(), MachineInv.ELECTRIC_IN);
+        upgradeSlot = WItemSlot.of(getMachineInv(), MachineInv.UPGRADE);
+        ElectricityStorage electricityStorage = ((ElectricityStorage) getMachineElectricity().storage);
+        electricityBar = new Bar(electricityBarBG, electricityBarFG, Unit.ELECTRICITY.getColor(), BarStorage.MIN, () -> electricityStorage.getAmount(), electricityStorage.getMax(), Direction.UP);
+        electricityBar.addDefaultTooltip("tooltip.ehtech.maschine.power_bar_amount");
         Supplier<?>[] powerBarTrendSuppliers = {
             () -> {
-                return Unit.ELECTRICITY_PER_TICK.format(((ElectricityStorage) getBE().getStorageMgr().getStorageEntry(TransferablesReg.ELECTRICITY).storage).getBal());
+                return Unit.ELECTRICITY_PER_TICK.format(((ElectricityStorage) getMachineElectricity().storage).getBal());
             }
         };
-        powerBar.getAdvancedTooltips().put("tooltip.ehtech.machine.power_bar_trend", (Supplier<Object>[]) powerBarTrendSuppliers);
+        electricityBar.getAdvancedTooltips().put("tooltip.ehtech.machine.power_bar_trend", (Supplier<Object>[]) powerBarTrendSuppliers);
         Supplier<?>[] activationButtonSuppliers = {
             () -> {
                 return getBE().getActivationState().toString().toLowerCase();
@@ -84,8 +81,8 @@ public abstract class MachineGui extends ContainerGui {
         buttonIds.add(activationButton);
         progressBar = new Bar(progressBarBG, progressBarFG, Unit.PERCENT.getColor(), (long) ProcessingBE.PROGRESS_MIN, () -> (long) getBE().getProgress(), (long) ProcessingBE.PROGRESS_MAX, Direction.RIGHT);
         progressBar.addDefaultTooltip("tooltip.ehtech.maschine.progress_bar");
-        networkSlot = WItemSlot.of(getInv(), MachineInv.NETWORK);
-        powerOutputSlot = WItemSlot.of(getInv(), MachineInv.ELECTRIC_OUT);
+        networkSlot = WItemSlot.of(getMachineInv(), MachineInv.NETWORK);
+        electricityOutSlot = WItemSlot.of(getMachineInv(), MachineInv.ELECTRIC_OUT);
         configurationButton.tooltips.add("tooltip.ehtech.configuration_button");
         configurationButton.setOnClick(getDefaultOnButtonClick(configurationButton));
         buttonIds.add(configurationButton);
@@ -94,12 +91,12 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     public void drawDefault() {
         super.drawDefault();
-        ((WGridPanel) rootPanel).add(powerInputSlot, 8, 1);
+        ((WGridPanel) rootPanel).add(electricityInSlot, 8, 1);
         ((WGridPanel) rootPanel).add(upgradeSlot, 9, 1);
-        ((WGridPanel) rootPanel).add(powerBar, 8, 2, 1, 3);
+        ((WGridPanel) rootPanel).add(electricityBar, 8, 2, 1, 3);
         ((WGridPanel) rootPanel).add(activationButton, 9, 2);
         ((WGridPanel) rootPanel).add(networkSlot, 9, 3);
-        ((WGridPanel) rootPanel).add(powerOutputSlot, 8, 5);
+        ((WGridPanel) rootPanel).add(electricityOutSlot, 8, 5);
         ((WGridPanel) rootPanel).add(configurationButton, 9, 5);
     }
 
@@ -107,7 +104,6 @@ public abstract class MachineGui extends ContainerGui {
     public boolean onButtonClick(PlayerEntity player, int id) {
         if (id == buttonIds.indexOf(activationButton)) {
             getBE().nextActivationState();
-            getBE().markDirty();
             return true;
         }
         if (id == buttonIds.indexOf(configurationButton)) {
@@ -133,16 +129,14 @@ public abstract class MachineGui extends ContainerGui {
     }
 
     // XXX protected?
-    public Inventory getInv() {
-        if (getStorageMgr().getStorageEntry(TransferablesReg.ITEMS).storage instanceof InventoryStorageImpl impl)
-            return ((InventoryStorageImplA) impl).getInventory();
-        TechMod.LOGGER.bigBug(new IllegalStateException("Item Storage must be of the type InventoryStorageImpl"));
-        return new SimpleInventory(0);
+    public Inventory getMachineInv() {
+        return AdvInv.itemStorageToInv(getStorageMgr().getEntry(TechMod.HELPER.makeId("machine_items")));
     }
 
     // XXX protected?
-    public StorageEntry<ElectricityVariant> getElectricity() {
-        return getStorageMgr().getStorageEntry(TransferablesReg.ELECTRICITY);
+    @SuppressWarnings("unchecked")
+    public StorageEntry<Void, ElectricityVariant> getMachineElectricity() {
+        return (StorageEntry<Void, ElectricityVariant>) getStorageMgr().getEntry(TechMod.HELPER.makeId("machine_electricity"));
     }
 
     /* TODO del

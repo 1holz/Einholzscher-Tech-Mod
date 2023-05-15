@@ -7,10 +7,10 @@ import net.minecraft.item.Items;
 
 public class MachineInv extends AdvInv {
     public static final int SIZE = AdvInv.SIZE + 4;
-    public static final int ELECTRIC_IN = AdvInv.SIZE + 0;
-    public static final int ELECTRIC_OUT = AdvInv.SIZE + 1;
-    public static final int UPGRADE = AdvInv.SIZE + 2;
-    public static final int NETWORK = AdvInv.SIZE + 3;
+    public static final int ELECTRIC_IN = SIZE - 4;
+    public static final int ELECTRIC_OUT = SIZE - 3;
+    public static final int UPGRADE = SIZE - 2;
+    public static final int NETWORK = SIZE - 1;
 
     public static InventoryStorage of() {
         return InventoryStorage.of(new MachineInv(), null);
