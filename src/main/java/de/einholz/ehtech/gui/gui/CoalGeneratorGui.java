@@ -2,8 +2,11 @@ package de.einholz.ehtech.gui.gui;
 
 import de.einholz.ehmooshroom.gui.gui.Unit;
 import de.einholz.ehmooshroom.gui.widget.Bar;
+import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.BarStorage;
 import de.einholz.ehmooshroom.storage.HeatStorage;
+import de.einholz.ehmooshroom.storage.StorageEntry;
+import de.einholz.ehmooshroom.storage.transferable.HeatVariant;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.CoalGeneratorBE.CoalGeneratorInv;
 import de.einholz.ehtech.registry.Registry;
@@ -11,6 +14,7 @@ import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
@@ -32,8 +36,8 @@ public class CoalGeneratorGui extends MachineGui {
     public static CoalGeneratorGui init(CoalGeneratorGui gui) {
         gui.heatBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
         gui.heatBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
-        gui.heatBar = new Bar(gui.heatBarBG, gui.heatBarFG, Unit.KELVIN.getColor(), BarStorage.MIN, () -> gui.getHeat().getAmount(), gui.getHeat().getMax(), Direction.UP);
-        gui.coalInSlot = WItemSlot.of(gui.getMachineInv(), CoalGeneratorInv.COAL_IN);
+        gui.heatBar = new Bar(gui.heatBarBG, gui.heatBarFG, Unit.KELVIN.getColor(), BarStorage.MIN, () -> ((HeatStorage) gui.getCoalGeneratorHeat().storage).getAmount(), ((HeatStorage) gui.getCoalGeneratorHeat().storage).getMax(), Direction.UP);
+        gui.coalInSlot = WItemSlot.of(gui.getCoalGeneratorInv(), CoalGeneratorInv.COAL_IN);
         return (CoalGeneratorGui) MachineGui.init(gui);
     }
 
@@ -46,8 +50,15 @@ public class CoalGeneratorGui extends MachineGui {
         ((WGridPanel) rootPanel).add(progressBar, 3, 3, 2, 1);
     }
 
-    public HeatStorage getHeat() {
-        return (HeatStorage) getStorageMgr().getEntry(TechMod.HELPER.makeId("coal_generator_heat")).storage;
+    // XXX protected?
+    public Inventory getCoalGeneratorInv() {
+        return AdvInv.itemStorageToInv(getStorageMgr().getEntry(TechMod.HELPER.makeId("coal_generator_items")));
+    }
+
+    // XXX protected?
+    @SuppressWarnings("unchecked")
+    public StorageEntry<Void, HeatVariant> getCoalGeneratorHeat() {
+        return (StorageEntry<Void, HeatVariant>) getStorageMgr().getEntry(TechMod.HELPER.makeId("coal_generator_heat"));
     }
 
     // TODO del

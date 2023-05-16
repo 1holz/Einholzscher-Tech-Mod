@@ -113,16 +113,6 @@ public abstract class MachineGui extends ContainerGui {
         return super.onButtonClick(player, id);
     }
 
-    /* TODO del
-    @Deprecated // todo replace with MooshroomLib methode
-    protected SidedStorageMgr getStorageMgr() {
-        SidedStorageMgr mgr = getBE().getStorageMgr();
-        if (mgr != null) return mgr;
-        TechMod.LOGGER.smallBug(new IllegalStateException("Can only retrieve StorageMgr from ContainerBE"));
-        return null;
-    }
-    */
-
     @Override
     protected MachineBE getBE() {
         return (MachineBE) super.getBE();
