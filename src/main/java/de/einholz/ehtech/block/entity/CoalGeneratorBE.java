@@ -20,11 +20,11 @@ import net.minecraft.util.math.BlockPos;
 
 public class CoalGeneratorBE extends MachineBE {
     public CoalGeneratorBE(BlockPos pos, BlockState state) {
-        this(Registry.COAL_GENERATOR.BLOCK_ENTITY_TYPE, pos, state, CoalGeneratorGui::init, Registry.COAL_GENERATOR.RECIPE_TYPE);
+        this(Registry.COAL_GENERATOR.BLOCK_ENTITY_TYPE, pos, state, CoalGeneratorGui::init);
     }
 
-    public CoalGeneratorBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory, RecipeType<? extends AdvRecipe> recipeType) {
-        super(type, pos, state, clientHandlerFactory, recipeType);
+    public CoalGeneratorBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
+        super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(TechMod.HELPER.makeId("coal_generator_items"), TransferablesReg.ITEMS, CoalGeneratorInv.of());
         getStorageMgr().withStorage(TechMod.HELPER.makeId("coal_generator_heat"), TransferablesReg.HEAT, new HeatStorage());
     
@@ -80,6 +80,11 @@ public class CoalGeneratorBE extends MachineBE {
     public void idle() {
         super.idle();
         if (!getCoalGeneratorHeat().isResourceBlank()) getCoalGeneratorHeat().decrease();
+    }
+
+    @Override
+    public RecipeType<AdvRecipe> getRecipeType() {
+        return Registry.COAL_GENERATOR.RECIPE_TYPE;
     }
 
     public static class CoalGeneratorInv extends MachineInv {

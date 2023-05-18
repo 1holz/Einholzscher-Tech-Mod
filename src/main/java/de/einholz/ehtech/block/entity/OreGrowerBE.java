@@ -24,11 +24,11 @@ import net.minecraft.util.math.BlockPos;
 
 public class OreGrowerBE extends MachineBE {
     public OreGrowerBE(BlockPos pos, BlockState state) {
-        this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, OreGrowerGui::init, Registry.ORE_GROWER.RECIPE_TYPE);
+        this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, OreGrowerGui::init);
     }
 
-    public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory, RecipeType<? extends AdvRecipe> recipeType) {
-        super(type, pos, state, clientHandlerFactory, recipeType);
+    public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
+        super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(TechMod.HELPER.makeId("ore_grower_items"), TransferablesReg.ITEMS, OreGrowerInv.of());
 
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
@@ -89,6 +89,11 @@ public class OreGrowerBE extends MachineBE {
     //public boolean containsBlockIngredients(Ingredient<Block>... ingredients) {
     //    return ingredients[0].ingredient.contains(world.getBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING))).getBlock());
     //}
+
+    @Override
+    public RecipeType<AdvRecipe> getRecipeType() {
+        return Registry.ORE_GROWER.RECIPE_TYPE;
+    }
 
 
     public static class OreGrowerInv extends MachineInv {

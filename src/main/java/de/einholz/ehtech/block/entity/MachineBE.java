@@ -14,8 +14,8 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.math.BlockPos;
 
 public class MachineBE extends ProcessingBE {
-    public MachineBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory, RecipeType<? extends AdvRecipe> recipeType) {
-        super(type, pos, state, clientHandlerFactory, recipeType);
+    public MachineBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
+        super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(TechMod.HELPER.makeId("machine_electricity"), TransferablesReg.ELECTRICITY, new ElectricityStorage());
         getStorageMgr().withStorage(TechMod.HELPER.makeId("machine_items") , TransferablesReg.ITEMS, MachineInv.of());
     }
