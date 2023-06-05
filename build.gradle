@@ -7,7 +7,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = "${project.archives_base_name}"
-version = "${project.mod_version}-${project.minecraft_version}"
+version = "${project.mod_version}+${project.minecraft_version}"
 group = "${project.maven_group}"
 
 repositories {
@@ -17,22 +17,26 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 	//mavenCentral()
-
-    maven {
-        name = "CottonMC"
-        url = "https://server.bbkr.space/artifactory/libs-release"
+    flatDir {
+        name "LocalLibs"
+        dirs "libs"
     }
+    maven {
+        name "CottonMC"
+        url "https://server.bbkr.space/artifactory/libs-release"
+    }
+//  TODO: del
 //    maven {
-//        name = "Ladysnake Libs"
-//        url = "https://ladysnake.jfrog.io/artifactory/mods"
+//        name "Ladysnake Libs"
+//        url "https://ladysnake.jfrog.io/artifactory/mods"
 //    }
 //    maven {
-//        name = "Ladysnake Libs Alt"
-//        url = "https://dl.bintray.com/ladysnake/libs"
+//        name "Ladysnake Libs Alt"
+//        url "https://dl.bintray.com/ladysnake/libs"
 //    }
 //    maven {
-//        name = "OnyxStudios Alt Alt"
-//        url = "https://maven.onyxstudios.dev"
+//        name "OnyxStudios Alt Alt"
+//        url "https://maven.onyxstudios.dev"
 //    }
 }
 
@@ -45,12 +49,20 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"//-${project.minecraft_version}"
 
-	include modImplementation("io.github.cottonmc:LibGui:${project.lib_gui_version}+${project.minecraft_version}")
+	include(modImplementation("io.github.cottonmc:LibGui:${project.lib_gui_version}+${project.minecraft_version}"))
+
+    // TODO del
 	//include modImplementation("io.github.onyxstudios:Cardinal-Components-API:${project.cardinal_components_api_version}")
 	//include modImplementation("io.github.onyxstudios:Cardinal-Components-API:cardinal-components-base:${project.cardinal_components_api_version}")
 	//include modImplementation("io.github.onyxstudios:Cardinal-Components-API:cardinal-components-block:${project.cardinal_components_api_version}")
-	implementation files("libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar")
-	include files("libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar")
+	//modApi files("libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar")
+	//include files("libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar")
+    //api(files("${rootDir}/libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar"))
+	//include(files("${rootDir}/libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar"))
+	//include files("${rootDir}/libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar")
+	//modApi(files("${rootDir}/libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar"))
+
+	include(modImplementation(name: "ehmooshroom-${project.ehmooshroom_version}+${project.minecraft_version}-dev"))
 }
 
 processResources {
@@ -100,7 +112,7 @@ publishing {
 	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories {
 		// uncomment to publish to the local maven
-		// mavenLocal()
+		//mavenLocal()
 
 		// Add repositories to publish to here.
 		// Notice: This block does NOT have the same function as the block in the top level.
