@@ -13,6 +13,7 @@ import de.einholz.ehtech.registry.Registry;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
 import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.network.PacketByteBuf;
@@ -61,12 +62,20 @@ public class CoalGeneratorGui extends MachineGui {
         return (StorageEntry<Void, HeatVariant>) getStorageMgr().getEntry(TechMod.HELPER.makeId("coal_generator_heat"));
     }
 
-    // TODO del
-    //protected AdvancedInventoryComponent getFirstInputInvComp() {
-    //    return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("coal_generator_input_inv_1"));
-    //}
+    /* TODO del
+    protected AdvancedInventoryComponent getFirstInputInvComp() {
+        return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("coal_generator_input_inv_1"));
+    }
 
-    //protected HeatDataComponent getFirstHeatComp() {
-    //    return (HeatDataComponent) getDataComp().getComp(TechMod.HELPER.makeId("coal_generator_heat_1"));
-    //}
+    protected HeatDataComponent getFirstHeatComp() {
+        return (HeatDataComponent) getDataComp().getComp(TechMod.HELPER.makeId("coal_generator_heat_1"));
+    }
+    */
+
+    @Override
+    public boolean onButtonClick(PlayerEntity player, int id) {
+        if (player.world.isClient) System.out.println("CoalGeneratorC");
+        else System.out.println("CoalGeneratorS");
+        return super.onButtonClick(player, id);
+    }
 }

@@ -1,5 +1,6 @@
 package de.einholz.ehtech.gui.gui;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import de.einholz.ehmooshroom.block.entity.ProcessingBE;
@@ -43,6 +44,7 @@ public abstract class MachineGui extends ContainerGui {
 
     protected MachineGui(ScreenHandlerType<? extends SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
+        //buttonClickFunc = (player, id) -> this.onButtonClick(player, id);
     }
 
     public static MachineGui init(MachineGui gui) {
@@ -50,9 +52,15 @@ public abstract class MachineGui extends ContainerGui {
         gui.electricityBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
         gui.progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
         gui.progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
-        gui.activationButton = gui.new ActivationButton();
+        gui.activationButton = gui.new ActivationButton((player) -> {
+            gui.getBE().nextActivationState();
+            return true;
+        });
         // TODO use translateable text
-        gui.configurationButton = (Button) new Button().setLabel(new LiteralText("CON"));
+        gui.configurationButton = (Button) new Button((player) -> {
+            if (!gui.world.isClient) player.openHandledScreen(gui.getBE().new SideConfigScreenHandlerFactory());
+            return true;
+        }).setLabel(new LiteralText("CON"));
         return (MachineGui) ContainerGui.init(gui);
     }
 
@@ -77,15 +85,13 @@ public abstract class MachineGui extends ContainerGui {
             }
         };
         activationButton.advancedTooltips.put("tooltip.ehtech.activation_button", (Supplier<Object>[]) activationButtonSuppliers);
-        activationButton.setOnClick(getDefaultOnButtonClick(activationButton));
-        buttonIds.add(activationButton);
+        addButton(activationButton);
         progressBar = new Bar(progressBarBG, progressBarFG, Unit.PERCENT.getColor(), (long) ProcessingBE.PROGRESS_MIN, () -> (long) getBE().getProgress(), (long) ProcessingBE.PROGRESS_MAX, Direction.RIGHT);
         progressBar.addDefaultTooltip("tooltip.ehtech.maschine.progress_bar");
         networkSlot = WItemSlot.of(getMachineInv(), MachineInv.NETWORK);
         electricityOutSlot = WItemSlot.of(getMachineInv(), MachineInv.ELECTRIC_OUT);
         configurationButton.tooltips.add("tooltip.ehtech.configuration_button");
-        configurationButton.setOnClick(getDefaultOnButtonClick(configurationButton));
-        buttonIds.add(configurationButton);
+        addButton(configurationButton);
     }
 
     @Override
@@ -98,19 +104,6 @@ public abstract class MachineGui extends ContainerGui {
         ((WGridPanel) rootPanel).add(networkSlot, 9, 3);
         ((WGridPanel) rootPanel).add(electricityOutSlot, 8, 5);
         ((WGridPanel) rootPanel).add(configurationButton, 9, 5);
-    }
-
-    @Override
-    public boolean onButtonClick(PlayerEntity player, int id) {
-        if (id == buttonIds.indexOf(activationButton)) {
-            getBE().nextActivationState();
-            return true;
-        }
-        if (id == buttonIds.indexOf(configurationButton)) {
-            if (!world.isClient) player.openHandledScreen(getBE().new SideConfigScreenHandlerFactory());
-            return true;
-        }
-        return super.onButtonClick(player, id);
     }
 
     @Override
@@ -147,6 +140,10 @@ public abstract class MachineGui extends ContainerGui {
     */
 
     protected class ActivationButton extends Button {
+        public ActivationButton(Function<PlayerEntity, Boolean> exe) {
+            super(exe);
+        }
+
         @Override
         public Identifier setTexture(int mouseX, int mouseY) {
             withTexture(TechMod.HELPER.makeId("textures/gui/container/machine/elements/activation_button/" + getBE().getActivationState().toString().toLowerCase() + ".png"));
