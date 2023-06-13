@@ -4,12 +4,12 @@ import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.recipe.Exgredient;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
 import de.einholz.ehmooshroom.storage.AdvInv;
+import de.einholz.ehmooshroom.storage.AdvItemStorage;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.OreGrowerGui;
 import de.einholz.ehtech.registry.Registry;
 import de.einholz.ehtech.storage.MachineInv;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
-import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -20,23 +20,28 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 public class OreGrowerBE extends MachineBE {
+    public static final Identifier ORE_IN = TechMod.HELPER.makeId("ore_in");
+    public static final Identifier ORE_GROWER_ITEMS = TechMod.HELPER.makeId("ore_grower_items");
+    public static final Identifier ORE_GROWER_HEAT = TechMod.HELPER.makeId("ore_grtower_heat");
+
     public OreGrowerBE(BlockPos pos, BlockState state) {
         this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, OreGrowerGui::init);
     }
 
     public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(TechMod.HELPER.makeId("ore_grower_items"), TransferablesReg.ITEMS, OreGrowerInv.of());
+        getStorageMgr().withStorage(ORE_GROWER_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
 
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
 
     // XXX protected?
-    public Inventory getOreGrowerInv() {
-        return AdvInv.itemStorageToInv(getStorageMgr().getEntry(TechMod.HELPER.makeId("ore_grower_items")));
+    public Inventory getrowerOreInv() {
+        return ((AdvItemStorage) getStorageMgr().getEntry(ORE_GROWER_ITEMS).storage).getInv();
     }
 
     /* TODO del
@@ -95,13 +100,19 @@ public class OreGrowerBE extends MachineBE {
         return Registry.ORE_GROWER.RECIPE_TYPE;
     }
 
+    private static AdvItemStorage makeItemStorage() {
+        AdvItemStorage storage = new AdvItemStorage(ORE_IN);
+        ((AdvInv) storage.getInv()).setAccepter((stack) -> true, ORE_IN);
+        return storage;
+    }
 
+    @Deprecated // TODO del
     public static class OreGrowerInv extends MachineInv {
-        public static final int SIZE = AdvInv.SIZE + 1;
+        public static final int SIZE = 0 + 1;
         public static final int ORE_IN = SIZE - 1;
 
-        public static InventoryStorage of() {
-            return InventoryStorage.of(new OreGrowerInv(), null);
+        public static AdvItemStorage of() {
+            return new AdvItemStorage();
         }
 
         public OreGrowerInv() {

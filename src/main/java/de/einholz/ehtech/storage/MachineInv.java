@@ -1,19 +1,20 @@
 package de.einholz.ehtech.storage;
 
 import de.einholz.ehmooshroom.storage.AdvInv;
-import net.fabricmc.fabric.api.transfer.v1.item.InventoryStorage;
+import de.einholz.ehmooshroom.storage.AdvItemStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
+@Deprecated // TODO del
 public class MachineInv extends AdvInv {
-    public static final int SIZE = AdvInv.SIZE + 4;
+    public static final int SIZE = 0 + 4;
     public static final int ELECTRIC_IN = SIZE - 4;
     public static final int ELECTRIC_OUT = SIZE - 3;
     public static final int UPGRADE = SIZE - 2;
     public static final int NETWORK = SIZE - 1;
 
-    public static InventoryStorage of() {
-        return InventoryStorage.of(new MachineInv(), null);
+    public static AdvItemStorage of() {
+        return new AdvItemStorage();
     }
 
     public MachineInv() {
