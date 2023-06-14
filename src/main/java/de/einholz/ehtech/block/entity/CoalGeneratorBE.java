@@ -14,7 +14,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
@@ -91,20 +90,6 @@ public class CoalGeneratorBE extends MachineBE {
     @Override
     public RecipeType<AdvRecipe> getRecipeType() {
         return Registry.COAL_GENERATOR.RECIPE_TYPE;
-    }
-
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
-        // TODO Auto-generated method stub
-        System.out.println("writeCG");
-        return super.writeNbt(nbt);
-    }
-
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        // TODO Auto-generated method stub
-        System.out.println("readCG");
-        super.readNbt(nbt);
     }
 
     private static AdvItemStorage makeItemStorage() {

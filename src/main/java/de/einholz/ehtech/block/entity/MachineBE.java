@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedCl
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -27,20 +26,6 @@ public class MachineBE extends ProcessingBE {
         super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferablesReg.ELECTRICITY, new ElectricityStorage());
         getStorageMgr().withStorage(MACHINE_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
-    }
-
-    @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
-        // TODO Auto-generated method stub
-        System.out.println("write");
-        return super.writeNbt(nbt);
-    }
-
-    @Override
-    public void readNbt(NbtCompound nbt) {
-        // TODO Auto-generated method stub
-        System.out.println("read");
-        super.readNbt(nbt);
     }
 
     private static AdvItemStorage makeItemStorage() {
