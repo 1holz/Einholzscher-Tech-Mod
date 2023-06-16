@@ -12,6 +12,7 @@ import de.einholz.ehtech.storage.MachineInv;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -100,8 +101,8 @@ public class OreGrowerBE extends MachineBE {
         return Registry.ORE_GROWER.RECIPE_TYPE;
     }
 
-    private static AdvItemStorage makeItemStorage() {
-        AdvItemStorage storage = new AdvItemStorage(ORE_IN);
+    private  AdvItemStorage makeItemStorage() {
+        AdvItemStorage storage = new AdvItemStorage(this, ORE_IN);
         ((AdvInv) storage.getInv()).setAccepter((stack) -> true, ORE_IN);
         return storage;
     }
@@ -111,8 +112,8 @@ public class OreGrowerBE extends MachineBE {
         public static final int SIZE = 0 + 1;
         public static final int ORE_IN = SIZE - 1;
 
-        public static AdvItemStorage of() {
-            return new AdvItemStorage();
+        public static AdvItemStorage of(BlockEntity dirtyMarker) {
+            return new AdvItemStorage(dirtyMarker);
         }
 
         public OreGrowerInv() {

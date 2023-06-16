@@ -11,6 +11,7 @@ import de.einholz.ehtech.registry.Registry;
 import de.einholz.ehtech.storage.MachineInv;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -31,7 +32,7 @@ public class CoalGeneratorBE extends MachineBE {
     public CoalGeneratorBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(COAL_GENERATOR_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
-        getStorageMgr().withStorage(COAL_GENERATOR_HEAT, TransferablesReg.HEAT, new HeatStorage());
+        getStorageMgr().withStorage(COAL_GENERATOR_HEAT, TransferablesReg.HEAT, new HeatStorage(this));
     
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
@@ -92,8 +93,8 @@ public class CoalGeneratorBE extends MachineBE {
         return Registry.COAL_GENERATOR.RECIPE_TYPE;
     }
 
-    private static AdvItemStorage makeItemStorage() {
-        AdvItemStorage storage = new AdvItemStorage(COAL_IN);
+    private AdvItemStorage makeItemStorage() {
+        AdvItemStorage storage = new AdvItemStorage(this, COAL_IN);
         ((AdvInv) storage.getInv()).setAccepter((stack) -> true, COAL_IN);
         return storage;
     }
@@ -103,8 +104,8 @@ public class CoalGeneratorBE extends MachineBE {
         public static final int SIZE = 0 + 1;
         public static final int COAL_IN = SIZE - 1;
 
-        public static AdvItemStorage of() {
-            return new AdvItemStorage();
+        public static AdvItemStorage of(BlockEntity dirtyMarker) {
+            return new AdvItemStorage(dirtyMarker);
         }
 
         public CoalGeneratorInv() {

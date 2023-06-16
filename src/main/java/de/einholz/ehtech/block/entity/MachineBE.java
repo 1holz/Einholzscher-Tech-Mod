@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedCl
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -25,12 +24,12 @@ public class MachineBE extends ProcessingBE {
 
     public MachineBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferablesReg.ELECTRICITY, new ElectricityStorage());
+        getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferablesReg.ELECTRICITY, new ElectricityStorage(this));
         getStorageMgr().withStorage(MACHINE_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
     }
 
-    private static AdvItemStorage makeItemStorage() {
-        AdvItemStorage storage = new AdvItemStorage(ELECTRIC_IN, ELECTRIC_OUT, UPGRADE, NETWORK);
+    private AdvItemStorage makeItemStorage() {
+        AdvItemStorage storage = new AdvItemStorage(this, ELECTRIC_IN, ELECTRIC_OUT, UPGRADE, NETWORK);
         ((AdvInv) storage.getInv())
             .setAccepter((stack) -> Items.BEDROCK.equals(stack.getItem()), ELECTRIC_IN, ELECTRIC_OUT)
             .setAccepter((stack) -> false, UPGRADE, NETWORK);

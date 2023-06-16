@@ -2,6 +2,7 @@ package de.einholz.ehtech.storage;
 
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.AdvItemStorage;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
@@ -13,8 +14,8 @@ public class MachineInv extends AdvInv {
     public static final int UPGRADE = SIZE - 2;
     public static final int NETWORK = SIZE - 1;
 
-    public static AdvItemStorage of() {
-        return new AdvItemStorage();
+    public static AdvItemStorage of(BlockEntity dirtyMarker) {
+        return new AdvItemStorage(dirtyMarker);
     }
 
     public MachineInv() {
