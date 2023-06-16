@@ -5,6 +5,7 @@ import java.util.List;
 import de.einholz.ehmooshroom.block.DirectionalBlock;
 import de.einholz.ehmooshroom.block.entity.ContainerBE;
 import de.einholz.ehmooshroom.item.Tool;
+import de.einholz.ehtech.TechMod;
 import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -31,7 +32,7 @@ public class Wrench extends Tool {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        System.out.println("Air");
+        TechMod.LOGGER.wip("Air");
         if (!user.isSneaking()) return super.use(world, user, hand);
         NbtCompound nbt = user.getStackInHand(hand).getOrCreateNbt();
         nbt.putString("Mode", WrenchMode.fromString(nbt.getString("Mode"), true).toString());
@@ -42,7 +43,7 @@ public class Wrench extends Tool {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        System.out.println("Block");
+        TechMod.LOGGER.wip("Block");
         ItemStack wrench = context.getStack();
         BlockState state = context.getWorld().getBlockState(context.getBlockPos());
         Block block = state.getBlock();

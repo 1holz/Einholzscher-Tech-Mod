@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedCl
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
