@@ -36,12 +36,10 @@ public class OreGrowerBE extends MachineBE {
     public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(ORE_GROWER_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
-
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
 
-    // XXX protected?
-    public Inventory getrowerOreInv() {
+    protected Inventory getrowerOreInv() {
         return ((AdvItemStorage) getStorageMgr().getEntry(ORE_GROWER_ITEMS).storage).getInv();
     }
 
@@ -53,7 +51,7 @@ public class OreGrowerBE extends MachineBE {
 
     @Override
     public boolean process() {
-        //if (!getRecipe(). containsBlockIngredients(getRecipe().input.blocks)) {
+        //if (!getRecipe().containsBlockIngredients(getRecipe().input.blocks)) {
         //    cancel();
         //    return false;
         //}

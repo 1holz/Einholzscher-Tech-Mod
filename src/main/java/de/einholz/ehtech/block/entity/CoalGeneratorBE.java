@@ -37,13 +37,11 @@ public class CoalGeneratorBE extends MachineBE {
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
 
-    // XXX protected?
-    public Inventory getCoalGeneratorInv() {
+    protected Inventory getCoalGeneratorInv() {
         return ((AdvItemStorage) getStorageMgr().getEntry(COAL_GENERATOR_ITEMS).storage).getInv();
     }
 
-    // XXX protected?
-    public HeatStorage getCoalGeneratorHeat() {
+    protected HeatStorage getCoalGeneratorHeat() {
         return (HeatStorage) getStorageMgr().getEntry(COAL_GENERATOR_HEAT).storage;
     }
 
@@ -55,27 +53,28 @@ public class CoalGeneratorBE extends MachineBE {
     public HeatDataComponent getFirstHeatComp() {
         return (HeatDataComponent) getImmutableComps().get(TechMod.HELPER.makeId("coal_generator_heat_1"));
     }
-    */
 
     @Override
     public boolean process() {
         AdvRecipe recipe = getRecipe();
-        /*
-        if (recipe.generates != Double.NaN && recipe.generates > 0.0) {
-            int generation = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * (getFirstHeatComp().heat.getBarCurrent() - getFirstHeatComp().heat.getBarMinimum()) / (getFirstHeatComp().heat.getBarMaximum() - getFirstHeatComp().heat.getBarMinimum()) * 3 + 1));
-            if (getMachineCapacitorComp().getCurrentEnergy() + generation <= getMachineCapacitorComp().getMaxEnergy()) getMachineCapacitorComp().generateEnergy(world, pos, generation);
-            else return false;
-        }
-        */
+        //if (recipe.generates != Double.NaN && recipe.generates > 0.0) {
+        //    int generation = (int) (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * (getMachineDataComp().getEfficiency() * getMachineDataComp().getSpeed() * (getFirstHeatComp().heat.getBarCurrent() - getFirstHeatComp().heat.getBarMinimum()) / (getFirstHeatComp().heat.getBarMaximum() - getFirstHeatComp().heat.getBarMinimum()) * 3 + 1));
+        //    if (getMachineCapacitorComp().getCurrentEnergy() + generation <= getMachineCapacitorComp().getMaxEnergy()) getMachineCapacitorComp().generateEnergy(world, pos, generation);
+        //    else return false;
+        //}
         setProgress(getRecipe().timeModifier * getSpeed());
         return true;
     }
+    */
 
     @Override
-    public void task() {
-        super.task();
-        AdvRecipe recipe = getRecipe();
+    public void operate() {
+        super.operate();
+        // originally 0.1 instead of 1
+        if (!getCoalGeneratorHeat().isResourceBlank() && !getMachineElectricity().isFull())
+            getMachineElectricity().increase((long) ((getCoalGeneratorHeat().getAmount() * 3 + 1) * getEfficiency()));
         /*
+        AdvRecipe recipe = getRecipe();
         if (recipe.generates != Double.NaN && recipe.generates > 0.0) {
             getFirstHeatComp().addHeat(recipe.generates * getMachineDataComp().getSpeed() * getMachineDataComp().getEfficiency());
         }
@@ -85,7 +84,8 @@ public class CoalGeneratorBE extends MachineBE {
     @Override
     public void idle() {
         super.idle();
-        if (!getCoalGeneratorHeat().isResourceBlank()) getCoalGeneratorHeat().decrease();
+        // originally 0.1 instead of 1
+        if (!getCoalGeneratorHeat().isResourceBlank()) getCoalGeneratorHeat().decrease(1);
     }
 
     @Override

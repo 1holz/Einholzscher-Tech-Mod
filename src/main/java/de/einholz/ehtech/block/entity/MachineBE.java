@@ -5,10 +5,12 @@ import de.einholz.ehmooshroom.registry.TransferablesReg;
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.AdvItemStorage;
 import de.einholz.ehmooshroom.storage.ElectricityStorage;
+import de.einholz.ehmooshroom.storage.HeatStorage;
 import de.einholz.ehtech.TechMod;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
@@ -26,6 +28,15 @@ public class MachineBE extends ProcessingBE {
         super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferablesReg.ELECTRICITY, new ElectricityStorage(this));
         getStorageMgr().withStorage(MACHINE_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
+        // TODO add cconfig availability
+    }
+
+    protected HeatStorage getMachineElectricity() {
+        return (HeatStorage) getStorageMgr().getEntry(MACHINE_ELECTRICITY).storage;
+    }
+
+    protected Inventory getMachineInv() {
+        return ((AdvItemStorage) getStorageMgr().getEntry(MACHINE_ITEMS).storage).getInv();
     }
 
     private AdvItemStorage makeItemStorage() {
