@@ -37,11 +37,11 @@ public class CoalGeneratorBE extends MachineBE {
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
 
-    protected Inventory getCoalGeneratorInv() {
+    public Inventory getCoalGeneratorInv() {
         return ((AdvItemStorage) getStorageMgr().getEntry(COAL_GENERATOR_ITEMS).storage).getInv();
     }
 
-    protected HeatStorage getCoalGeneratorHeat() {
+    public HeatStorage getCoalGeneratorHeat() {
         return (HeatStorage) getStorageMgr().getEntry(COAL_GENERATOR_HEAT).storage;
     }
 

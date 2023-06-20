@@ -39,7 +39,7 @@ public class OreGrowerBE extends MachineBE {
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
 
-    protected Inventory getrowerOreInv() {
+    public Inventory getOreGrowerInv() {
         return ((AdvItemStorage) getStorageMgr().getEntry(ORE_GROWER_ITEMS).storage).getInv();
     }
 

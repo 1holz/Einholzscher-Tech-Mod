@@ -11,15 +11,12 @@ import de.einholz.ehmooshroom.gui.widget.Button;
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.BarStorage;
 import de.einholz.ehmooshroom.storage.ElectricityStorage;
-import de.einholz.ehmooshroom.storage.StorageEntry;
-import de.einholz.ehmooshroom.storage.transferable.ElectricityVariant;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.MachineBE;
-import de.einholz.ehtech.storage.MachineInv;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
+import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
-import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -29,10 +26,10 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
 public abstract class MachineGui extends ContainerGui {
-    protected Identifier electricityBarBG;
-    protected Identifier electricityBarFG;
-    protected Identifier progressBarBG;
-    protected Identifier progressBarFG;
+    protected Identifier electricityBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/electricity_bar/background.png");
+    protected Identifier electricityBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/electricity_bar/foreground.png");
+    protected Identifier progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
+    protected Identifier progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
     protected WItemSlot electricityInSlot;
     protected WItemSlot upgradeSlot;
     protected Bar electricityBar;
@@ -44,14 +41,9 @@ public abstract class MachineGui extends ContainerGui {
 
     protected MachineGui(ScreenHandlerType<? extends SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
-        //buttonClickFunc = (player, id) -> this.onButtonClick(player, id);
     }
 
     public static MachineGui init(MachineGui gui) {
-        gui.electricityBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/background.png");
-        gui.electricityBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/power_bar/foreground.png");
-        gui.progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
-        gui.progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
         gui.activationButton = gui.new ActivationButton((player) -> {
             gui.getBE().nextActivationState();
             return true;
@@ -68,14 +60,13 @@ public abstract class MachineGui extends ContainerGui {
     @Override
     protected void initWidgets() {
         super.initWidgets();
-        electricityInSlot = WItemSlot.of(getMachineInv(), MachineInv.ELECTRIC_IN);
-        upgradeSlot = WItemSlot.of(getMachineInv(), MachineInv.UPGRADE);
-        ElectricityStorage electricityStorage = ((ElectricityStorage) getMachineElectricity().storage);
-        electricityBar = new Bar(electricityBarBG, electricityBarFG, Unit.ELECTRICITY.getColor(), BarStorage.MIN, () -> electricityStorage.getAmount(), electricityStorage.getMax(), Direction.UP);
+        electricityInSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.ELECTRIC_IN));
+        upgradeSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.UPGRADE));
+        electricityBar = new Bar(electricityBarBG, electricityBarFG, Unit.ELECTRICITY.getColor(), BarStorage.MIN, () -> getMachineElectricity().getAmount(), getMachineElectricity().getMax(), Direction.UP);
         electricityBar.addDefaultTooltip("tooltip.ehtech.maschine.power_bar_amount");
         Supplier<?>[] powerBarTrendSuppliers = {
             () -> {
-                return Unit.ELECTRICITY_PER_TICK.format(((ElectricityStorage) getMachineElectricity().storage).getBal());
+                return Unit.ELECTRICITY_PER_TICK.format(getMachineElectricity().getBal());
             }
         };
         electricityBar.getAdvancedTooltips().put("tooltip.ehtech.machine.power_bar_trend", (Supplier<Object>[]) powerBarTrendSuppliers);
@@ -88,8 +79,8 @@ public abstract class MachineGui extends ContainerGui {
         addButton(activationButton);
         progressBar = new Bar(progressBarBG, progressBarFG, Unit.PERCENT.getColor(), (long) ProcessingBE.PROGRESS_MIN, () -> (long) getBE().getProgress(), (long) ProcessingBE.PROGRESS_MAX, Direction.RIGHT);
         progressBar.addDefaultTooltip("tooltip.ehtech.maschine.progress_bar");
-        networkSlot = WItemSlot.of(getMachineInv(), MachineInv.NETWORK);
-        electricityOutSlot = WItemSlot.of(getMachineInv(), MachineInv.ELECTRIC_OUT);
+        networkSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.NETWORK));
+        electricityOutSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.ELECTRIC_OUT));
         configurationButton.tooltips.add("tooltip.ehtech.configuration_button");
         addButton(configurationButton);
     }
@@ -111,15 +102,12 @@ public abstract class MachineGui extends ContainerGui {
         return (MachineBE) super.getBE();
     }
 
-    // XXX protected?
     public Inventory getMachineInv() {
-        return AdvInv.itemStorageToInv(getStorageMgr().getEntry(TechMod.HELPER.makeId("machine_items")));
+        return ((MachineBE) getBE()).getMachineInv();
     }
 
-    // XXX protected?
-    @SuppressWarnings("unchecked")
-    public StorageEntry<Void, ElectricityVariant> getMachineElectricity() {
-        return (StorageEntry<Void, ElectricityVariant>) getStorageMgr().getEntry(TechMod.HELPER.makeId("machine_electricity"));
+    public ElectricityStorage getMachineElectricity() {
+        return ((MachineBE) getBE()).getMachineElectricity();
     }
 
     /* TODO del

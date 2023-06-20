@@ -31,11 +31,11 @@ public class MachineBE extends ProcessingBE {
         // TODO add cconfig availability
     }
 
-    protected HeatStorage getMachineElectricity() {
-        return (HeatStorage) getStorageMgr().getEntry(MACHINE_ELECTRICITY).storage;
+    public ElectricityStorage getMachineElectricity() {
+        return (ElectricityStorage) getStorageMgr().getEntry(MACHINE_ELECTRICITY).storage;
     }
 
-    protected Inventory getMachineInv() {
+    public Inventory getMachineInv() {
         return ((AdvItemStorage) getStorageMgr().getEntry(MACHINE_ITEMS).storage).getInv();
     }
 

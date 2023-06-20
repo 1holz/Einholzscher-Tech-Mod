@@ -2,7 +2,7 @@ package de.einholz.ehtech.gui.gui;
 
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehtech.TechMod;
-import de.einholz.ehtech.block.entity.OreGrowerBE.OreGrowerInv;
+import de.einholz.ehtech.block.entity.OreGrowerBE;
 import de.einholz.ehtech.registry.Registry;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
@@ -26,13 +26,12 @@ public class OreGrowerGui extends MachineGui {
     public static OreGrowerGui init(OreGrowerGui gui) {
         gui.progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_bg.png");
         gui.progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/oregrower/elements/progress_bar_fg.png");
-        gui.oreInSlot = WItemSlot.of(gui.getOreGrowerInv(), OreGrowerInv.ORE_IN);
+        gui.oreInSlot = WItemSlot.of(gui.getOreGrowerInv(), ((AdvInv) gui.getOreGrowerInv()).getSlotIndex(OreGrowerBE.ORE_IN));
         return (OreGrowerGui) MachineGui.init(gui);
     }
 
-    // XXX protected?
-    public Inventory getOreGrowerInv() {
-        return AdvInv.itemStorageToInv(getStorageMgr().getEntry(TechMod.HELPER.makeId("ore_grower_items")));
+    protected Inventory getOreGrowerInv() {
+        return ((OreGrowerBE) getBE()).getOreGrowerInv();
     }
 
     @Override
