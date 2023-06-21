@@ -9,8 +9,8 @@
     ],
     "output": [
         {
-            "type": "ehmooshroom:electricity",
-            "amount": 1
+            "type": "ehmooshroom:heat",
+            "amount": 100
         }
     ],
     "timeModifier": 1.25
