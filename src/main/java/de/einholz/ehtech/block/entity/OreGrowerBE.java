@@ -5,11 +5,15 @@ import de.einholz.ehmooshroom.recipe.Exgredient;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.AdvItemStorage;
+import de.einholz.ehmooshroom.storage.SingleBlockStorage;
+import de.einholz.ehmooshroom.storage.transferable.BlockVariant;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.OreGrowerGui;
 import de.einholz.ehtech.registry.Registry;
 import de.einholz.ehtech.storage.MachineInv;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
+import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -27,34 +31,45 @@ import net.minecraft.util.math.BlockPos;
 public class OreGrowerBE extends MachineBE {
     public static final Identifier ORE_IN = TechMod.HELPER.makeId("ore_in");
     public static final Identifier ORE_GROWER_ITEMS = TechMod.HELPER.makeId("ore_grower_items");
-    public static final Identifier ORE_GROWER_HEAT = TechMod.HELPER.makeId("ore_grtower_heat");
+    public static final Identifier ORE_GROWER_HEAT = TechMod.HELPER.makeId("ore_grower_heat");
+    public static final Identifier ORE_GROWER_BLOCK = TechMod.HELPER.makeId("ore_grower_block");
 
     public OreGrowerBE(BlockPos pos, BlockState state) {
         this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, OreGrowerGui::init);
     }
 
-    public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
+    public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
+            ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(ORE_GROWER_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
-        //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
+        getStorageMgr().withStorage(ORE_GROWER_BLOCK, TransferablesReg.BLOCKS, new OreGrowerBlockStorage(this));
+        // getConfigComp().setConfigAvailability(new Identifier[]
+        // {getFirstInputInvComp().getId()}, new ConfigBehavior[]
+        // {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
 
     public Inventory getOreGrowerInv() {
         return ((AdvItemStorage) getStorageMgr().getEntry(ORE_GROWER_ITEMS).storage).getInv();
     }
 
-    /* TODO del
-    public AdvancedInventoryComponent getFirstInputInvComp() {
-        return (AdvancedInventoryComponent) getImmutableComps().get(TechMod.HELPER.makeId("ore_grower_input_inv_1"));
+    public SingleBlockStorage getOreGrowerBlock() {
+        return (SingleBlockStorage) getStorageMgr().getEntry(ORE_GROWER_BLOCK).storage;
     }
-    */
+
+    /*
+     * TODO del
+     * public AdvancedInventoryComponent getFirstInputInvComp() {
+     * return (AdvancedInventoryComponent)
+     * getImmutableComps().get(TechMod.HELPER.makeId("ore_grower_input_inv_1"));
+     * }
+     */
 
     @Override
     public boolean process() {
-        //if (!getRecipe().containsBlockIngredients(getRecipe().input.blocks)) {
-        //    cancel();
-        //    return false;
-        //}
+        // if (!getRecipe().containsBlockIngredients(getRecipe().input.blocks)) {
+        // cancel();
+        // return false;
+        // }
         return super.process();
     }
 
@@ -64,12 +79,14 @@ public class OreGrowerBE extends MachineBE {
         super.task();
         AdvRecipe recipe = getRecipe();
         Exgredient<Block> blockEx = null;
-        for (Exgredient<?> ex : recipe.output) if (TransferablesReg.BLOCKS.equals(ex.getType())) {
-            blockEx = (Exgredient<Block>) ex;
-            break;
-        }
+        for (Exgredient<?> ex : recipe.output)
+            if (TransferablesReg.BLOCKS.equals(ex.getType())) {
+                blockEx = (Exgredient<Block>) ex;
+                break;
+            }
         if (blockEx == null) {
-            TechMod.LOGGER.smallBug(new NullPointerException("The recipe " + recipe.getId().toString() + " has no block output which is needed for the OreGrower to generate particles."));
+            TechMod.LOGGER.smallBug(new NullPointerException("The recipe " + recipe.getId().toString()
+                    + " has no block output which is needed for the OreGrower to generate particles."));
             return;
         }
         BlockPos target = pos.offset(world.getBlockState(pos).get(Properties.FACING));
@@ -79,30 +96,97 @@ public class OreGrowerBE extends MachineBE {
             double x = side == 0 ? 0 : side == 1 ? 1 : world.random.nextDouble();
             double y = side == 2 ? 0 : side == 3 ? 1 : world.random.nextDouble();
             double z = side == 4 ? 0 : side == 5 ? 1 : world.random.nextDouble();
-            world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockEx.getOutput().getDefaultState()), target.getX() + x, target.getY() + y, target.getZ() + z, 0.1, 0.1, 0.1);
+            world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockEx.getOutput().getDefaultState()),
+                    target.getX() + x, target.getY() + y, target.getZ() + z, 0.1, 0.1, 0.1);
         }
     }
 
     @Override
     public void complete() {
-        //world.setBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING)), getRecipe().output.blocks[0]);
+        // world.setBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING)),
+        // getRecipe().output.blocks[0]);
         super.complete();
     }
 
-    //@Override
-    //public boolean containsBlockIngredients(Ingredient<Block>... ingredients) {
-    //    return ingredients[0].ingredient.contains(world.getBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING))).getBlock());
-    //}
+    // @Override
+    // public boolean containsBlockIngredients(Ingredient<Block>... ingredients) {
+    // return
+    // ingredients[0].ingredient.contains(world.getBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING))).getBlock());
+    // }
 
     @Override
     public RecipeType<AdvRecipe> getRecipeType() {
         return Registry.ORE_GROWER.RECIPE_TYPE;
     }
 
-    private  AdvItemStorage makeItemStorage() {
+    private AdvItemStorage makeItemStorage() {
         AdvItemStorage storage = new AdvItemStorage(this, ORE_IN);
         ((AdvInv) storage.getInv()).setAccepter((stack) -> true, ORE_IN);
         return storage;
+    }
+
+    // based on how CauldronStorage works
+    public static class OreGrowerBlockStorage extends SingleBlockStorage {
+        private Block originalBlock;
+
+        public OreGrowerBlockStorage(BlockEntity dirtyMarker) {
+            super(dirtyMarker);
+        }
+
+        protected BlockPos getPos() {
+            BlockPos bePos = getDirtyMarker().getPos();
+            return bePos.offset(getDirtyMarker().getWorld().getBlockState(bePos).get(Properties.FACING));
+        }
+
+        @Override
+        protected void releaseSnapshot(ResourceAmount<BlockVariant> snapshot) {
+            originalBlock = snapshot.resource().getObject();
+            super.releaseSnapshot(snapshot);
+        }
+
+        @Override
+        public long insert(BlockVariant insertedVariant, long maxAmount, TransactionContext transaction) {
+            updateSnapshots(transaction);
+            getDirtyMarker().getWorld().setBlockState(getPos(), insertedVariant.getObject().getDefaultState(), 0);
+            return 1;
+        }
+
+        @Override
+        public long extract(BlockVariant extractedVariant, long maxAmount, TransactionContext transaction) {
+            if (getResource() == null || isResourceBlank())
+                return 0;
+            return getResource().equals(extractedVariant) ? 1 : 0;
+        }
+
+        @Override
+        public BlockVariant getResource() {
+            return new BlockVariant(getDirtyMarker().getWorld().getBlockState(getPos()).getBlock());
+        }
+
+        @Override
+        public long getAmount() {
+            return isResourceBlank() ? 0 : 1;
+        }
+
+        @Override
+        public ResourceAmount<BlockVariant> createSnapshot() {
+            if (isResourceBlank())
+                return new ResourceAmount<BlockVariant>(BlockVariant.blank(), 0);
+            return new ResourceAmount<BlockVariant>(getResource(), 1);
+        }
+
+        @Override
+        public void readSnapshot(ResourceAmount<BlockVariant> savedState) {
+            getDirtyMarker().getWorld().setBlockState(getPos(), savedState.resource().getObject().getDefaultState(), 0);
+        }
+
+        @Override
+        public void onFinalCommit() {
+            if (getResource().getObject().equals(originalBlock))
+                return;
+            getDirtyMarker().getWorld().setBlockState(getPos(), originalBlock.getDefaultState(), 0);
+            getDirtyMarker().getWorld().setBlockState(getPos(), getResource().getObject().getDefaultState());
+        }
     }
 
     @Deprecated // TODO del

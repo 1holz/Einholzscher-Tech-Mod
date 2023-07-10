@@ -1,6 +1,7 @@
 package de.einholz.ehtech.gui.gui;
 
 import de.einholz.ehmooshroom.storage.AdvInv;
+import de.einholz.ehmooshroom.storage.SingleBlockStorage;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.OreGrowerBE;
 import de.einholz.ehtech.registry.Registry;
@@ -32,6 +33,10 @@ public class OreGrowerGui extends MachineGui {
 
     protected Inventory getOreGrowerInv() {
         return ((OreGrowerBE) getBE()).getOreGrowerInv();
+    }
+
+    protected SingleBlockStorage getOreGrowerBlock() {
+        return ((OreGrowerBE) getBE()).getOreGrowerBlock();
     }
 
     @Override
