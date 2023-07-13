@@ -78,10 +78,10 @@ public class OreGrowerBE extends MachineBE {
     public void task() {
         super.task();
         AdvRecipe recipe = getRecipe();
-        Exgredient<Block> blockEx = null;
-        for (Exgredient<?> ex : recipe.output)
+        Exgredient<Block, BlockVariant> blockEx = null;
+        for (Exgredient<?, ?> ex : recipe.output)
             if (TransferablesReg.BLOCKS.equals(ex.getType())) {
-                blockEx = (Exgredient<Block>) ex;
+                blockEx = (Exgredient<Block, BlockVariant>) ex;
                 break;
             }
         if (blockEx == null) {
