@@ -1,7 +1,7 @@
 package de.einholz.ehtech.gui.gui;
 
 import de.einholz.ehmooshroom.storage.AdvInv;
-import de.einholz.ehmooshroom.storage.SingleBlockStorage;
+import de.einholz.ehmooshroom.storage.storages.SingleBlockStorage;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.OreGrowerBE;
 import de.einholz.ehtech.registry.Registry;
@@ -45,9 +45,4 @@ public class OreGrowerGui extends MachineGui {
         ((WGridPanel) rootPanel).add(oreInSlot, 2, 3);
         ((WGridPanel) rootPanel).add(progressBar, 3, 3, 2, 1);
     }
-
-    // TODO del
-    //protected AdvancedInventoryComponent getFirstInputInvComp() {
-    //    return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("ore_grower_input_inv_1"));
-    //}
 }

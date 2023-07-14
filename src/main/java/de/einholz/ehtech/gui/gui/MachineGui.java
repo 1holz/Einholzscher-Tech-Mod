@@ -9,8 +9,8 @@ import de.einholz.ehmooshroom.gui.gui.Unit;
 import de.einholz.ehmooshroom.gui.widget.Bar;
 import de.einholz.ehmooshroom.gui.widget.Button;
 import de.einholz.ehmooshroom.storage.AdvInv;
-import de.einholz.ehmooshroom.storage.BarStorage;
-import de.einholz.ehmooshroom.storage.ElectricityStorage;
+import de.einholz.ehmooshroom.storage.storages.BarStorage;
+import de.einholz.ehmooshroom.storage.storages.ElectricityStorage;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.MachineBE;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
@@ -109,23 +109,6 @@ public abstract class MachineGui extends ContainerGui {
     public ElectricityStorage getMachineElectricity() {
         return ((MachineBE) getBE()).getMachineElectricity();
     }
-
-    /* TODO del
-    @Deprecated
-    protected MachineDataComponent getMachineDataComp() {
-        return (MachineDataComponent) getDataComp().getComp(TechMod.HELPER.makeId("data_machine"));
-    }
-
-    @Deprecated
-    protected AdvancedCapacitorComponent getCapacitorComp() {
-        return (AdvancedCapacitorComponent) BlockComponentProvider.get(world.getBlockState(pos)).getComponent(world, pos, UniversalComponents.CAPACITOR_COMPONENT, null);
-    }
-
-    @Deprecated
-    protected AdvancedInventoryComponent getMachineInvComp() {
-        return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("inventory_machine"));
-    }
-    */
 
     protected class ActivationButton extends Button {
         public ActivationButton(Function<PlayerEntity, Boolean> exe) {

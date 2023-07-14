@@ -4,13 +4,12 @@ import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.recipe.Exgredient;
 import de.einholz.ehmooshroom.registry.TransferablesReg;
 import de.einholz.ehmooshroom.storage.AdvInv;
-import de.einholz.ehmooshroom.storage.AdvItemStorage;
-import de.einholz.ehmooshroom.storage.SingleBlockStorage;
-import de.einholz.ehmooshroom.storage.transferable.BlockVariant;
+import de.einholz.ehmooshroom.storage.storages.AdvItemStorage;
+import de.einholz.ehmooshroom.storage.storages.SingleBlockStorage;
+import de.einholz.ehmooshroom.storage.variants.BlockVariant;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.OreGrowerGui;
 import de.einholz.ehtech.registry.Registry;
-import de.einholz.ehtech.storage.MachineInv;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
@@ -19,7 +18,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.RecipeType;
@@ -55,14 +53,6 @@ public class OreGrowerBE extends MachineBE {
     public SingleBlockStorage getOreGrowerBlock() {
         return (SingleBlockStorage) getStorageMgr().getEntry(ORE_GROWER_BLOCK).storage;
     }
-
-    /*
-     * TODO del
-     * public AdvancedInventoryComponent getFirstInputInvComp() {
-     * return (AdvancedInventoryComponent)
-     * getImmutableComps().get(TechMod.HELPER.makeId("ore_grower_input_inv_1"));
-     * }
-     */
 
     @Override
     public boolean process() {
@@ -109,12 +99,6 @@ public class OreGrowerBE extends MachineBE {
         // getRecipe().output.blocks[0]);
         super.complete();
     }
-
-    // @Override
-    // public boolean containsBlockIngredients(Ingredient<Block>... ingredients) {
-    // return
-    // ingredients[0].ingredient.contains(world.getBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING))).getBlock());
-    // }
 
     @Override
     public RecipeType<AdvRecipe> getRecipeType() {
@@ -189,34 +173,6 @@ public class OreGrowerBE extends MachineBE {
                 return;
             getDirtyMarker().getWorld().setBlockState(getPos(), lastReleasedSnapshot.getDefaultState(), 0);
             getDirtyMarker().getWorld().setBlockState(getPos(), block.getDefaultState());
-        }
-    }
-
-    @Deprecated // TODO del
-    public static class OreGrowerInv extends MachineInv {
-        public static final int SIZE = 0 + 1;
-        public static final int ORE_IN = SIZE - 1;
-
-        public static AdvItemStorage of(BlockEntity dirtyMarker) {
-            return new AdvItemStorage(dirtyMarker);
-        }
-
-        public OreGrowerInv() {
-            this(0);
-        }
-
-        public OreGrowerInv(int add) {
-            super(add + SIZE);
-        }
-
-        @Override
-        public boolean isValid(int slot, ItemStack stack) {
-            switch (slot) {
-                case ORE_IN:
-                    return true; // TODO check if part of recipe. probably requires data generators
-                default:
-                    return super.isValid(slot, stack);
-            }
         }
     }
 }

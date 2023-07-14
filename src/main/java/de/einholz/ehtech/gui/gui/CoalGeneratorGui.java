@@ -3,8 +3,8 @@ package de.einholz.ehtech.gui.gui;
 import de.einholz.ehmooshroom.gui.gui.Unit;
 import de.einholz.ehmooshroom.gui.widget.Bar;
 import de.einholz.ehmooshroom.storage.AdvInv;
-import de.einholz.ehmooshroom.storage.BarStorage;
-import de.einholz.ehmooshroom.storage.HeatStorage;
+import de.einholz.ehmooshroom.storage.storages.BarStorage;
+import de.einholz.ehmooshroom.storage.storages.HeatStorage;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.CoalGeneratorBE;
 import de.einholz.ehtech.registry.Registry;
@@ -26,7 +26,7 @@ public class CoalGeneratorGui extends MachineGui {
     protected CoalGeneratorGui(ScreenHandlerType<? extends CoalGeneratorGui> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
     }
-    
+
     public static CoalGeneratorGui init(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
         return init(new CoalGeneratorGui(Registry.COAL_GENERATOR.GUI, syncId, playerInv, buf));
     }
@@ -53,14 +53,4 @@ public class CoalGeneratorGui extends MachineGui {
     protected HeatStorage getCoalGeneratorHeat() {
         return ((CoalGeneratorBE) getBE()).getCoalGeneratorHeat();
     }
-
-    /* TODO del
-    protected AdvancedInventoryComponent getFirstInputInvComp() {
-        return (AdvancedInventoryComponent) getInvComp().getComp(TechMod.HELPER.makeId("coal_generator_input_inv_1"));
-    }
-
-    protected HeatDataComponent getFirstHeatComp() {
-        return (HeatDataComponent) getDataComp().getComp(TechMod.HELPER.makeId("coal_generator_heat_1"));
-    }
-    */
 }
