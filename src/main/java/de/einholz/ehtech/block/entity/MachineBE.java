@@ -9,7 +9,6 @@ import de.einholz.ehtech.TechMod;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
@@ -23,7 +22,8 @@ public class MachineBE extends ProcessingBE {
     public static final Identifier MACHINE_ELECTRICITY = TechMod.HELPER.makeId("machine_electricity");
     public static final Identifier MACHINE_ITEMS = TechMod.HELPER.makeId("machine_items");
 
-    public MachineBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
+    public MachineBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
+            ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferablesReg.ELECTRICITY, new ElectricityStorage(this));
         getStorageMgr().withStorage(MACHINE_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
@@ -32,19 +32,29 @@ public class MachineBE extends ProcessingBE {
         putMaxTransfer(TransferablesReg.ELECTRICITY, 1);
     }
 
+    @Override
+    public void transfer() {
+        super.transfer();
+        // TODO only for early development replace with proper creative battery
+        if (getMachineInv().getStack(ELECTRIC_IN).getItem().equals(Items.BEDROCK))
+            getMachineElectricity().increase(getMaxTransfer(TransferablesReg.ELECTRICITY));
+        if (getMachineInv().getStack(ELECTRIC_OUT).getItem().equals(Items.BEDROCK))
+            getMachineElectricity().decrease(getMaxTransfer(TransferablesReg.ELECTRICITY));
+    }
+
     public ElectricityStorage getMachineElectricity() {
         return (ElectricityStorage) getStorageMgr().getEntry(MACHINE_ELECTRICITY).storage;
     }
 
-    public Inventory getMachineInv() {
-        return ((AdvItemStorage) getStorageMgr().getEntry(MACHINE_ITEMS).storage).getInv();
+    public AdvInv getMachineInv() {
+        return (AdvInv) ((AdvItemStorage) getStorageMgr().getEntry(MACHINE_ITEMS).storage).getInv();
     }
 
     private AdvItemStorage makeItemStorage() {
         AdvItemStorage storage = new AdvItemStorage(this, ELECTRIC_IN, ELECTRIC_OUT, UPGRADE, NETWORK);
         ((AdvInv) storage.getInv())
-            .setAccepter((stack) -> Items.BEDROCK.equals(stack.getItem()), ELECTRIC_IN, ELECTRIC_OUT)
-            .setAccepter((stack) -> false, UPGRADE, NETWORK);
+                .setAccepter((stack) -> Items.BEDROCK.equals(stack.getItem()), ELECTRIC_IN, ELECTRIC_OUT)
+                .setAccepter((stack) -> false, UPGRADE, NETWORK);
         return storage;
     }
 }
