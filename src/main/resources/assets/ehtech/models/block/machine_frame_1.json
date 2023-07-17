@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:block/cube_all",
     "textures": {
-        "all": "ehtech:block/directional/machine/maschine_side"
+        "all": "ehtech:block/directional/machine/machine_side"
     }
 }

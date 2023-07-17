@@ -22,7 +22,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public abstract class MachineGui extends ContainerGui {
@@ -48,11 +48,10 @@ public abstract class MachineGui extends ContainerGui {
             gui.getBE().nextActivationState();
             return true;
         });
-        // TODO use translateable text
         gui.configurationButton = (Button) new Button((player) -> {
             if (!gui.world.isClient) player.openHandledScreen(gui.getBE().new SideConfigScreenHandlerFactory());
             return true;
-        }).setLabel(new LiteralText("CON"));
+        }).setLabel(new TranslatableText("block.ehtech.machine.configuration_button"));
         return (MachineGui) ContainerGui.init(gui);
     }
 
@@ -63,7 +62,7 @@ public abstract class MachineGui extends ContainerGui {
         electricityInSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.ELECTRIC_IN));
         upgradeSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.UPGRADE));
         electricityBar = new Bar(electricityBarBG, electricityBarFG, Unit.ELECTRICITY.getColor(), BarStorage.MIN, () -> getMachineElectricity().getAmount(), getMachineElectricity().getMax(), Direction.UP);
-        electricityBar.addDefaultTooltip("tooltip.ehtech.maschine.power_bar_amount");
+        electricityBar.addDefaultTooltip("tooltip.ehtech.machine.power_bar_amount");
         Supplier<?>[] powerBarTrendSuppliers = {
             () -> {
                 return Unit.ELECTRICITY_PER_TICK.format(getMachineElectricity().getBal());
@@ -78,10 +77,10 @@ public abstract class MachineGui extends ContainerGui {
         activationButton.advancedTooltips.put("tooltip.ehtech.activation_button", (Supplier<Object>[]) activationButtonSuppliers);
         addButton(activationButton);
         progressBar = new Bar(progressBarBG, progressBarFG, Unit.PERCENT.getColor(), (long) ProcessingBE.PROGRESS_MIN, () -> (long) getBE().getProgress(), (long) ProcessingBE.PROGRESS_MAX, Direction.RIGHT);
-        progressBar.addDefaultTooltip("tooltip.ehtech.maschine.progress_bar");
+        progressBar.addDefaultTooltip("tooltip.ehtech.machine.progress_bar");
         networkSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.NETWORK));
         electricityOutSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.ELECTRIC_OUT));
-        configurationButton.tooltips.add("tooltip.ehtech.configuration_button");
+        configurationButton.tooltips.add("tooltip.ehtech.machine.configuration_button");
         addButton(configurationButton);
     }
 
