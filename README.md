@@ -10,4 +10,6 @@ Currently it just adds a coal generator and an ore grower. The ore grower can "g
 Example setup of a lapis generator:  
 ![](https://github.com/Albert-Einholz/Einholzscher-Tech-Mod/blob/master/media/description/gif/trailer.gif)
 
-also see: https://www.curseforge.com/minecraft/mc-mods/einholzscher-tech-mod
+also see:
+- https://modrinth.com/mod/ehtech
+- https://www.curseforge.com/minecraft/mc-mods/einholzscher-tech-mod
