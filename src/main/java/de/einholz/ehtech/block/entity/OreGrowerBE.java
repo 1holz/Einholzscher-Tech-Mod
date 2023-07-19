@@ -75,8 +75,8 @@ public class OreGrowerBE extends MachineBE {
                 break;
             }
         if (blockEx == null) {
-            TechMod.LOGGER.smallBug(new NullPointerException("The recipe " + recipe.getId().toString()
-                    + " has no block output which is needed for the OreGrower to generate particles."));
+            TechMod.LOGGER.warnBug("The recipe", recipe.getId().toString(),
+                    "has no block output which is needed for the OreGrower to generate particles.");
             return;
         }
         if (true)
