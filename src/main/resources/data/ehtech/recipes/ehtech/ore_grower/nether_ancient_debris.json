@@ -3,12 +3,12 @@
     "input": [
         {
             "type": "ehmooshroom:items",
-            "tagId": "ehtech:machine_recipes/ore_grower/ancient_debris_seed",
+            "id": "ehtech:machine_recipes/ore_grower/ancient_debris_seed",
             "amount": 1
         },
         {
             "type": "ehmooshroom:blocks",
-            "tagId": "minecraft:base_stone_nether",
+            "id": "minecraft:base_stone_nether",
             "amount": 1
         },
         {

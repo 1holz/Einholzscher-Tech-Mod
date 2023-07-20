@@ -3,7 +3,7 @@
     "input": [
         {
             "type": "ehmooshroom:items",
-            "tagId": "ehtech:machine_recipes/coal_generator/coke_coal_block",
+            "id": "ehtech:machine_recipes/coal_generator/coke_coal_block",
             "amount": 1
         }
     ],

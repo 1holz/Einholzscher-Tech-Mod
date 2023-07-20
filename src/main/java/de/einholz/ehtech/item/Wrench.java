@@ -32,20 +32,20 @@ public class Wrench extends Tool {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        TechMod.LOGGER.wip("Air");
+        TechMod.LOGGER.test("Air");
         if (!user.isSneaking())
             return super.use(world, user, hand);
         NbtCompound nbt = user.getStackInHand(hand).getOrCreateNbt();
         nbt.putString("Mode", WrenchMode.fromString(nbt.getString("Mode"), true).toString());
         if (world.isClient)
-            ((ClientPlayerEntity) user).sendMessage((Text) (new TranslatableText("title.ehtech.wrench",
+            ((ClientPlayerEntity) user).sendMessage((new TranslatableText("title.ehtech.wrench",
                     user.getStackInHand(hand).getNbt().getString("Mode"))), true);
         return new TypedActionResult<>(ActionResult.SUCCESS, user.getStackInHand(hand));
     }
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        TechMod.LOGGER.wip("Block");
+        TechMod.LOGGER.test("Block");
         ItemStack wrench = context.getStack();
         BlockState state = context.getWorld().getBlockState(context.getBlockPos());
         Block block = state.getBlock();

@@ -3,7 +3,7 @@
     "input": [
         {
             "type": "ehmooshroom:items",
-            "tagId": "ehtech:machine_recipes/coal_generator/hard_coal_chunk",
+            "id": "ehtech:machine_recipes/coal_generator/hard_coal_chunk",
             "amount": 1
         }
     ],
