@@ -7,7 +7,7 @@ import de.einholz.ehmooshroom.storage.storages.BarStorage;
 import de.einholz.ehmooshroom.storage.storages.HeatStorage;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.CoalGeneratorBE;
-import de.einholz.ehtech.registry.Registry;
+import de.einholz.ehtech.registry.ScreenHandlerReg;
 import io.github.cottonmc.cotton.gui.widget.WBar.Direction;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
@@ -28,7 +28,7 @@ public class CoalGeneratorGui extends MachineGui {
     }
 
     public static CoalGeneratorGui init(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        return init(new CoalGeneratorGui(Registry.COAL_GENERATOR.GUI, syncId, playerInv, buf));
+        return init(new CoalGeneratorGui(ScreenHandlerReg.COAL_GENERATOR, syncId, playerInv, buf));
     }
 
     public static CoalGeneratorGui init(CoalGeneratorGui gui) {

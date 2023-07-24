@@ -2,14 +2,15 @@ package de.einholz.ehtech.block.entity;
 
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.recipe.Exgredient;
-import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehmooshroom.registry.TransferableRegistry;
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.storages.AdvItemStorage;
 import de.einholz.ehmooshroom.storage.storages.SingleBlockStorage;
 import de.einholz.ehmooshroom.storage.variants.BlockVariant;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.OreGrowerGui;
-import de.einholz.ehtech.registry.Registry;
+import de.einholz.ehtech.registry.BlockEntityTypeReg;
+import de.einholz.ehtech.registry.RecipeTypeReg;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
@@ -33,14 +34,14 @@ public class OreGrowerBE extends MachineBE {
     public static final Identifier ORE_GROWER_BLOCK = TechMod.HELPER.makeId("ore_grower_block");
 
     public OreGrowerBE(BlockPos pos, BlockState state) {
-        this(Registry.ORE_GROWER.BLOCK_ENTITY_TYPE, pos, state, OreGrowerGui::init);
+        this(BlockEntityTypeReg.ORE_GROWER, pos, state, OreGrowerGui::init);
     }
 
     public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
             ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(ORE_GROWER_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
-        getStorageMgr().withStorage(ORE_GROWER_BLOCK, TransferablesReg.BLOCKS, new OreGrowerBlockStorage(this));
+        getStorageMgr().withStorage(ORE_GROWER_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
+        getStorageMgr().withStorage(ORE_GROWER_BLOCK, TransferableRegistry.BLOCKS, new OreGrowerBlockStorage(this));
         // getConfigComp().setConfigAvailability(new Identifier[]
         // {getFirstInputInvComp().getId()}, new ConfigBehavior[]
         // {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
@@ -67,15 +68,14 @@ public class OreGrowerBE extends MachineBE {
     @Override
     public void task() {
         super.task();
-        AdvRecipe recipe = getRecipe();
         Exgredient<Block, BlockVariant> blockEx = null;
-        for (Exgredient<?, ?> ex : recipe.output)
-            if (TransferablesReg.BLOCKS.equals(ex.getType())) {
+        for (Exgredient<?, ?> ex : getRecipe().output)
+            if (TransferableRegistry.BLOCKS.equals(ex.getType())) {
                 blockEx = (Exgredient<Block, BlockVariant>) ex;
                 break;
             }
         if (blockEx == null) {
-            TechMod.LOGGER.warnBug("The recipe", recipe.getId().toString(),
+            TechMod.LOGGER.warnBug("The recipe", getRecipe().getId().toString(),
                     "has no block output which is needed for the OreGrower to generate particles.");
             return;
         }
@@ -102,7 +102,7 @@ public class OreGrowerBE extends MachineBE {
 
     @Override
     public RecipeType<AdvRecipe> getRecipeType() {
-        return Registry.ORE_GROWER.RECIPE_TYPE;
+        return RecipeTypeReg.ORE_GROWER;
     }
 
     private AdvItemStorage makeItemStorage() {

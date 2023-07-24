@@ -1,7 +1,7 @@
 package de.einholz.ehtech.block.entity;
 
 import de.einholz.ehmooshroom.block.entity.ProcessingBE;
-import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehmooshroom.registry.TransferableRegistry;
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.storages.AdvItemStorage;
 import de.einholz.ehmooshroom.storage.storages.ElectricityStorage;
@@ -25,11 +25,11 @@ public class MachineBE extends ProcessingBE {
     public MachineBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
             ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferablesReg.ELECTRICITY, new ElectricityStorage(this));
-        getStorageMgr().withStorage(MACHINE_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
+        getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferableRegistry.ELECTRICITY, new ElectricityStorage(this));
+        getStorageMgr().withStorage(MACHINE_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
         // TODO add config availability
-        putMaxTransfer(TransferablesReg.ITEMS, 1);
-        putMaxTransfer(TransferablesReg.ELECTRICITY, 1);
+        putMaxTransfer(TransferableRegistry.ITEMS, 1);
+        putMaxTransfer(TransferableRegistry.ELECTRICITY, 1);
     }
 
     @Override
@@ -37,9 +37,9 @@ public class MachineBE extends ProcessingBE {
         super.transfer();
         // TODO only for early development replace with proper creative battery
         if (getMachineInv().getStack(ELECTRIC_IN).getItem().equals(Items.BEDROCK))
-            getMachineElectricity().increase(getMaxTransfer(TransferablesReg.ELECTRICITY));
+            getMachineElectricity().increase(getMaxTransfer(TransferableRegistry.ELECTRICITY));
         if (getMachineInv().getStack(ELECTRIC_OUT).getItem().equals(Items.BEDROCK))
-            getMachineElectricity().decrease(getMaxTransfer(TransferablesReg.ELECTRICITY));
+            getMachineElectricity().decrease(getMaxTransfer(TransferableRegistry.ELECTRICITY));
     }
 
     public ElectricityStorage getMachineElectricity() {

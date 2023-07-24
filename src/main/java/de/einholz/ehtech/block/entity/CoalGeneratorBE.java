@@ -1,13 +1,14 @@
 package de.einholz.ehtech.block.entity;
 
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
-import de.einholz.ehmooshroom.registry.TransferablesReg;
+import de.einholz.ehmooshroom.registry.TransferableRegistry;
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.storages.AdvItemStorage;
 import de.einholz.ehmooshroom.storage.storages.HeatStorage;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.CoalGeneratorGui;
-import de.einholz.ehtech.registry.Registry;
+import de.einholz.ehtech.registry.BlockEntityTypeReg;
+import de.einholz.ehtech.registry.RecipeTypeReg;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
@@ -23,13 +24,13 @@ public class CoalGeneratorBE extends MachineBE {
     public static final Identifier COAL_GENERATOR_HEAT = TechMod.HELPER.makeId("coal_generator_heat");
 
     public CoalGeneratorBE(BlockPos pos, BlockState state) {
-        this(Registry.COAL_GENERATOR.BLOCK_ENTITY_TYPE, pos, state, CoalGeneratorGui::init);
+        this(BlockEntityTypeReg.COAL_GENERATOR, pos, state, CoalGeneratorGui::init);
     }
 
     public CoalGeneratorBE(BlockEntityType<?> type, BlockPos pos, BlockState state, ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(COAL_GENERATOR_ITEMS, TransferablesReg.ITEMS, makeItemStorage());
-        getStorageMgr().withStorage(COAL_GENERATOR_HEAT, TransferablesReg.HEAT, new HeatStorage(this));
+        getStorageMgr().withStorage(COAL_GENERATOR_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
+        getStorageMgr().withStorage(COAL_GENERATOR_HEAT, TransferableRegistry.HEAT, new HeatStorage(this));
 
         //getConfigComp().setConfigAvailability(new Identifier[] {getFirstInputInvComp().getId()}, new ConfigBehavior[] {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
     }
@@ -59,7 +60,7 @@ public class CoalGeneratorBE extends MachineBE {
 
     @Override
     public RecipeType<AdvRecipe> getRecipeType() {
-        return Registry.COAL_GENERATOR.RECIPE_TYPE;
+        return RecipeTypeReg.COAL_GENERATOR;
     }
 
     private AdvItemStorage makeItemStorage() {

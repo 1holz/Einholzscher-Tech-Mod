@@ -4,7 +4,7 @@ import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.storages.SingleBlockStorage;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.entity.OreGrowerBE;
-import de.einholz.ehtech.registry.Registry;
+import de.einholz.ehtech.registry.ScreenHandlerReg;
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.WGridPanel;
 import io.github.cottonmc.cotton.gui.widget.WItemSlot;
@@ -21,7 +21,7 @@ public class OreGrowerGui extends MachineGui {
     }
 
     public static OreGrowerGui init(int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
-        return init(new OreGrowerGui(Registry.ORE_GROWER.GUI, syncId, playerInv, buf));
+        return init(new OreGrowerGui(ScreenHandlerReg.ORE_GROWER, syncId, playerInv, buf));
     }
 
     public static OreGrowerGui init(OreGrowerGui gui) {
