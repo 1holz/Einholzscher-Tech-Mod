@@ -12,7 +12,7 @@ public class MachineBlock extends ContainerBlock {
     public MachineBlock(Identifier id, BlockEntityTicker<? extends BlockEntity> ticker) {
         this(getDefaultSettings(), id, ticker);
     }
-    
+
     public MachineBlock(FabricBlockSettings settings, Identifier id, BlockEntityTicker<? extends BlockEntity> ticker) {
         super(settings, id, ticker);
     }

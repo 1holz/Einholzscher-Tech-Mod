@@ -2,10 +2,10 @@ package de.einholz.ehtech.registry;
 
 import java.util.function.Function;
 
+import de.einholz.ehmooshroom.block.entity.ContainerBE;
 import de.einholz.ehmooshroom.registry.BlockRegistry;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.block.MachineBlock;
-import de.einholz.ehtech.block.entity.MachineBE;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.MapColor;
@@ -32,8 +32,9 @@ public class BlockReg extends BlockRegistry {
             .get();
 
     public BlockReg register(String name) {
-        // idFactory() has to be called manually since id is not initialized at this time
-        return (BlockReg) register(name, new MachineBlock(idFactory().apply(name), MachineBE::tick));
+        // idFactory() has to be called manually since id is not initialized at this
+        // time
+        return (BlockReg) register(name, new MachineBlock(idFactory().apply(name), ContainerBE::tick));
     }
 
     @Override

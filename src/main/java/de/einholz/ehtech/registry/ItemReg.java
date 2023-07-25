@@ -67,6 +67,5 @@ public class ItemReg extends ItemRegistry {
     }
 
     public static void registerAll() {
-        ItemRegistry.removeItemGroup(WRENCH_GROUP_ID);
     }
 }
