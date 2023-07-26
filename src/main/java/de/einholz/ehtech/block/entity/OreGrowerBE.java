@@ -4,6 +4,7 @@ import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.recipe.Exgredient;
 import de.einholz.ehmooshroom.registry.TransferableRegistry;
 import de.einholz.ehmooshroom.storage.AdvInv;
+import de.einholz.ehmooshroom.storage.SideConfigType;
 import de.einholz.ehmooshroom.storage.storages.AdvItemStorage;
 import de.einholz.ehmooshroom.storage.storages.SingleBlockStorage;
 import de.einholz.ehmooshroom.storage.variants.BlockVariant;
@@ -30,7 +31,6 @@ import net.minecraft.util.math.BlockPos;
 public class OreGrowerBE extends MachineBE {
     public static final Identifier ORE_IN = TechMod.HELPER.makeId("ore_in");
     public static final Identifier ORE_GROWER_ITEMS = TechMod.HELPER.makeId("ore_grower_items");
-    public static final Identifier ORE_GROWER_HEAT = TechMod.HELPER.makeId("ore_grower_heat");
     public static final Identifier ORE_GROWER_BLOCK = TechMod.HELPER.makeId("ore_grower_block");
 
     public OreGrowerBE(BlockPos pos, BlockState state) {
@@ -42,9 +42,14 @@ public class OreGrowerBE extends MachineBE {
         super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(ORE_GROWER_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
         getStorageMgr().withStorage(ORE_GROWER_BLOCK, TransferableRegistry.BLOCKS, new OreGrowerBlockStorage(this));
-        // getConfigComp().setConfigAvailability(new Identifier[]
-        // {getFirstInputInvComp().getId()}, new ConfigBehavior[]
-        // {ConfigBehavior.SELF_INPUT, ConfigBehavior.FOREIGN_INPUT}, null, true);
+        getStorageMgr().getEntry(ORE_GROWER_ITEMS).change(SideConfigType.OUT_PROC);
+        getStorageMgr().getEntry(ORE_GROWER_ITEMS).setAvailability(false, new SideConfigType[] {
+                SideConfigType.SELF_OUT_D, SideConfigType.SELF_OUT_U, SideConfigType.SELF_OUT_N,
+                SideConfigType.SELF_OUT_S, SideConfigType.SELF_OUT_W, SideConfigType.SELF_OUT_E,
+                SideConfigType.FOREIGN_OUT_D, SideConfigType.FOREIGN_OUT_U, SideConfigType.FOREIGN_OUT_N,
+                SideConfigType.FOREIGN_OUT_S, SideConfigType.FOREIGN_OUT_W, SideConfigType.FOREIGN_OUT_E
+        });
+        getStorageMgr().getEntry(ORE_GROWER_BLOCK).setAvailability(false, (SideConfigType[]) null);
     }
 
     public Inventory getOreGrowerInv() {

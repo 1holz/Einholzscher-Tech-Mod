@@ -3,6 +3,7 @@ package de.einholz.ehtech.block.entity;
 import de.einholz.ehmooshroom.block.entity.ProcessingBE;
 import de.einholz.ehmooshroom.registry.TransferableRegistry;
 import de.einholz.ehmooshroom.storage.AdvInv;
+import de.einholz.ehmooshroom.storage.SideConfigType;
 import de.einholz.ehmooshroom.storage.storages.AdvItemStorage;
 import de.einholz.ehmooshroom.storage.storages.ElectricityStorage;
 import de.einholz.ehtech.TechMod;
@@ -25,9 +26,10 @@ public class MachineBE extends ProcessingBE {
     public MachineBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
             ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferableRegistry.ELECTRICITY, new ElectricityStorage(this));
+        getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferableRegistry.ELECTRICITY,
+                new ElectricityStorage(this));
         getStorageMgr().withStorage(MACHINE_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
-        // TODO add config availability
+        getStorageMgr().getEntry(MACHINE_ITEMS).setAvailability(false, (SideConfigType[]) null);
         putMaxTransfer(TransferableRegistry.ITEMS, 1);
         putMaxTransfer(TransferableRegistry.ELECTRICITY, 1);
     }
