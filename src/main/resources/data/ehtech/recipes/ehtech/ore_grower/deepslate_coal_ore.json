@@ -3,12 +3,12 @@
     "input": [
         {
             "type": "ehmooshroom:items",
-            "id": "ehtech:machine_recipes/ore_grower/emerald_seed",
+            "id": "ehtech:machine_recipes/ore_grower/coal_seed",
             "amount": 1
         },
         {
             "type": "ehmooshroom:blocks",
-            "id": "ehtech:machine_recipes/ore_grower/stone_base",
+            "id": "ehtech:machine_recipes/ore_grower/deepslate_base",
             "amount": 1
         },
         {
@@ -23,5 +23,5 @@
             "amount": 1
         }
     ],
-    "timeModifier": 0.0078125
+    "timeModifier": 0.03125
 }

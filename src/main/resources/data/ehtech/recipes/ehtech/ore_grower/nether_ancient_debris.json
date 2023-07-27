@@ -8,7 +8,7 @@
         },
         {
             "type": "ehmooshroom:blocks",
-            "id": "minecraft:base_stone_nether",
+            "id": "ehtech:machine_recipes/ore_grower/netherrack_base",
             "amount": 1
         },
         {
