@@ -1,6 +1,5 @@
 package de.einholz.ehtech.gui.gui;
 
-import de.einholz.ehmooshroom.gui.gui.Unit;
 import de.einholz.ehmooshroom.gui.widget.Bar;
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.storages.BarStorage;
@@ -18,12 +17,15 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 
 public class CoalGeneratorGui extends MachineGui {
-    protected Identifier heatBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
-    protected Identifier heatBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
+    protected Identifier heatBarBG = TechMod.HELPER
+            .makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/background.png");
+    protected Identifier heatBarFG = TechMod.HELPER
+            .makeId("textures/gui/container/machine/coalgenerator/elements/heat_bar/foreground.png");
     protected Bar heatBar;
     protected WItemSlot coalInSlot;
 
-    protected CoalGeneratorGui(ScreenHandlerType<? extends CoalGeneratorGui> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
+    protected CoalGeneratorGui(ScreenHandlerType<? extends CoalGeneratorGui> type, int syncId,
+            PlayerInventory playerInv, PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
     }
 
@@ -32,8 +34,10 @@ public class CoalGeneratorGui extends MachineGui {
     }
 
     public static CoalGeneratorGui init(CoalGeneratorGui gui) {
-        gui.heatBar = new Bar(gui.heatBarBG, gui.heatBarFG, Unit.KELVIN.getColor(), BarStorage.MIN, () -> gui.getCoalGeneratorHeat().getAmount(), gui.getCoalGeneratorHeat().getMax(), Direction.UP);
-        gui.coalInSlot = WItemSlot.of(gui.getCoalGeneratorInv(), ((AdvInv) gui.getCoalGeneratorInv()).getSlotIndex(CoalGeneratorBE.COAL_IN));
+        gui.heatBar = new Bar(gui.heatBarBG, gui.heatBarFG, BarStorage.MIN,
+                () -> gui.getCoalGeneratorHeat().getAmount(), gui.getCoalGeneratorHeat().getMax(), Direction.UP, "°C");
+        gui.coalInSlot = WItemSlot.of(gui.getCoalGeneratorInv(),
+                ((AdvInv) gui.getCoalGeneratorInv()).getSlotIndex(CoalGeneratorBE.COAL_IN));
         return (CoalGeneratorGui) MachineGui.init(gui);
     }
 

@@ -19,9 +19,9 @@
     "tooltip.ehtech.activation_button": "%s",
     "tooltip.ehtech.coal_generator.heat_bar": "Hitze: %s / %s / %s",
     "tooltip.ehtech.machine.configuration_button": "Seitenconfiguration",
-    "tooltip.ehtech.machine.power_bar_amount": "Strom: %2$sW / %3$sW",
+    "tooltip.ehtech.machine.power_bar_amount": "Strom: %2$s / %3$s",
     "tooltip.ehtech.machine.power_bar_trend": "%d%s",
     "tooltip.ehtech.machine.progress_bar": "%2$s",
     "tooltip.ehtech.wrench.withmode": "Modus: %s",
-    "tooltip.ehtech.wrench.withoutmode": "Schleich rechts klicke um Modus zu setzen"
+    "tooltip.ehtech.wrench.withoutmode": "Schleich rechtsklicke um Modus zu setzen"
 }

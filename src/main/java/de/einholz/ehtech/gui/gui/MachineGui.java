@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import de.einholz.ehmooshroom.block.entity.ProcessingBE;
 import de.einholz.ehmooshroom.gui.gui.ContainerGui;
-import de.einholz.ehmooshroom.gui.gui.Unit;
+import de.einholz.ehmooshroom.gui.gui.UnitFormatter;
 import de.einholz.ehmooshroom.gui.widget.Bar;
 import de.einholz.ehmooshroom.gui.widget.Button;
 import de.einholz.ehmooshroom.storage.AdvInv;
@@ -26,30 +26,36 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public abstract class MachineGui extends ContainerGui {
-    protected Identifier electricityBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/electricity_bar/background.png");
-    protected Identifier electricityBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/electricity_bar/foreground.png");
-    protected Identifier progressBarBG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/background.png");
-    protected Identifier progressBarFG = TechMod.HELPER.makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
+    protected Identifier electricityBarBG = TechMod.HELPER
+            .makeId("textures/gui/container/machine/elements/electricity_bar/background.png");
+    protected Identifier electricityBarFG = TechMod.HELPER
+            .makeId("textures/gui/container/machine/elements/electricity_bar/foreground.png");
+    protected Identifier progressBarBG = TechMod.HELPER
+            .makeId("textures/gui/container/machine/elements/progress_bar/background.png");
+    protected Identifier progressBarFG = TechMod.HELPER
+            .makeId("textures/gui/container/machine/elements/progress_bar/foreground.png");
     protected WItemSlot electricityInSlot;
     protected WItemSlot upgradeSlot;
     protected Bar electricityBar;
-    protected Button activationButton ;
+    protected Button activationButton;
     protected Bar progressBar;
     protected WItemSlot networkSlot;
     protected WItemSlot electricityOutSlot;
     protected Button configurationButton;
 
-    protected MachineGui(ScreenHandlerType<? extends SyncedGuiDescription> type, int syncId, PlayerInventory playerInv, PacketByteBuf buf) {
+    protected MachineGui(ScreenHandlerType<? extends SyncedGuiDescription> type, int syncId, PlayerInventory playerInv,
+            PacketByteBuf buf) {
         super(type, syncId, playerInv, buf);
     }
 
     public static MachineGui init(MachineGui gui) {
-        gui.activationButton = gui.new ActivationButton((player) -> {
+        gui.activationButton = gui.new ActivationButton(player -> {
             gui.getBE().nextActivationState();
             return true;
         });
-        gui.configurationButton = (Button) new Button((player) -> {
-            if (!gui.world.isClient) player.openHandledScreen(gui.getBE().new SideConfigScreenHandlerFactory());
+        gui.configurationButton = (Button) new Button(player -> {
+            if (!gui.world.isClient)
+                player.openHandledScreen(gui.getBE().new SideConfigScreenHandlerFactory());
             return true;
         }).setLabel(new TranslatableText("block.ehtech.machine.configuration_button"));
         return (MachineGui) ContainerGui.init(gui);
@@ -61,22 +67,18 @@ public abstract class MachineGui extends ContainerGui {
         super.initWidgets();
         electricityInSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.ELECTRIC_IN));
         upgradeSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.UPGRADE));
-        electricityBar = new Bar(electricityBarBG, electricityBarFG, Unit.ELECTRICITY.getColor(), BarStorage.MIN, () -> getMachineElectricity().getAmount(), getMachineElectricity().getMax(), Direction.UP);
+        electricityBar = new Bar(electricityBarBG, electricityBarFG, BarStorage.MIN, () -> getMachineElectricity().getAmount(), getMachineElectricity().getMax(), Direction.UP, "Wh");
         electricityBar.addDefaultTooltip("tooltip.ehtech.machine.power_bar_amount");
-        Supplier<?>[] powerBarTrendSuppliers = {
-            () -> {
-                return Unit.ELECTRICITY_PER_TICK.format(getMachineElectricity().getBal());
-            }
+        Supplier<Object>[] powerBarTrendSuppliers = new Supplier[] {
+            () -> UnitFormatter.formatLong(getMachineElectricity().getBal(), "Wh/tick")
         };
-        electricityBar.getAdvancedTooltips().put("tooltip.ehtech.machine.power_bar_trend", (Supplier<Object>[]) powerBarTrendSuppliers);
-        Supplier<?>[] activationButtonSuppliers = {
-            () -> {
-                return getBE().getActivationState().toString().toLowerCase();
-            }
+        electricityBar.getDynTooltips().put("tooltip.ehtech.machine.power_bar_trend", powerBarTrendSuppliers);
+        Supplier<Object>[] activationButtonSuppliers = new Supplier[] {
+            getBE().getActivationState().toString()::toLowerCase
         };
-        activationButton.advancedTooltips.put("tooltip.ehtech.activation_button", (Supplier<Object>[]) activationButtonSuppliers);
+        activationButton.advancedTooltips.put("tooltip.ehtech.activation_button", activationButtonSuppliers);
         addButton(activationButton);
-        progressBar = new Bar(progressBarBG, progressBarFG, Unit.PERCENT.getColor(), (long) ProcessingBE.PROGRESS_MIN, () -> (long) getBE().getProgress(), (long) ProcessingBE.PROGRESS_MAX, Direction.RIGHT);
+        progressBar = new Bar(progressBarBG, progressBarFG, (long) ProcessingBE.PROGRESS_MIN, () -> (long) getBE().getProgress(), (long) ProcessingBE.PROGRESS_MAX, Direction.RIGHT, "\u2030");
         progressBar.addDefaultTooltip("tooltip.ehtech.machine.progress_bar");
         networkSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.NETWORK));
         electricityOutSlot = WItemSlot.of(getMachineInv(), ((AdvInv) getMachineInv()).getSlotIndex(MachineBE.ELECTRIC_OUT));
@@ -116,7 +118,8 @@ public abstract class MachineGui extends ContainerGui {
 
         @Override
         public Identifier setTexture(int mouseX, int mouseY) {
-            withTexture(TechMod.HELPER.makeId("textures/gui/container/machine/elements/activation_button/" + getBE().getActivationState().toString().toLowerCase() + ".png"));
+            withTexture(TechMod.HELPER.makeId("textures/gui/container/machine/elements/activation_button/"
+                    + getBE().getActivationState().toString().toLowerCase() + ".png"));
             return super.setTexture(mouseX, mouseY);
         }
     }
