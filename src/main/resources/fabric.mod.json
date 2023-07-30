@@ -27,7 +27,7 @@
         "ehtech.mixins.json"
     ],
     "depends": {
-        "ehmooshroom": "0.0.6",
+        "ehmooshroom": "0.0.7",
         "fabricloader": ">=0.14.7",
         "fabric": "*",
         "minecraft": "~1.17",
@@ -38,6 +38,17 @@
     },
     "custom": {
         "loom:injected_interfaces": {},
+        "mc-publish": {
+            "loaders": [
+                "fabric"
+            ],
+            "dependencies": [
+                "libgui(embedded)",
+                "ehmooshroom(embedded)"
+            ],
+            "modrinth": "7Bhx81AK",
+            "curseforge": "391202"
+        },
         "modmenu": {
             "links": {
                 "modmenu.discord": "https://discord.gg/VUpY7a7pqF"
