@@ -53,9 +53,9 @@ jobs:
           github-tag: "v${{ env.MOD_VERSION }}+${{ env.MINECRAFT_VERSION }}"
           github-token: "${{ env.GITHUB_TOKEN }}"
 
-          MODRINTH
+          # MODRINTH
           modrinth-token: "${{ env.MODRINTH_TOKEN }}"
           modrinth-featured: true
 
-          CURSEFORGE
+          # CURSEFORGE
           curseforge-token: "${{ env.CURSEFORGE_TOKEN }}"
