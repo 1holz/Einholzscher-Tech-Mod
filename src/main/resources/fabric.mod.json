@@ -28,9 +28,9 @@
     ],
     "depends": {
         "ehmooshroom": "0.0.7",
-        "fabricloader": ">=0.14.7",
+        "fabricloader": ">=0.14",
         "fabric": "*",
-        "minecraft": "~1.17",
+        "minecraft": "~1.18",
         "java": ">=17"
     },
     "suggests": {

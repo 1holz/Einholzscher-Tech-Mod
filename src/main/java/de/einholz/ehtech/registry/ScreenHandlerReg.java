@@ -7,8 +7,8 @@ import de.einholz.ehmooshroom.registry.ScreenHandlerRegistry;
 import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.CoalGeneratorGui;
 import de.einholz.ehtech.gui.gui.OreGrowerGui;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry.Factory;
-import net.fabricmc.fabric.impl.screenhandler.ExtendedScreenHandlerType;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
+import net.minecraft.client.gui.screen.ingame.HandledScreens.Provider;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
@@ -17,12 +17,12 @@ public class ScreenHandlerReg<T extends ScreenHandler> extends ScreenHandlerRegi
     @SuppressWarnings("unchecked")
     public static final ScreenHandlerType<CoalGeneratorGui> COAL_GENERATOR = (ScreenHandlerType<CoalGeneratorGui>) new ScreenHandlerReg<CoalGeneratorGui>()
             .register("coal_generator", ExtendedScreenHandlerType::new, CoalGeneratorGui::init)
-            .withScreen((Factory<CoalGeneratorGui, ContainerScreen<CoalGeneratorGui>>) ContainerScreen::new)
+            .withScreen((Provider<CoalGeneratorGui, ContainerScreen<CoalGeneratorGui>>) ContainerScreen::new)
             .get();
     @SuppressWarnings("unchecked")
     public static final ScreenHandlerType<OreGrowerGui> ORE_GROWER = (ScreenHandlerType<OreGrowerGui>) new ScreenHandlerReg<OreGrowerGui>()
             .register("ore_grower", ExtendedScreenHandlerType::new, OreGrowerGui::init)
-            .withScreen((Factory<OreGrowerGui, ContainerScreen<OreGrowerGui>>) ContainerScreen::new)
+            .withScreen((Provider<OreGrowerGui, ContainerScreen<OreGrowerGui>>) ContainerScreen::new)
             .get();
 
     @Override
