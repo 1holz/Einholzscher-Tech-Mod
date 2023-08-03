@@ -2,7 +2,7 @@
     "type": "ehtech:coal_generator",
     "input": [
         {
-            "typeId": "ehmooshroom:items",
+            "typeId": "minecraft:item",
             "id": "ehtech:machine_recipes/coal_generator/coke_coal_block",
             "amount": 1
         }

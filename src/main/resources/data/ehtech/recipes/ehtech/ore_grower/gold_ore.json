@@ -2,12 +2,12 @@
     "type": "ehtech:ore_grower",
     "input": [
         {
-            "typeId": "ehmooshroom:items",
+            "typeId": "minecraft:item",
             "id": "ehtech:machine_recipes/ore_grower/gold_seed",
             "amount": 1
         },
         {
-            "typeId": "ehmooshroom:blocks",
+            "typeId": "minecraft:block",
             "id": "ehtech:machine_recipes/ore_grower/stone_base",
             "amount": 1
         },
@@ -18,7 +18,7 @@
     ],
     "output": [
         {
-            "typeId": "ehmooshroom:blocks",
+            "typeId": "minecraft:block",
             "id": "minecraft:coal_ore",
             "amount": 1
         }
