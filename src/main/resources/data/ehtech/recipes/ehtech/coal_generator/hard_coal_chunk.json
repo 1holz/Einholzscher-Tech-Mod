@@ -2,14 +2,14 @@
     "type": "ehtech:coal_generator",
     "input": [
         {
-            "type": "ehmooshroom:items",
+            "typeId": "ehmooshroom:items",
             "id": "ehtech:machine_recipes/coal_generator/hard_coal_chunk",
             "amount": 1
         }
     ],
     "output": [
         {
-            "type": "ehmooshroom:heat",
+            "typeId": "ehmooshroom:heat",
             "amount": 100
         }
     ],

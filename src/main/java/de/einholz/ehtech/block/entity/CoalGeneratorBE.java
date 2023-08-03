@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Einholz
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.einholz.ehtech.block.entity;
 
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
@@ -10,7 +26,7 @@ import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.CoalGeneratorGui;
 import de.einholz.ehtech.registry.BlockEntityTypeReg;
 import de.einholz.ehtech.registry.RecipeTypeReg;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType.ExtendedFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
@@ -29,7 +45,7 @@ public class CoalGeneratorBE extends MachineBE {
     }
 
     public CoalGeneratorBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
-            ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
+            ExtendedFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(COAL_GENERATOR_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
         getStorageMgr().withStorage(COAL_GENERATOR_HEAT, TransferableRegistry.HEAT, new HeatStorage(this));
@@ -44,11 +60,11 @@ public class CoalGeneratorBE extends MachineBE {
     }
 
     public Inventory getCoalGeneratorInv() {
-        return ((AdvItemStorage) getStorageMgr().getEntry(COAL_GENERATOR_ITEMS).storage).getInv();
+        return ((AdvItemStorage) getStorageMgr().getEntry(COAL_GENERATOR_ITEMS).getStorage()).getInv();
     }
 
     public HeatStorage getCoalGeneratorHeat() {
-        return (HeatStorage) getStorageMgr().getEntry(COAL_GENERATOR_HEAT).storage;
+        return (HeatStorage) getStorageMgr().getEntry(COAL_GENERATOR_HEAT).getStorage();
     }
 
     @Override

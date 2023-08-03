@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Einholz
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.einholz.ehtech.block.entity;
 
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
@@ -12,7 +28,7 @@ import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.OreGrowerGui;
 import de.einholz.ehtech.registry.BlockEntityTypeReg;
 import de.einholz.ehtech.registry.RecipeTypeReg;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry.ExtendedClientHandlerFactory;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType.ExtendedFactory;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.block.Block;
@@ -27,6 +43,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 
 public class OreGrowerBE extends MachineBE {
     public static final Identifier ORE_IN = TechMod.HELPER.makeId("ore_in");
@@ -38,7 +55,7 @@ public class OreGrowerBE extends MachineBE {
     }
 
     public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
-            ExtendedClientHandlerFactory<? extends ScreenHandler> clientHandlerFactory) {
+            ExtendedFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
         getStorageMgr().withStorage(ORE_GROWER_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
         getStorageMgr().withStorage(ORE_GROWER_BLOCK, TransferableRegistry.BLOCKS, new OreGrowerBlockStorage(this));
@@ -53,11 +70,11 @@ public class OreGrowerBE extends MachineBE {
     }
 
     public Inventory getOreGrowerInv() {
-        return ((AdvItemStorage) getStorageMgr().getEntry(ORE_GROWER_ITEMS).storage).getInv();
+        return ((AdvItemStorage) getStorageMgr().getEntry(ORE_GROWER_ITEMS).getStorage()).getInv();
     }
 
     public SingleBlockStorage getOreGrowerBlock() {
-        return (SingleBlockStorage) getStorageMgr().getEntry(ORE_GROWER_BLOCK).storage;
+        return (SingleBlockStorage) getStorageMgr().getEntry(ORE_GROWER_BLOCK).getStorage();
     }
 
     @Override
@@ -75,7 +92,7 @@ public class OreGrowerBE extends MachineBE {
         super.task();
         Exgredient<Block, BlockVariant> blockEx = null;
         for (Exgredient<?, ?> ex : getRecipe().output)
-            if (TransferableRegistry.BLOCKS.equals(ex.getType())) {
+            if (Registry.BLOCK_KEY.getValue().equals(ex.getTypeId())) {
                 blockEx = (Exgredient<Block, BlockVariant>) ex;
                 break;
             }
