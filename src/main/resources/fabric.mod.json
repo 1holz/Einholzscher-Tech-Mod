@@ -4,12 +4,12 @@
     "id": "ehtech",
     "version": "${version}",
     "icon": "assets/ehtech/icon.png",
-    "description": "The Einholzscher Tech Mod is just another Minecraft Tech Mod for Fabric.",
+    "description": "The Einholzscher Tech Mod is just another Minecraft Tech Mod for Fabric",
     "authors": [
         "Einholz"
     ],
     "contact": {
-        "homepage": "https://curseforge.com/minecraft/mc-mods/einholzscher-tech-mod",
+        "homepage": "https://modrinth.com/mod/ehtech",
         "sources": "https://github.com/Albert-Einholz/Einholzscher-Tech-Mod",
         "issues": "https://github.com/Albert-Einholz/Einholzscher-Tech-Mod/issues"
     },
@@ -33,8 +33,11 @@
         "minecraft": "~1.18",
         "java": ">=17"
     },
-    "suggests": {
+    "recommends": {
         "nochatreports": "*"
+    },
+    "suggests": {
+        "modmenu": "*"
     },
     "custom": {
         "loom:injected_interfaces": {},
