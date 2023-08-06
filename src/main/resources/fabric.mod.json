@@ -27,16 +27,15 @@
         "ehtech.mixins.json"
     ],
     "depends": {
-        "ehmooshroom": "0.0.7",
+        "ehmooshroom": "0.0.8",
         "fabricloader": ">=0.14",
         "fabric": "*",
         "minecraft": "~1.18",
         "java": ">=17"
     },
-    "recommends": {
-        "nochatreports": "*"
-    },
+    "recommends": {},
     "suggests": {
+        "nochatreports": "*",
         "modmenu": "*"
     },
     "custom": {
@@ -56,8 +55,7 @@
             "links": {
                 "modmenu.discord": "https://discord.gg/VUpY7a7pqF"
             },
-            "badges": [],
-            "parent": {}
+            "badges": []
         }
     }
 }

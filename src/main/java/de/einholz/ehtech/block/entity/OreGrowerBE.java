@@ -77,15 +77,6 @@ public class OreGrowerBE extends MachineBE {
         return (SingleBlockStorage) getStorageMgr().getEntry(ORE_GROWER_BLOCK).getStorage();
     }
 
-    @Override
-    public boolean process() {
-        // if (!getRecipe().containsBlockIngredients(getRecipe().input.blocks)) {
-        // cancel();
-        // return false;
-        // }
-        return super.process();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public void task() {
@@ -113,13 +104,6 @@ public class OreGrowerBE extends MachineBE {
             world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockEx.getOutput().getDefaultState()),
                     target.getX() + x, target.getY() + y, target.getZ() + z, 0.1, 0.1, 0.1);
         }
-    }
-
-    @Override
-    public void complete() {
-        // world.setBlockState(pos.offset(world.getBlockState(pos).get(Properties.FACING)),
-        // getRecipe().output.blocks[0]);
-        super.complete();
     }
 
     @Override

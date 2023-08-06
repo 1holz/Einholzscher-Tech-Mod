@@ -6,6 +6,7 @@ _This is a beta release_
 
 # Known Bugs
 - displaying particles during ore growing leads to a crash. alledgedly because getPos() does not exist. hence particles are disabled at the moment
+- OreGrower#OreGrowerBlockStorage no longer working
 
 # To Do
 - get Wrench working again
