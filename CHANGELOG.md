@@ -1,12 +1,12 @@
 _This is a beta release_
 
 # Changelog
-- changed Minecraft version from 1.17.1 to 1.18.2
-- added better modmenu support
+- failed fix at making particles display
+- fixed ore grower always growing coal ore
 
 # Known Bugs
 - displaying particles during ore growing leads to a crash. alledgedly because getPos() does not exist. hence particles are disabled at the moment
-- OreGrower#OreGrowerBlockStorage no longer working
+- OreGrower#OreGrowerBlockStorage is a bit unreliable
 
 # To Do
 - get Wrench working again

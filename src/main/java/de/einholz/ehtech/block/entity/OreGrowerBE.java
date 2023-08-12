@@ -16,6 +16,8 @@
 
 package de.einholz.ehtech.block.entity;
 
+import org.jetbrains.annotations.Nullable;
+
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.recipe.Exgredient;
 import de.einholz.ehmooshroom.registry.TransferableRegistry;
@@ -28,12 +30,10 @@ import de.einholz.ehtech.TechMod;
 import de.einholz.ehtech.gui.gui.OreGrowerGui;
 import de.einholz.ehtech.registry.BlockEntityTypeReg;
 import de.einholz.ehtech.registry.RecipeTypeReg;
+import de.einholz.ehtech.storage.storages.OreGrowerBlockStorage;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType.ExtendedFactory;
-import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
-import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.particle.BlockStateParticleEffect;
@@ -44,11 +44,15 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.World;
 
 public class OreGrowerBE extends MachineBE {
     public static final Identifier ORE_IN = TechMod.HELPER.makeId("ore_in");
     public static final Identifier ORE_GROWER_ITEMS = TechMod.HELPER.makeId("ore_grower_items");
     public static final Identifier ORE_GROWER_BLOCK = TechMod.HELPER.makeId("ore_grower_block");
+    private final BlockPos bugPos;
+    private World bugWorld;
+
 
     public OreGrowerBE(BlockPos pos, BlockState state) {
         this(BlockEntityTypeReg.ORE_GROWER, pos, state, OreGrowerGui::init);
@@ -57,6 +61,7 @@ public class OreGrowerBE extends MachineBE {
     public OreGrowerBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
             ExtendedFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
+        this.bugPos = pos;
         getStorageMgr().withStorage(ORE_GROWER_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
         getStorageMgr().withStorage(ORE_GROWER_BLOCK, TransferableRegistry.BLOCKS, new OreGrowerBlockStorage(this));
         getStorageMgr().getEntry(ORE_GROWER_ITEMS).change(SideConfigType.OUT_PROC);
@@ -77,7 +82,7 @@ public class OreGrowerBE extends MachineBE {
         return (SingleBlockStorage) getStorageMgr().getEntry(ORE_GROWER_BLOCK).getStorage();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "resource" })
     @Override
     public void task() {
         super.task();
@@ -92,16 +97,17 @@ public class OreGrowerBE extends MachineBE {
                     "has no block output which is needed for the OreGrower to generate particles.");
             return;
         }
-        if (true)
+        if (!hasWorld())
             return;
-        BlockPos target = getPos().offset(world.getBlockState(getPos()).get(Properties.FACING));
+        BlockPos target = getPos().offset(getWorld().getBlockState(getPos()).get(Properties.FACING));
         // TODO Make particle amount configurable?
         for (int i = 0; i < 4; i++) {
-            int side = world.random.nextInt(5);
-            double x = side == 0 ? 0 : side == 1 ? 1 : world.random.nextDouble();
-            double y = side == 2 ? 0 : side == 3 ? 1 : world.random.nextDouble();
-            double z = side == 4 ? 0 : side == 5 ? 1 : world.random.nextDouble();
-            world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockEx.getOutput().getDefaultState()),
+            int side = getWorld().random.nextInt(5);
+            double x = side == 0 ? 0 : side == 1 ? 1 : getWorld().random.nextDouble();
+            double y = side == 2 ? 0 : side == 3 ? 1 : getWorld().random.nextDouble();
+            double z = side == 4 ? 0 : side == 5 ? 1 : getWorld().random.nextDouble();
+            getWorld().addParticle(
+                    new BlockStateParticleEffect(ParticleTypes.BLOCK, blockEx.getOutput().getDefaultState()),
                     target.getX() + x, target.getY() + y, target.getZ() + z, 0.1, 0.1, 0.1);
         }
     }
@@ -111,74 +117,47 @@ public class OreGrowerBE extends MachineBE {
         return RecipeTypeReg.ORE_GROWER;
     }
 
+    // otherwise it says the method would not exist. remove once the error is gone
+    @Override
+    public BlockPos getPos() {
+        //try {
+        //    return super.getPos();
+        //} catch (Throwable e) {
+            return bugPos;
+        //}
+    }
+
+    @Override
+    @Nullable
+    public World getWorld() {
+        //try {
+        //    return super.getWorld();
+        //} catch (Throwable e) {
+            return bugWorld;
+        //}
+    }
+
+    @Override
+    public void setWorld(World world) {
+        //try {
+        //    super.setWorld(world);
+        //} finally {
+            bugWorld = world;
+        //}
+    }
+
+    @Override
+    public boolean hasWorld() {
+        //try {
+        //    return super.hasWorld();
+        //} catch (Throwable e) {
+            return getWorld() != null;
+        //}
+    }
+
     private AdvItemStorage makeItemStorage() {
         AdvItemStorage storage = new AdvItemStorage(this, ORE_IN);
         ((AdvInv) storage.getInv()).setAccepter((stack) -> true, ORE_IN);
         return storage;
-    }
-
-    // based on how CauldronStorage works
-    public static class OreGrowerBlockStorage extends SingleBlockStorage {
-        private Block lastReleasedSnapshot;
-
-        public OreGrowerBlockStorage(BlockEntity dirtyMarker) {
-            super(dirtyMarker);
-        }
-
-        protected BlockPos getPos() {
-            BlockPos bePos = getDirtyMarker().getPos();
-            return bePos.offset(getDirtyMarker().getWorld().getBlockState(bePos).get(Properties.FACING));
-        }
-
-        @Override
-        public long insert(BlockVariant insertedVariant, long maxAmount, TransactionContext transaction) {
-            if (!supportsInsertion() || maxAmount < 1)
-                return 0;
-            updateSnapshots(transaction);
-            getDirtyMarker().getWorld().setBlockState(getPos(), insertedVariant.getObject().getDefaultState(), 0);
-            return 1;
-        }
-
-        @Override
-        public long extract(BlockVariant extractedVariant, long maxAmount, TransactionContext transaction) {
-            if (!supportsExtraction() || maxAmount < 1 || getResource() == null || isResourceBlank()
-                    || !getResource().equals(extractedVariant))
-                return 0;
-            // getDirtyMarker().getWorld().setBlockState(getPos(),
-            // BlockVariant.blank().getObject().getDefaultState(), 0);
-            return 1;
-        }
-
-        @Override
-        public BlockVariant getResource() {
-            return new BlockVariant(getDirtyMarker().getWorld().getBlockState(getPos()).getBlock());
-        }
-
-        @Override
-        public ResourceAmount<BlockVariant> createSnapshot() {
-            if (isResourceBlank())
-                return new ResourceAmount<BlockVariant>(BlockVariant.blank(), 0);
-            return new ResourceAmount<BlockVariant>(getResource(), 1);
-        }
-
-        @Override
-        protected void releaseSnapshot(ResourceAmount<BlockVariant> snapshot) {
-            lastReleasedSnapshot = snapshot.resource().getObject();
-            super.releaseSnapshot(snapshot);
-        }
-
-        @Override
-        public void readSnapshot(ResourceAmount<BlockVariant> savedState) {
-            getDirtyMarker().getWorld().setBlockState(getPos(), savedState.resource().getObject().getDefaultState(), 0);
-        }
-
-        @Override
-        public void onFinalCommit() {
-            Block block = createSnapshot().resource().getObject();
-            if (lastReleasedSnapshot.equals(block))
-                return;
-            getDirtyMarker().getWorld().setBlockState(getPos(), lastReleasedSnapshot.getDefaultState(), 0);
-            getDirtyMarker().getWorld().setBlockState(getPos(), block.getDefaultState());
-        }
     }
 }
