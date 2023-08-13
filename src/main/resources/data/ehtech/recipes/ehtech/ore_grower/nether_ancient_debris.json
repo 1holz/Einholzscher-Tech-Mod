@@ -19,7 +19,7 @@
     "output": [
         {
             "type": "ehmooshroom:blocks",
-            "id": "minecraft:coal_ore",
+            "id": "minecraft:ancient_debris",
             "amount": 1
         }
     ],

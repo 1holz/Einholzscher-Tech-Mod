@@ -19,7 +19,7 @@
     "output": [
         {
             "type": "ehmooshroom:blocks",
-            "id": "minecraft:coal_ore",
+            "id": "minecraft:deepslate_copper_ore",
             "amount": 1
         }
     ],

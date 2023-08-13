@@ -19,7 +19,7 @@
     "output": [
         {
             "type": "ehmooshroom:blocks",
-            "id": "minecraft:coal_ore",
+            "id": "minecraft:emerald_ore",
             "amount": 1
         }
     ],
