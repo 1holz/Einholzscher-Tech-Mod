@@ -17,10 +17,9 @@
 package de.einholz.ehtech.block.entity;
 
 import de.einholz.ehmooshroom.block.entity.ProcessingBE;
-import de.einholz.ehmooshroom.registry.TransferableRegistry;
 import de.einholz.ehmooshroom.storage.AdvInv;
+import de.einholz.ehmooshroom.storage.BlockApiLookups;
 import de.einholz.ehmooshroom.storage.SideConfigType;
-import de.einholz.ehmooshroom.storage.Transferable;
 import de.einholz.ehmooshroom.storage.storages.AdvItemStorage;
 import de.einholz.ehmooshroom.storage.storages.ElectricityStorage;
 import de.einholz.ehtech.TechMod;
@@ -44,12 +43,11 @@ public class MachineBE extends ProcessingBE {
     public MachineBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
             ExtendedFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(MACHINE_ELECTRICITY, TransferableRegistry.ELECTRICITY,
-                new ElectricityStorage(this));
-        getStorageMgr().withStorage(MACHINE_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
+        getStorageMgr().withStorage(MACHINE_ELECTRICITY, new ElectricityStorage(this));
+        getStorageMgr().withStorage(MACHINE_ITEMS, makeItemStorage());
         getStorageMgr().getEntry(MACHINE_ITEMS).setAvailability(false, (SideConfigType[]) null);
         putMaxTransfer(Registry.ITEM_KEY.getValue(), 1);
-        putMaxTransfer(Transferable.ELECTRICITY_ID, 1);
+        putMaxTransfer(BlockApiLookups.ELECTRICITY_ID, 1);
     }
 
     @Override
@@ -57,9 +55,9 @@ public class MachineBE extends ProcessingBE {
         super.transfer();
         // TODO only for early development replace with proper creative battery
         if (getMachineInv().getStack(ELECTRIC_IN).getItem().equals(Items.BEDROCK))
-            getMachineElectricity().increase(getMaxTransfer(Transferable.ELECTRICITY_ID));
+            getMachineElectricity().increase(getMaxTransfer(BlockApiLookups.ELECTRICITY_ID));
         if (getMachineInv().getStack(ELECTRIC_OUT).getItem().equals(Items.BEDROCK))
-            getMachineElectricity().decrease(getMaxTransfer(Transferable.ELECTRICITY_ID));
+            getMachineElectricity().decrease(getMaxTransfer(BlockApiLookups.ELECTRICITY_ID));
     }
 
     public ElectricityStorage getMachineElectricity() {

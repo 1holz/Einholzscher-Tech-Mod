@@ -20,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.recipe.Exgredient;
-import de.einholz.ehmooshroom.registry.TransferableRegistry;
 import de.einholz.ehmooshroom.storage.AdvInv;
 import de.einholz.ehmooshroom.storage.SideConfigType;
 import de.einholz.ehmooshroom.storage.storages.AdvItemStorage;
@@ -53,7 +52,6 @@ public class OreGrowerBE extends MachineBE {
     private final BlockPos bugPos;
     private World bugWorld;
 
-
     public OreGrowerBE(BlockPos pos, BlockState state) {
         this(BlockEntityTypeReg.ORE_GROWER, pos, state, OreGrowerGui::init);
     }
@@ -62,8 +60,8 @@ public class OreGrowerBE extends MachineBE {
             ExtendedFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
         this.bugPos = pos;
-        getStorageMgr().withStorage(ORE_GROWER_ITEMS, TransferableRegistry.ITEMS, makeItemStorage());
-        getStorageMgr().withStorage(ORE_GROWER_BLOCK, TransferableRegistry.BLOCKS, new OreGrowerBlockStorage(this));
+        getStorageMgr().withStorage(ORE_GROWER_ITEMS, makeItemStorage());
+        getStorageMgr().withStorage(ORE_GROWER_BLOCK, new OreGrowerBlockStorage(this));
         getStorageMgr().getEntry(ORE_GROWER_ITEMS).change(SideConfigType.OUT_PROC);
         getStorageMgr().getEntry(ORE_GROWER_ITEMS).setAvailability(false, new SideConfigType[] {
                 SideConfigType.SELF_OUT_D, SideConfigType.SELF_OUT_U, SideConfigType.SELF_OUT_N,
@@ -120,39 +118,39 @@ public class OreGrowerBE extends MachineBE {
     // otherwise it says the method would not exist. remove once the error is gone
     @Override
     public BlockPos getPos() {
-        //try {
-        //    return super.getPos();
-        //} catch (Throwable e) {
-            return bugPos;
-        //}
+        // try {
+        // return super.getPos();
+        // } catch (Throwable e) {
+        return bugPos;
+        // }
     }
 
     @Override
     @Nullable
     public World getWorld() {
-        //try {
-        //    return super.getWorld();
-        //} catch (Throwable e) {
-            return bugWorld;
-        //}
+        // try {
+        // return super.getWorld();
+        // } catch (Throwable e) {
+        return bugWorld;
+        // }
     }
 
     @Override
     public void setWorld(World world) {
-        //try {
-        //    super.setWorld(world);
-        //} finally {
-            bugWorld = world;
-        //}
+        // try {
+        // super.setWorld(world);
+        // } finally {
+        bugWorld = world;
+        // }
     }
 
     @Override
     public boolean hasWorld() {
-        //try {
-        //    return super.hasWorld();
-        //} catch (Throwable e) {
-            return getWorld() != null;
-        //}
+        // try {
+        // return super.hasWorld();
+        // } catch (Throwable e) {
+        return getWorld() != null;
+        // }
     }
 
     private AdvItemStorage makeItemStorage() {
