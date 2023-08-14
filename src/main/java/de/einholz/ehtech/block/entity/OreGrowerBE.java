@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import de.einholz.ehmooshroom.recipe.AdvRecipe;
 import de.einholz.ehmooshroom.recipe.Exgredient;
 import de.einholz.ehmooshroom.storage.AdvInv;
+import de.einholz.ehmooshroom.storage.BlockApiLookups;
 import de.einholz.ehmooshroom.storage.SideConfigType;
 import de.einholz.ehmooshroom.storage.storages.AdvItemStorage;
 import de.einholz.ehmooshroom.storage.storages.SingleBlockStorage;
@@ -60,8 +61,8 @@ public class OreGrowerBE extends MachineBE {
             ExtendedFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
         this.bugPos = pos;
-        getStorageMgr().withStorage(ORE_GROWER_ITEMS, makeItemStorage());
-        getStorageMgr().withStorage(ORE_GROWER_BLOCK, new OreGrowerBlockStorage(this));
+        getStorageMgr().withStorage(ORE_GROWER_ITEMS, BlockApiLookups.ITEM_ID, makeItemStorage());
+        getStorageMgr().withStorage(ORE_GROWER_BLOCK, BlockApiLookups.BLOCK_ID, new OreGrowerBlockStorage(this));
         getStorageMgr().getEntry(ORE_GROWER_ITEMS).change(SideConfigType.OUT_PROC);
         getStorageMgr().getEntry(ORE_GROWER_ITEMS).setAvailability(false, new SideConfigType[] {
                 SideConfigType.SELF_OUT_D, SideConfigType.SELF_OUT_U, SideConfigType.SELF_OUT_N,

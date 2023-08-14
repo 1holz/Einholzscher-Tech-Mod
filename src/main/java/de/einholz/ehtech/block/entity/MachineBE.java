@@ -43,8 +43,8 @@ public class MachineBE extends ProcessingBE {
     public MachineBE(BlockEntityType<?> type, BlockPos pos, BlockState state,
             ExtendedFactory<? extends ScreenHandler> clientHandlerFactory) {
         super(type, pos, state, clientHandlerFactory);
-        getStorageMgr().withStorage(MACHINE_ELECTRICITY, new ElectricityStorage(this));
-        getStorageMgr().withStorage(MACHINE_ITEMS, makeItemStorage());
+        getStorageMgr().withStorage(MACHINE_ELECTRICITY, BlockApiLookups.ELECTRICITY_ID, new ElectricityStorage(this));
+        getStorageMgr().withStorage(MACHINE_ITEMS, BlockApiLookups.ITEM_ID, makeItemStorage());
         getStorageMgr().getEntry(MACHINE_ITEMS).setAvailability(false, (SideConfigType[]) null);
         putMaxTransfer(Registry.ITEM_KEY.getValue(), 1);
         putMaxTransfer(BlockApiLookups.ELECTRICITY_ID, 1);
