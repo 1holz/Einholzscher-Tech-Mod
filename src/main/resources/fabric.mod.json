@@ -27,7 +27,7 @@
         "ehtech.mixins.json"
     ],
     "depends": {
-        "ehmooshroom": "0.0.8",
+        "ehmooshroom": "0.0.9",
         "fabricloader": ">=0.14",
         "fabric": "*",
         "minecraft": "~1.18",
