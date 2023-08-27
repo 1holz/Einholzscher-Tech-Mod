@@ -55,9 +55,9 @@ public class MachineBE extends ProcessingBE {
         super.transfer();
         // TODO only for early development replace with proper creative battery
         if (getMachineInv().getStack(ELECTRIC_IN).getItem().equals(Items.BEDROCK))
-            getMachineElectricity().increase(getMaxTransfer(BlockApiLookups.ELECTRICITY_ID));
+            getMachineElectricity().increase(10 * getMaxTransfer(BlockApiLookups.ELECTRICITY_ID));
         if (getMachineInv().getStack(ELECTRIC_OUT).getItem().equals(Items.BEDROCK))
-            getMachineElectricity().decrease(getMaxTransfer(BlockApiLookups.ELECTRICITY_ID));
+            getMachineElectricity().decrease(10 * getMaxTransfer(BlockApiLookups.ELECTRICITY_ID));
     }
 
     public ElectricityStorage getMachineElectricity() {
