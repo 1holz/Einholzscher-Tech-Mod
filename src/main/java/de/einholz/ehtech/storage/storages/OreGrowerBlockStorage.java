@@ -22,6 +22,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 
@@ -87,5 +88,13 @@ public class OreGrowerBlockStorage extends SingleBlockStorage {
             return;
         getDirtyMarker().getWorld().setBlockState(getPos(), lastReleasedSnapshot.getDefaultState(), 0);
         getDirtyMarker().getWorld().setBlockState(getPos(), block.getDefaultState());
+    }
+
+    @Override
+    public void writeNbt(NbtCompound nbt) {
+    }
+
+    @Override
+    public void readNbt(NbtCompound nbt) {
     }
 }
