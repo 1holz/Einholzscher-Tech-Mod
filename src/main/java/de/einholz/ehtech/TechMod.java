@@ -18,6 +18,8 @@ package de.einholz.ehtech;
 
 import de.einholz.ehmooshroom.util.Helper;
 import de.einholz.ehmooshroom.util.LoggerHelper;
+import de.einholz.ehtech.generators.lang.EnglishLangProvider;
+import de.einholz.ehtech.generators.lang.GermanLangProvider;
 import de.einholz.ehtech.generators.tags.BlockTagGenerator;
 import de.einholz.ehtech.generators.tags.ItemTagGenerator;
 import de.einholz.ehtech.registry.BlockEntityTypeReg;
@@ -57,6 +59,17 @@ public class TechMod implements ModInitializer, ClientModInitializer, DataGenera
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         // use this for future versions:
         // Pack pack = generator.createPack();
+        // LANG
+        generator.addProvider(new GermanLangProvider(generator, "de_at"));
+        generator.addProvider(new GermanLangProvider(generator, "de_ch"));
+        generator.addProvider(new GermanLangProvider(generator, "de_de"));
+        generator.addProvider(new EnglishLangProvider(generator, "en_au"));
+        generator.addProvider(new EnglishLangProvider(generator, "en_ca"));
+        generator.addProvider(new EnglishLangProvider(generator, "en_gb"));
+        generator.addProvider(new EnglishLangProvider(generator, "en_nz"));
+        generator.addProvider(new EnglishLangProvider(generator, "en_pt"));
+        generator.addProvider(new EnglishLangProvider(generator, "en_us"));
+        // TAGS
         generator.addProvider(new BlockTagGenerator(generator));
         generator.addProvider(new ItemTagGenerator(generator));
     }

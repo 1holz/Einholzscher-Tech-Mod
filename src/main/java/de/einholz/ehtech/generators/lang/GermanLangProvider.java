@@ -25,15 +25,30 @@ public class GermanLangProvider extends CustomLangProvider {
     }
 
     public void generateTranslations(TranslationBuilder builder) {
-        add(builder, "block", "cancel_button", "X");
-        add(builder, "block", "side_config.acc", " |G|P|↓   |↑  |N   |S  |W   |O  |");
-        add(builder, "block", "side_config.item", "Gegenstände");
-        add(builder, "block", "side_config.fluid", "Flüssigkeiten");
-        add(builder, "block", "side_config.power", "Strom");
-        add(builder, "chat", "wip", "An diesem Feature wird noch gearbeitet");
+        add(builder, "block", "charcoal_block", "Holzkohleblock");
+        add(builder, "block", "coal_generator", "Kohle Generator");
+        add(builder, "block", "coke_coal_block", "Koksblock");
+        add(builder, "block", "config.coal_generator_items", "Gegenstände (Kohle Generator)");
+        add(builder, "block", "config.machine_electricity", "Elektrizität (Maschine)");
+        add(builder, "block", "config.ore_grower", "Gegenstände (Erz Wachser)");
+        add(builder, "block", "machine.configuration_button", "KON");
+        add(builder, "block", "machine_frame_1", "Machinenrahmen Stufe 1");
+        add(builder, "block", "ore_grower", "Erz Wachser");
+        add(builder, "item", "wrench", "Schraubenschlüssel");
+        add(builder, "item", "charcoal_tiny", "Winzige Holzkohle");
+        add(builder, "item", "coke_coal_chunk", "Koks Stück");
+        add(builder, "item", "coke_coal_tiny", "Winziges Koks");
+        add(builder, "item", "hard_coal_tiny", "Winzige Steinkohle");
+        add(builder, "itemGroup", "wrench", "Einholzscher Technik Mod");
+        add(builder, "title", "wrench", "Modus wurde zu %s gesetzt");
         add(builder, "tooltip", "activation_button", "%s");
-        add(builder, "tooltip", "cancel_button", "Zurück zum Hauptfenster");
-        add(builder, "tooltip", "config_button", "%s mit Zugriff von %s ist %s (%s)");
+        add(builder, "tooltip", "coal_generator.heat_bar", "Hitze: %s / %s / %s");
+        add(builder, "tooltip", "machine.configuration_button", "Seitenconfiguration");
+        add(builder, "tooltip", "machine.power_bar_amount", "Strom: %2$s / %3$s");
+        add(builder, "tooltip", "machine.power_bar_trend", "%d%s");
+        add(builder, "tooltip", "machine.progress_bar", "%2$s");
+        add(builder, "tooltip", "wrench.withmode", "Modus: %s");
+        add(builder, "tooltip", "wrench.withoutmode", "Schleich rechtsklicke um Modus zu setzen");
         // try {
         // builder.add(getPath());
         // } catch (NoSuchElementException | IOException e) {

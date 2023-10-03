@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Einholz
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.einholz.ehtech.item;
 
 import java.util.List;
@@ -63,19 +79,19 @@ public class Wrench extends Tool {
         // Direction.values()[(state.get(Properties.FACING).ordinal() + 1) %
         // Direction.values().length]));
         else if (WrenchMode.POWER.equals(mode) && context.getWorld().isClient())
-            ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
+            ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehmooshroom.wip"), false);
         else if (WrenchMode.ITEM.equals(mode) && context.getWorld().isClient())
-            ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
+            ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehmooshroom.wip"), false);
         else if (WrenchMode.FLUID.equals(mode) && context.getWorld().isClient())
-            ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
+            ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehmooshroom.wip"), false);
         else if (WrenchMode.CONFIGURE.equals(mode) && !context.getWorld().isClient())
             context.getPlayer()
                     .openHandledScreen((ContainerBE) context.getWorld().getBlockEntity(context.getBlockPos()));
         // else if (WrenchMode.BREAK.equals(mode) && context.getWorld().isClient())
         // ((ClientPlayerEntity) context.getPlayer()).sendMessage(new
-        // TranslatableText("chat.ehtech.wip"), false);
+        // TranslatableText("chat.ehmooshroom.wip"), false);
         else if (WrenchMode.BLOCK_SPECIFIC.equals(mode) && context.getWorld().isClient())
-            ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehtech.wip"), false);
+            ((ClientPlayerEntity) context.getPlayer()).sendMessage(new TranslatableText("chat.ehmooshroom.wip"), false);
         else
             return super.useOnBlock(context);
         return ActionResult.SUCCESS;
