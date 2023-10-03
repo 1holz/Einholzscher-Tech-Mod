@@ -21,6 +21,9 @@
         ],
         "client": [
             "de.einholz.ehtech.TechMod"
+        ],
+        "fabric-datagen": [
+            "de.einholz.ehtech.TechMod"
         ]
     },
     "mixins": [

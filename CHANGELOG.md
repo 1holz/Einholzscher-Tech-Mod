@@ -1,9 +1,6 @@
 _This is a beta release_
 
 # Changelog
-- failed fix at making particles display
-- fixed ore grower always growing coal ore
-- Bedrock as a creative battery is 10 times faster
 
 # Known Bugs
 - displaying particles during ore growing leads to a crash. alledgedly because getPos() does not exist. hence particles are disabled at the moment

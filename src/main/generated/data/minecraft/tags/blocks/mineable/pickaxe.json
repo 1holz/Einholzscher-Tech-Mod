@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "ehtech:charcoal_block",
+    "ehtech:coal_generator",
+    "ehtech:coke_coal_block",
+    "ehtech:machine_frame_1",
+    "ehtech:ore_grower"
+  ]
+}
