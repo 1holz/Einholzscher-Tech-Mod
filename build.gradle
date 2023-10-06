@@ -19,7 +19,7 @@ repositories {
 	//mavenCentral()
     flatDir {
         name "LocalLibs"
-        dirs "libs"
+        dirs "./../Mooshroom-Lib/build/devlibs"
     }
     maven {
         name "CottonMC"

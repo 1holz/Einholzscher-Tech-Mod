@@ -20,6 +20,7 @@ import de.einholz.ehmooshroom.util.Helper;
 import de.einholz.ehmooshroom.util.LoggerHelper;
 import de.einholz.ehtech.generators.lang.EnglishLangProvider;
 import de.einholz.ehtech.generators.lang.GermanLangProvider;
+import de.einholz.ehtech.generators.loottables.BlockLootTableGenerator;
 import de.einholz.ehtech.generators.tags.BlockTagGenerator;
 import de.einholz.ehtech.generators.tags.ItemTagGenerator;
 import de.einholz.ehtech.registry.BlockEntityTypeReg;
@@ -69,8 +70,10 @@ public class TechMod implements ModInitializer, ClientModInitializer, DataGenera
         generator.addProvider(new EnglishLangProvider(generator, "en_nz"));
         generator.addProvider(new EnglishLangProvider(generator, "en_pt"));
         generator.addProvider(new EnglishLangProvider(generator, "en_us"));
+        // LOOT TABLES
+        generator.addProvider(BlockLootTableGenerator::new);
         // TAGS
-        generator.addProvider(new BlockTagGenerator(generator));
-        generator.addProvider(new ItemTagGenerator(generator));
+        generator.addProvider(BlockTagGenerator::new);
+        generator.addProvider(ItemTagGenerator::new);
     }
 }
