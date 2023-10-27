@@ -18,7 +18,7 @@ repositories {
 	// for more information about repositories.
 	//mavenCentral()
     flatDir {
-        name "LocalLibs"
+        name "Mooshroom-Lib"
         dirs "./../Mooshroom-Lib/build/devlibs"
     }
     maven {
@@ -46,17 +46,9 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
 	include(modImplementation("io.github.cottonmc:LibGui:${project.lib_gui_version}+${project.minecraft_version}"))
-	modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
-
-    // TODO del
-	//modApi files("libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar")
-	//include files("libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar")
-    //api(files("${rootDir}/libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar"))
-	//include(files("${rootDir}/libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar"))
-	//include files("${rootDir}/libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar")
-	//modApi(files("${rootDir}/libs/ehmooshroom-${project.ehmooshroom_version}-${project.minecraft_version}-dev.jar"))
-
 	include(modImplementation(name: "ehmooshroom-${project.ehmooshroom_version}+${project.minecraft_version}-dev"))
+
+    modImplementation "com.terraformersmc:modmenu:${project.mod_menu_version}"
 }
 
 processResources {
