@@ -1,5 +1,7 @@
 # Einholzscher Tech Mod
 
+_Consider this project discontinued_
+
 [![Gradle](https://github.com/Albert-Einholz/Einholzscher-Tech-Mod/actions/workflows/gradle.yml/badge.svg)](https://github.com/Albert-Einholz/Einholzscher-Tech-Mod/actions/workflows/gradle.yml)
 
 The Einholzscher Tech Mod is just another Minecraft Tech Mod for Fabric.
